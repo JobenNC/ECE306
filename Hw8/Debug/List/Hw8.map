@@ -2,7 +2,7 @@
 #                                                                              #
 #      IAR Universal Linker V6.0.0.46                                          #
 #                                                                              #
-#           Link time     =  02/Nov/2014  22:27:42                             #
+#           Link time     =  03/Nov/2014  00:39:46                             #
 #           Target CPU    =  MSP430                                            #
 #           List file     =  C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug #
 #                            \List\Hw8.map                                     #
@@ -102,7 +102,7 @@
                 *                                      *
                 ****************************************
 
-       Program entry at :           C2AE  Relocatable, from module : ?cstart
+       Program entry at :           C250  Relocatable, from module : ?cstart
 
 
 
@@ -153,7 +153,7 @@ clocks ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\clocks.r43 )
         _A_CSCTL2_L                         0164
         _A_CSCTL3_L                         0166
         _A_WDTCTL_L                         015C
-        Init_Clocks                         CE42
+        Init_Clocks                         C948
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
         CSCTL0                              0160
@@ -172,7 +172,7 @@ clocks ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\clocks.r43 )
         WDTCTL_H                            015D
         WDTCTL_L                            015C
 init ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\init.r43 )
-        Init_Conditions                     CF82
+        Init_Conditions                     CAA2
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
 init_adc ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\init_adc.r43 )
@@ -181,8 +181,8 @@ init_adc ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\init_adc.r43 )
         _A_ADC10CTL2_L                      0704
         _A_ADC10MCTL0_L                     070A
         _A_ADC10IE_L                        071A
-        ADC_Process                         CF2C
-        init_adc                            CB54
+        ADC_Process                         CA4C
+        init_adc                            C65A
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
         ADC10CTL0                           0700
@@ -201,36 +201,32 @@ init_adc ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\init_adc.r43 )
         ADC10IE_H                           071B
         ADC10IE_L                           071A
 interrupt_ports ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\interrupt_ports.r43 )
-        _A_PAOUT_L                          0202
         _A_PBIE_L                           023A
         _A_PBIFG_L                          023C
         _A_PJOUT_L                          0322
-        isDebounce                          1C10
-        bounceCount                         1C12
-        switchPress                         1C14
-        drive                               1C16
-        LED_White_LD                        1C18
-        LED_Black_LD                        1C1A
-        LED_White_RD                        1C1C
-        LED_Black_RD                        1C1E
-        LED_Off_RD                          1C20
-        LED_Off_LD                          1C22
-        butt1                               1C00
-        butt2                               1C24
-        starting                            1C26
-        nib1                                1C4E
-        nib2                                1C4F
-        nib3                                1C50
-        nib4                                1C51
+        isDebounce                          1C0E
+        bounceCount                         1C10
+        switchPress                         1C12
+        drive                               NOT NEEDED
+        LED_White_LD                        NOT NEEDED
+        LED_Black_LD                        NOT NEEDED
+        LED_White_RD                        NOT NEEDED
+        LED_Black_RD                        NOT NEEDED
+        LED_Off_RD                          NOT NEEDED
+        LED_Off_LD                          NOT NEEDED
+        butt1                               NOT NEEDED
+        butt2                               NOT NEEDED
+        starting                            NOT NEEDED
+        nib1                                NOT NEEDED
+        nib2                                NOT NEEDED
+        nib3                                NOT NEEDED
+        nib4                                NOT NEEDED
         outP                                NOT NEEDED
-        display_One                         1C28
-        switch_interrupt                    C2D6
+        display_One                         NOT NEEDED
+        switch_interrupt                    C278
         switch_interrupt::??INTVEC 64       FFD0
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
-        PAOUT                               0202
-        PAOUT_H                             0203
-        PAOUT_L                             0202
         PBIE                                023A
         PBIE_H                              023B
         PBIE_L                              023A
@@ -245,11 +241,11 @@ interrupts_adc ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\interrupt
         _A_ADC10MCTL0_L                     NOT NEEDED
         _A_ADC10MEM0_L                      0712
         _A_ADC10IV_L                        071E
-        ADC_Thumb                           1C02
-        ADC_RD                              1C04
-        ADC_LD                              1C06
-        chan                                1C08
-        ADC10_ISR                           C87C
+        ADC_Thumb                           1C00
+        ADC_RD                              1C02
+        ADC_LD                              1C04
+        chan                                1C06
+        ADC10_ISR                           C2D6
         ADC10_ISR::??INTVEC 92              FFEC
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
@@ -271,9 +267,9 @@ interrupts_timers ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\interr
         _A_PJOUT_L                          NOT NEEDED
         TA0CCR0                             0352
         lcdCount                            NOT NEEDED
-        fMCount                             1C2A
-        timerCount                          1C2C
-        Timer0_A0_ISR                       C91A
+        fMCount                             1C14
+        timerCount                          1C16
+        Timer0_A0_ISR                       C374
         Timer0_A0_ISR::??INTVEC 90          FFEA
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
@@ -287,7 +283,7 @@ interrupts_timers ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\interr
         PJOUT_H                             0323
         PJOUT_L                             0322
 LCD ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\LCD.r43 )
-        _A_PAOUT_L                          NOT NEEDED
+        _A_PAOUT_L                          0202
         _A_UCB0CTLW0_L                      0640
         _A_UCB0BRW_L                        0646
         _A_UCB0TXBUF_L                      064E
@@ -297,25 +293,25 @@ LCD ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\LCD.r43 )
         display_line_2                      NOT NEEDED
         display_1                           NOT NEEDED
         display_2                           NOT NEEDED
-        char_count                          1C2E
-        current_line                        1C52
+        char_count                          1C18
+        current_line                        1C3E
         update_display_count                NOT NEEDED
         display_update_time                 NOT NEEDED
-        Init_SPI_B0                         CDF8
-        SPI_B0_write                        CEE4
-        spi_rs_data                         CF62
-        spi_rs_command                      CF5A
-        spi_chipselect_idle                 CF4A
-        spi_chipselect_active               CF72
-        spi_reset_idle                      CF52
-        spi_reset_active                    CF6A
-        Init_LCD                            CA4A
-        lcd_clear                           CF42
-        lcd_write                           CCC8
+        Init_SPI_B0                         C8FE
+        SPI_B0_write                        C9F0
+        spi_rs_data                         CA8A
+        spi_rs_command                      CA6A
+        spi_chipselect_idle                 CA5A
+        spi_chipselect_active               CA72
+        spi_reset_idle                      CA7A
+        spi_reset_active                    CA82
+        Init_LCD                            C550
+        lcd_clear                           CA62
+        lcd_write                           C7CE
         lcd_command                         NOT NEEDED
-        lcd_putc                            CD74
+        lcd_putc                            C87A
         lcd_puts                            NOT NEEDED
-        lcd_out                             CE1E
+        lcd_out                             C924
         Display_Process                     NOT NEEDED
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
@@ -337,7 +333,7 @@ LCD ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\LCD.r43 )
 LED ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\LED.r43 )
         _A_PBOUT_L                          0222
         _A_PJOUT_L                          NOT NEEDED
-        Init_LEDs                           CDCE
+        Init_LEDs                           C8D4
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
         PBOUT                               0222
@@ -349,23 +345,26 @@ LED ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\LED.r43 )
 main ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\main.r43 )
         _A_PJOUT_L                          NOT NEEDED
         _A_UCA1TXBUF_L                      05EE
-        Time_Sequence                       1C30
-        one_time                            1C53
-        five_msec_count                     1C32
-        startTimer                          1C34
+        Time_Sequence                       1C1A
+        one_time                            1C3F
+        five_msec_count                     1C1C
+        startTimer                          1C1E
         driving                             NOT NEEDED
         reverse                             NOT NEEDED
         startHalf                           NOT NEEDED
         halfTimer                           NOT NEEDED
-        L_Dir                               1C36
-        R_Dir                               1C38
-        display_NCSU                        1C3A
-        display_HW3                         1C3C
-        test1                               1C3E
-        test2                               1C40
-        writeNext                           1C42
-        test                                1C54
-        main                                C9AA
+        L_Dir                               1C20
+        R_Dir                               1C22
+        serial                              1C24
+        display_NCSU                        1C26
+        display_HW3                         1C28
+        test1                               1C2A
+        test2                               1C2C
+        timeOut                             1C2E
+        dontWrite                           1C30
+        writeNext                           1C32
+        test                                1C40
+        main                                C400
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
         PJOUT                               0322
@@ -392,12 +391,12 @@ ports ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\ports.r43 )
         _A_PJDIR_L                          0324
         _A_PJREN_L                          0326
         _A_PJSELC_L                         0336
-        Init_Ports1                         CAD8
-        Init_Ports2                         CBC0
-        Init_Ports3                         CC7A
-        Init_Ports4                         CD08
-        Init_PortsJ                         CDA4
-        Init_Ports                          CED0
+        Init_Ports1                         C5DE
+        Init_Ports2                         C6C6
+        Init_Ports3                         C780
+        Init_Ports4                         C80E
+        Init_PortsJ                         C8AA
+        Init_Ports                          CA04
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
         PAOUT                               0202
@@ -458,17 +457,17 @@ Serial ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\Serial.r43 )
         _A_UCA1RXBUF_L                      05EC
         _A_UCA1IE_L                         05FA
         UCA1IV                              05FE
-        SMALL_RING_SIZE                     1C0A
-        LARGE_RING_SIZE                     1C0C
-        BEGINNING                           1C44
-        USB_Char_Tx                         1C55
-        USB_Char_Rx                         1C5D
-        usb_tx_ring_wr                      1C46
-        usb_tx_ring_rd                      1C48
-        usb_rx_ring_wr                      1C4A
-        usb_rx_ring_rd                      1C4C
-        Init_Serial_UCA1                    CC26
-        USCI_A1_ISR                         C960
+        SMALL_RING_SIZE                     1C08
+        LARGE_RING_SIZE                     1C0A
+        BEGINNING                           1C34
+        USB_Char_Tx                         1C41
+        USB_Char_Rx                         1C49
+        usb_tx_ring_wr                      1C36
+        usb_tx_ring_rd                      1C38
+        usb_rx_ring_wr                      1C3A
+        usb_rx_ring_rd                      1C3C
+        Init_Serial_UCA1                    C72C
+        USCI_A1_ISR                         C3BA
         USCI_A1_ISR::??INTVEC 86            FFE6
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
@@ -492,7 +491,7 @@ swtich ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\swtich.r43 )
         _A_PBOUT_L                          NOT NEEDED
         buttOne                             NOT NEEDED
         buttTwo                             NOT NEEDED
-        waitCount                           1C0E
+        waitCount                           1C0C
         move                                NOT NEEDED
         changeDisplay                       NOT NEEDED
         Switches_Process                    NOT NEEDED
@@ -505,7 +504,7 @@ swtich ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\swtich.r43 )
         PBOUT_H                             0223
         PBOUT_L                             0222
 system ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\system.r43 )
-        enable_interrupts                   CF86
+        enable_interrupts                   CAA6
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
 timers ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\timers.r43 )
@@ -513,12 +512,12 @@ timers ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\timers.r43 )
         TA0CCTL0                            0342
         TA0CCR0                             NOT NEEDED
         TA0EX0                              0360
-        Init_Timers                         CF3A
-        usleep10                            CEA0
-        five_msec_sleep                     CF1C
-        TimerB0code                         CE64
-        Init_Timer_A0                       CD42
-        newFM                               NOT NEEDED
+        Init_Timers                         CA92
+        usleep10                            C9C0
+        five_msec_sleep                     CA3C
+        TimerB0code                         C96A
+        Init_Timer_A0                       C848
+        newFM                               C9A6
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
 timersB2 ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\timersB2.r43 )
@@ -528,29 +527,29 @@ timersB2 ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\timersB2.r43 )
         TB2EX0                              0460
         sleeping                            NOT NEEDED
         sleeptime                           NOT NEEDED
-        Init_Timer_B2                       CE86
+        Init_Timer_B2                       C98C
         led_blink                           NOT NEEDED
         gps_resetting                       NOT NEEDED
         gps_2b_reset                        NOT NEEDED
         reset_gps_time                      NOT NEEDED
         transmit_delay                      NOT NEEDED
         transmit_time                       NOT NEEDED
-        Timer2_B0_ISR                       C99A
+        Timer2_B0_ISR                       C3F0
         Timer2_B0_ISR::??INTVEC 70          FFD6
         ?setjmp_save_r4                     NOT NEEDED
         ?setjmp_save_r5                     NOT NEEDED
 ?abort ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.r43 )
         abort                               NOT NEEDED
 ?__dbg_break ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.r43 )
-        __DebugBreak                        CF8E
+        __DebugBreak                        CAAE
 ?__dwrite ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.r43 )
         __dwrite                            NOT NEEDED
 ?__exit ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.r43 )
-        __exit                              CEB8
+        __exit                              C9D8
 ?__write ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.r43 )
         __write                             NOT NEEDED
 ?_exit ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.r43 )
-        _exit                               CF7A
+        _exit                               CA9A
         __cstart_call_dtors                 NOT NEEDED
         __cstart_closeall                   NOT NEEDED
         __cstart_clearlocks                 NOT NEEDED
@@ -561,34 +560,34 @@ timersB2 ( C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\timersB2.r43 )
         __call_dtors                        NOT NEEDED
         __data16_vec_cctor                  NOT NEEDED
 ?cstart ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.r43 )
-        __program_start                     C2AE
-        ?cstart_begin                       C2AE
+        __program_start                     C250
+        ?cstart_begin                       C250
         ?cstart_call_mpu_init               NOT NEEDED
         ?cstart_call_low_level_init         NOT NEEDED
         ?cstart_init_copy_ramfunc           NOT NEEDED
-        ?cstart_init_zero                   C2B2
-        ?cstart_init_copy                   C2BE
+        ?cstart_init_zero                   C254
+        ?cstart_init_copy                   C260
         ?cstart_init_zero20                 NOT NEEDED
         ?cstart_init_copy20                 NOT NEEDED
         __cstart_init_tls                   NOT NEEDED
         ?cstart_call_ctors                  NOT NEEDED
-        ?cstart_call_main                   C2CE
-        ?cstart_end                         C2D6
+        ?cstart_call_main                   C270
+        ?cstart_end                         C278
 lowinit ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.r43 )
         __low_level_init                    NOT NEEDED
 ?reset_vector ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.r43 )
         ?reset_vector                       FFFE
 ?exit ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.r43 )
-        exit                                CF7E
+        exit                                CA9E
 ?malloc ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.r43 )
         malloc                              NOT NEEDED
 ?memcpy ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.r43 )
-        memcpy                              CF0A
+        memcpy                              CA2A
 ?memmove ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.r43 )
         memmove                             NOT NEEDED
 ?memzero ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.r43 )
-        __data16_memzero                    CEF8
-        __data16_memcpy                     CF8A
+        __data16_memzero                    CA18
+        __data16_memcpy                     CAAA
         __data16_memmove                    NOT NEEDED
 ?MpuInit ( C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.r43 )
         __iar_430_mpu_init                  NOT NEEDED
@@ -640,33 +639,34 @@ Module               CODE      DATA      CONST
 ?memzero               22
 ?reset_vector           2
 LCD                   404      3      8
+  + shared                            2
 LED                    42
   + shared                            2
-Serial                142     38     12      4
+Serial                138     38     12      4
   + common             88
 clocks                 34            10
 init                    4
 init_adc              122             6
   + shared                            4
-interrupt_ports     1 446     32           113
-  + shared             66             8
+interrupt_ports        94      6
+  + shared             66             6
   + common
 interrupts_adc        158      8      4      8
   + common             94
 interrupts_timers      70      4
   + shared             92             2
   + common
-main                  160     22      2     46
+main                  336     28      2     65
 ports                 424            24
 swtich                         2      2      2
 system                  4
-timers                132             6
+timers                158             6
 timersB2               42             8
   + common             72
 N/A (command line)           160
 N/A (alignment)
-----------          -----    ---     --    ---
-Total:              3 300    269     98    173
+----------          -----    ---     --     --
+Total:              2 146    249     98     79
   + common             94
 
 
@@ -708,14 +708,14 @@ DATA16_AN                              015C - 015D               2   rel    0
                                        0712 - 0713               2 
                                        071A - 071B               2 
                                        071E - 071F               2 
-DATA16_I                               1C00 - 1C0F              10   rel    1
-DATA16_Z                               1C10 - 1C6C              5D   rel    1
+DATA16_I                               1C00 - 1C0D               E   rel    1
+DATA16_Z                               1C0E - 1C58              4B   rel    1
 CSTACK                                 1F60 - 1FFF              A0   rel    1
-DATA16_C                               C200 - C29C              9D   rel    0
-DATA16_ID                              C29E - C2AD              10   rel    1
-CSTART                                 C2AE - C2D5              28   rel    1
-ISR_CODE                               C2D6 - C9A9             6D4   rel    1
-<CODE> 1                               C9AA - CF8F             5E6   rel    1
+DATA16_C                               C200 - C240              41   rel    0
+DATA16_ID                              C242 - C24F               E   rel    1
+CSTART                                 C250 - C277              28   rel    1
+ISR_CODE                               C278 - C3FF             188   rel    1
+<CODE> 1                               C400 - CAAF             6B0   rel    1
 INTVEC                                 FF90 - FFED              5E   com    1
 RESET                                  FFFE - FFFF               2   rel    1
 
@@ -725,9 +725,9 @@ RESET                                  FFFE - FFFF               2   rel    1
                 *                                      *
                 ****************************************
 
- 3 394 bytes of CODE  memory
-   269 bytes of DATA  memory (+ 98 absolute )
-   173 bytes of CONST memory
+ 2 240 bytes of CODE  memory
+   249 bytes of DATA  memory (+ 98 absolute )
+    79 bytes of CONST memory
 
 Errors: none
 Warnings: none

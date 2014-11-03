@@ -78,7 +78,6 @@ __interrupt void USCI_A1_ISR(void){
  break;
  case 4: // Vector 4 – TXIFG
    //write to UCAxTXBUF x=0
-   int i = 0;
    
  break;
  default: break; 

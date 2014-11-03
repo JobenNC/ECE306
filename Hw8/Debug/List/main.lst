@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         02/Nov/2014  22:27:42
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         03/Nov/2014  00:39:46
 # Copyright 1996-2014 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
 #
@@ -120,330 +120,468 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\main.c
      29          unsigned int R_Dir;
    \                     R_Dir:
    \   000000                DS8 2
-     30          
 
    \                                 In  segment DATA16_Z, align 2, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     31          char *display_NCSU;
+     30          char *serial;
+   \                     serial:
+   \   000000                DS8 2
+     31          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     32          char *display_NCSU;
    \                     display_NCSU:
    \   000000                DS8 2
 
    \                                 In  segment DATA16_Z, align 2, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     32          char *display_HW3;
+     33          char *display_HW3;
    \                     display_HW3:
    \   000000                DS8 2
-     33          
+     34          
 
    \                                 In  segment DATA16_Z, align 2, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     34          int test1=0;
+     35          int test1=0;
    \                     test1:
    \   000000                DS8 2
 
    \                                 In  segment DATA16_Z, align 2, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     35          int test2=0;
+     36          int test2=0;
    \                     test2:
    \   000000                DS8 2
-     36          
+     37          
 
    \                                 In  segment DATA16_Z, align 2, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     37          extern volatile int writeNext = 0;
+     38          int timeOut = 0;
+   \                     timeOut:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     39          int dontWrite = 0;
+   \                     dontWrite:
+   \   000000                DS8 2
+     40          
+     41          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     42          extern volatile int writeNext = 0;
    \                     writeNext:
    \   000000                DS8 2
-     38          
+     43          
 
    \                                 In  segment DATA16_Z, align 1, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     39          char test;
+     44          char test;
    \                     test:
    \   000000                DS8 1
-     40          
+     45          
 
    \                                 In  segment CODE, align 2
-     41          void main(void){
+     46          void main(void){
    \                     main:
-     42          //===========================================================================
-     43          // Function name: main
-     44          //
-     45          // Description: The main function.  Our 'while' OS
-     46          // 
-     47          // Passed : no variables passed
-     48          // Locals: no variables declared
-     49          // Returned: no values returned
-     50          // Globals: Time_Sequence, one_time, five_msec_count
-     51          // Calls: Init_Ports, Init_Clocks, Init_Conditions, Init_Timers, Init_LEDs,
-     52          //      Init_LCD, five_msec_sleep, Switch_Process
-     53          //
-     54          // Author: Joseph Jarriel
-     55          // Date: Sep 2014
-     56          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
-     57          //===========================================================================
-     58            Init_Ports();                             // Initialize Ports
-   \   000000   ........     CALLA   #Init_Ports
-     59            Init_Clocks();                            // Initialize Clock System 
-   \   000004   ........     CALLA   #Init_Clocks
-     60            init_adc();
-   \   000008   ........     CALLA   #init_adc
-     61            Init_Serial_UCA1();                        // Initialize Serial Comms
-   \   00000C   ........     CALLA   #Init_Serial_UCA1
-     62            Init_Conditions();
-   \   000010   ........     CALLA   #Init_Conditions
-     63            PJOUT |= LED1;                            // Turn LED 1 on to indicate boot
-   \   000014   92D32203     BIS.W   #0x1, &0x322
-     64            Time_Sequence = RESET;                        // 
-   \   000018   8243....     MOV.W   #0x0, &Time_Sequence
-     65            Init_Timers();                            // Initialize Timers
-   \   00001C   ........     CALLA   #Init_Timers
-     66            five_msec_sleep(SLEEP_50);                      // 250 msec delay for the clock to settle
-   \   000020   3C403200     MOV.W   #0x32, R12
-   \   000024   ........     CALLA   #five_msec_sleep
-     67            Init_LCD();                               // Initialize LCD
-   \   000028   ........     CALLA   #Init_LCD
-     68            five_msec_sleep(SLEEP_75);                      // 375 msec delay for the clock to settle
-   \   00002C   3C404B00     MOV.W   #0x4b, R12
-   \   000030   ........     CALLA   #five_msec_sleep
-     69            Init_LEDs();                              // Initialize LEDs
-   \   000034   ........     CALLA   #Init_LEDs
-     70            display_NCSU = "   Callibrate   ";
-   \   000038   B240........ MOV.W   #`?<Constant "   Callibrate   ">`, &display_NCSU
-     71            display_HW3 =  "  IR Em Off  ";
-   \   00003E   B240........ MOV.W   #`?<Constant "  IR Em Off  ">`, &display_HW3
-     72            
-     73          //  lcd_command(CLEAR_DISPLAY);
-     74            five_msec_sleep(SLEEP_10); 
-   \   000044   3C400A00     MOV.W   #0xa, R12
-   \   000048   ........     CALLA   #five_msec_sleep
-     75            lcd_out("Make Selection",LCD_LINE_1);       // 16 characters max between quotes - line 1
-   \   00004C   7D408000     MOV.B   #0x80, R13
-   \   000050   3C40....     MOV.W   #`?<Constant "Make Selection">`, R12
-   \   000054   ........     CALLA   #lcd_out
-     76            //lcd_out("LED On       ",LCD_LINE_2);
-     77              //lcd_out(display_NCSU,LCD_LINE_1);       // 16 characters max between quotes - line 1
-     78              //lcd_out(display_HW3,LCD_LINE_2);        // 16 characters max between quotes - line 2
-     79              
-     80          //------------------------------------------------------------------------------
-     81          // Begining of the "While" Operating System
-     82          //------------------------------------------------------------------------------
-     83           ADC_Process();
-   \   000058   ........     CALLA   #ADC_Process
-     84           L_Dir = L_FORWARD;
-   \   00005C   B2404000.... MOV.W   #0x40, &L_Dir
-     85           R_Dir = R_FORWARD;
-   \   000062   B2401000.... MOV.W   #0x10, &R_Dir
-     86           while(ALWAYS) {    
-     87             
-     88             // Can the Operating system run
-     89             //newFM(20);
-     90             
-     91             //UCA1TXBUF = 'U';
-     92             
-     93             if (writeNext)
+   \   000000   0A12         PUSH.W  R10
+     47          //===========================================================================
+     48          // Function name: main
+     49          //
+     50          // Description: The main function.  Our 'while' OS
+     51          // 
+     52          // Passed : no variables passed
+     53          // Locals: no variables declared
+     54          // Returned: no values returned
+     55          // Globals: Time_Sequence, one_time, five_msec_count
+     56          // Calls: Init_Ports, Init_Clocks, Init_Conditions, Init_Timers, Init_LEDs,
+     57          //      Init_LCD, five_msec_sleep, Switch_Process
+     58          //
+     59          // Author: Joseph Jarriel
+     60          // Date: Sep 2014
+     61          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+     62          //===========================================================================
+     63            Init_Ports();                             // Initialize Ports
+   \   000002   ........     CALLA   #Init_Ports
+     64            Init_Clocks();                            // Initialize Clock System 
+   \   000006   ........     CALLA   #Init_Clocks
+     65            init_adc();
+   \   00000A   ........     CALLA   #init_adc
+     66            Init_Serial_UCA1();                        // Initialize Serial Comms
+   \   00000E   ........     CALLA   #Init_Serial_UCA1
+     67            Init_Conditions();
+   \   000012   ........     CALLA   #Init_Conditions
+     68            PJOUT |= LED1;                            // Turn LED 1 on to indicate boot
+   \   000016   92D32203     BIS.W   #0x1, &0x322
+     69            Time_Sequence = RESET;                        // 
+   \   00001A   8243....     MOV.W   #0x0, &Time_Sequence
+     70            Init_Timers();                            // Initialize Timers
+   \   00001E   ........     CALLA   #Init_Timers
+     71            five_msec_sleep(SLEEP_50);                      // 250 msec delay for the clock to settle
+   \   000022   3C403200     MOV.W   #0x32, R12
+   \   000026   ........     CALLA   #five_msec_sleep
+     72            Init_LCD();                               // Initialize LCD
+   \   00002A   ........     CALLA   #Init_LCD
+     73            five_msec_sleep(SLEEP_75);                      // 375 msec delay for the clock to settle
+   \   00002E   3C404B00     MOV.W   #0x4b, R12
+   \   000032   ........     CALLA   #five_msec_sleep
+     74            Init_LEDs();                              // Initialize LEDs
+   \   000036   ........     CALLA   #Init_LEDs
+     75            display_NCSU = "   Callibrate   ";
+   \   00003A   B240........ MOV.W   #`?<Constant "   Callibrate   ">`, &display_NCSU
+     76            display_HW3 =  "  IR Em Off  ";
+   \   000040   B240........ MOV.W   #`?<Constant "  IR Em Off  ">`, &display_HW3
+     77            
+     78          //  lcd_command(CLEAR_DISPLAY);
+     79            five_msec_sleep(SLEEP_10); 
+   \   000046   3C400A00     MOV.W   #0xa, R12
+   \   00004A   ........     CALLA   #five_msec_sleep
+     80            lcd_out("1-Display 2-Clear",LCD_LINE_1);       // 16 characters max between quotes - line 1
+   \   00004E   7D408000     MOV.B   #0x80, R13
+   \   000052   3C40....     MOV.W   #`?<Constant "1-Display 2-Clear">`, R12
+   \   000056   ........     CALLA   #lcd_out
+     81            //lcd_out("LED On       ",LCD_LINE_2);
+     82              //lcd_out(display_NCSU,LCD_LINE_1);       // 16 characters max between quotes - line 1
+     83              //lcd_out(display_HW3,LCD_LINE_2);        // 16 characters max between quotes - line 2
+     84              
+     85          //------------------------------------------------------------------------------
+     86          // Begining of the "While" Operating System
+     87          //------------------------------------------------------------------------------
+     88           ADC_Process();
+   \   00005A   ........     CALLA   #ADC_Process
+     89           L_Dir = L_FORWARD;
+   \   00005E   B2404000.... MOV.W   #0x40, &L_Dir
+     90           R_Dir = R_FORWARD;
+   \   000064   B2401000.... MOV.W   #0x10, &R_Dir
+     91           serial="               ";
+   \   00006A   B240........ MOV.W   #`?<Constant "               ">`, &serial
+   \   000070   0A3C         JMP     ??main_0
+     92           while(ALWAYS) {    
+     93             
+     94             // Can the Operating system run
+     95             //newFM(20);
+     96             
+     97             //UCA1TXBUF = 'U';
+     98             serial="               ";
+     99             if (writeNext)
+    100             {
+    101                //UCA1TXBUF = 'u';
+    102             writeNext = 0;
+    103             //while ((!UCTXIFG) || (timeOut < 100))
+    104             //{
+    105             //     newFM(1);
+    106             //     timeOut++;
+    107             //}
+    108             if ((UCTXIFG))
+    109             {
+    110             timeOut = 0;
+    111             for (int j = 0; j < 6; j++)
+    112             {
+    113                switch (j)
+    114                {
+    115                case 0:
+    116                  UCA1TXBUF = 'N';
+    117                  break;
+    118                case 1:
+    119                  UCA1TXBUF = 'C';
+    120                  break;
+    121                case 2:
+    122                  UCA1TXBUF = 'S';
+    123                  break;
+    124                case 3:
+    125                  UCA1TXBUF = 'U';
+    126                  break;
+    127                case 4:
+    128                  UCA1TXBUF = '#';
+    129                  break;
+    130                case 5:
+    131                  UCA1TXBUF = '1';
+    132                  break;
+    133                default:
+    134                  break;
+    135                }
+    136                
+    137                newFM(20);
+    138                if (usb_rx_ring_wr == 0)
+    139                {
+    140                  dontWrite = 1;
+    141                  break;
+    142                }
+    143             
+    144                
+    145                while (1)
+    146                {
+    147                  newFM(1);
+    148                  test1 = usb_rx_ring_wr;
+    149                  test2 = usb_rx_ring_rd;
+    150                  if (test1 != test2) break;
+    151                }
+    152                
+    153                /////while (!UCTXIFG)
+    154                ////{
+    155                ////}
+    156                ////UCA1TXBUF = 'u';
+    157                
+    158          
+    159                usb_rx_ring_rd++;
+    160                test = USB_Char_Rx[usb_rx_ring_wr];
+    161                //int stop = 0;
+    162                
+    163                //if (test < numRange) test = test + numOffset;
+    164                //else test = test + charOffset;
+    165                //display_One="            ";
+    166                serial[char1-1+j]=test;
+    167                }
+    168             
+    169             lcd_clear();
+    170             if (!dontWrite) lcd_out(serial, LCD_LINE_1);
+    171             else dontWrite = 0;
+   \                     ??main_2:
+   \   000072   8243....     MOV.W   #0x0, &dontWrite
+    172             //else dontWrite = 0;
+    173             usb_rx_ring_wr = 0;
+   \                     ??main_3:
+   \   000076   8243....     MOV.W   #0x0, &usb_rx_ring_wr
+    174             usb_rx_ring_rd = 0;
+   \   00007A   8243....     MOV.W   #0x0, &usb_rx_ring_rd
+    175             usb_tx_ring_wr = 0;
+   \   00007E   8243....     MOV.W   #0x0, &usb_tx_ring_wr
+    176             usb_tx_ring_rd = 0;
+   \   000082   8243....     MOV.W   #0x0, &usb_tx_ring_rd
    \                     ??main_0:
-   \   000068   8293....     CMP.W   #0x0, &writeNext
-   \   00006C   FD27         JEQ     ??main_0
-     94             {
-     95                //UCA1TXBUF = 'u';
-     96                writeNext = 0;
-   \   00006E   8243....     MOV.W   #0x0, &writeNext
-     97                
-     98                while (!UCTXIFG)
-     99                {
-    100                }
-    101                UCA1TXBUF = 'u';
-   \   000072   B2407500EE05 MOV.W   #0x75, &0x5ee
-    102                
-    103                while (1)
-    104                {
-    105                  test1 = usb_rx_ring_wr;
+   \   000086   B240........ MOV.W   #`?<Constant "               ">`, &serial
+   \   00008C   8293....     CMP.W   #0x0, &writeNext
+   \   000090   FA27         JEQ     ??main_0
+   \   000092   8243....     MOV.W   #0x0, &writeNext
+   \   000096   8243....     MOV.W   #0x0, &timeOut
+   \   00009A   0A43         MOV.W   #0x0, R10
+   \   00009C   1B3C         JMP     ??main_5
    \                     ??main_1:
-   \   000078   9242........ MOV.W   &usb_rx_ring_wr, &test1
-    106                  test2 = usb_rx_ring_rd;
-   \   00007E   9242........ MOV.W   &usb_rx_ring_rd, &test2
-    107                  if (test1 != test2) break;
-   \   000084   9292........ CMP.W   &test2, &test1
-   \   00008A   F627         JEQ     ??main_1
-    108                }
-    109                
-    110                /////while (!UCTXIFG)
-    111                ////{
-    112                ////}
-    113                ////UCA1TXBUF = 'u';
-    114                
-    115                usb_rx_ring_rd++;
-   \   00008C   9253....     ADD.W   #0x1, &usb_rx_ring_rd
-    116                test = USB_Char_Rx[usb_rx_ring_wr];
-   \   000090   1F42....     MOV.W   &usb_rx_ring_wr, R15
-   \   000094   D24F........ MOV.B   USB_Char_Rx(R15), &test
-    117                int stop = 0;
-                           ^
-Warning[Pe177]: variable "stop" was declared but never referenced
-   \   00009A   0F43         MOV.W   #0x0, R15
-   \   00009C   E53F         JMP     ??main_0
-   \   00009E   0343         NOP
-   \   0000A0                REQUIRE _A_PJOUT_L
-   \   0000A0                REQUIRE _A_UCA1TXBUF_L
-    118             }
-    119              //Code for tx rx
-    120          
-    121              //
-    122          
-    123           // //switch(Time_Sequence){
-    124           // //  case TSEQ_250:                               // 1000 msec  
-    125           // //    if(one_time){
-    126           // //      //Init_LEDs();                      // Initialize LEDs
-    127           // //      one_time = RESET;
-    128           // //    }
-    129           // //    Time_Sequence = RESET;                    // 
-    130           // //  case TSEQ_200:                               // 1000 msec  
-    131           // //    if(one_time){
-    132           // //      //PJOUT |= LED4;                      // Change State of LED 4
-    133           // //      //P3OUT |= LED5;                      // Change State of LED 5
-    134           // //      one_time = RESET;
-    135           // //    }
-    136           // //  case TSEQ_150:                               // 750 msec  
-    137           // //    if(one_time){
-    138           // //      //PJOUT |= LED3;                      // Change State of LED 3
-    139           // //      //P3OUT |= LED6;                      // Change State of LED 6
-    140           // //      one_time = RESET;
-    141           // //    }
-    142           // //  case TSEQ_100:                               // 500 msec  
-    143           // //    if(one_time){
-    144           // //      //PJOUT |= LED2;                      // Change State of LED 2
-    145           // //      //P3OUT |= LED7;                      // Change State of LED 7
-    146           // //      one_time = RESET;
-    147           // //    }
-    148           // //  case  TSEQ_50:                               // 250 msec  
-    149           // //    if(one_time){
-    150           //  //     //PJOUT |= LED1;                      // Change State of LED 1
-    151           //  //     //P3OUT |= LED8;                      // Change State of LED 8
-    152           // //      one_time = RESET;
-    153           // //    }
-    154           // //    break;                                // 
-    155           // //  default: break; 
-    156           // //}
-    157           // //Switches_Process();                       // Check for switch state change
-    158           // 
-    159           // if (starting)
-    160           // {
-    161           //   newFM(HALF_SEC);
-    162           //   starting = RESET;
-    163           // }
-    164           // 
-    165           // if ((drive) && ~(driving))
-    166           // {
-    167           //     //newFM(200);
-    168           //     driving = START;
-    169           // }
-    170           // if (driving)
-    171           // {
-    172           //   
-    173           //   //if ((ADC_LD > (LED_Black_LD-350)) && (ADC_RD < (LED_Black_RD-350)))
-    174           //   //{
-    175           //   //  P3OUT &= ~L_FORWARD;
-    176           //   //  P3OUT |= R_FORWARD;
-    177           //   //  newFM(20);
-    178           //   //  P3OUT &= ~L_FORWARD;
-    179           //   //  P3OUT &= ~R_FORWARD;
-    180           //   //}
-    181           //   
-    182           //   //else if ((ADC_LD < (LED_Black_LD-350)) && (ADC_RD > (LED_Black_RD-350)))
-    183           //   //{
-    184           //   //  P3OUT |= L_FORWARD;
-    185           //   //  P3OUT &= ~R_FORWARD;
-    186           //   //  newFM(20);
-    187           //   //  P3OUT &= ~L_FORWARD;
-    188           //   //  P3OUT &= ~R_FORWARD;
-    189           //   //}
-    190           //   
-    191           //   if ((ADC_LD < (LED_Black_LD - offLine)) && (ADC_RD < (LED_Black_RD - offLine)))
-    192           //   {
-    193           //     P3OUT |= L_Dir;
-    194           //     P3OUT |= R_Dir;
-    195           //     newFM(SEVENTH);
-    196           //     P3OUT &= ~L_Dir;
-    197           //     P3OUT &= ~R_Dir;
-    198           //   }
-    199           //   
-    200           //   else
-    201           //   {
-    202           //     P3OUT &= ~L_Dir;
-    203           //     P3OUT &= ~R_Dir;
-    204           //     if (reverse == RESET)
-    205           //     {
-    206           //       newFM(HALF_SEC);
-    207           //       L_Dir = L_REVERSE;
-    208           //       R_Dir = R_REVERSE;
-    209           //       
-    210           //       startTimer = START;
-    211           //       P3OUT |= L_Dir;
-    212           //       P3OUT |= R_Dir;
-    213           //       newFM(seventy);
-    214           //       P3OUT &= ~L_Dir;
-    215           //       P3OUT &= ~R_Dir;
-    216           //       
-    217           //       reverse++;
-    218           //     }
-    219           //     else if (reverse == START)
-    220           //     {
-    221           //       
-    222           //       startTimer = RESET;
-    223           //       P3OUT &= ~L_Dir;
-    224           //       P3OUT &= ~R_Dir;
-    225           //       
-    226           //       L_Dir = L_FORWARD;
-    227           //       R_Dir = R_FORWARD;
-    228           //       
-    229           //       newFM(HALF_SEC);
-    230           //       
-    231           //       P3OUT |= L_Dir;
-    232           //       P3OUT |= R_Dir;
-    233           //       newFM(timerCount/HALF);
-    234           //       P3OUT &= ~L_Dir;
-    235           //       P3OUT &= ~R_Dir;
-    236           //       
-    237           //       newFM(ONE_SEC);
-    238           //       
-    239           //       L_Dir = R_FORWARD;
-    240           //       R_Dir = L_REVERSE;
-    241           //       P3OUT |= L_Dir;
-    242           //       P3OUT |= R_Dir;
-    243           //       newFM(twoLoop);
-    244           //       P3OUT &= ~L_Dir;
-    245           //       P3OUT &= ~R_Dir;
-    246           //       
-    247           //       newFM(ONE_SEC);
-    248           //       
-    249           //       L_Dir = R_REVERSE;
-    250           //       R_Dir = L_FORWARD;
-    251           //       P3OUT |= L_Dir;
-    252           //       P3OUT |= R_Dir;
-    253           //       newFM(twoLoop);
-    254           //       P3OUT &= ~L_Dir;
-    255           //       P3OUT &= ~R_Dir;
-    256           //       
-    257           //       
-    258           //       reverse++;
-    259           //       driving = RESET;
-    260           //       drive = RESET;
-    261           //     }
-    262           //     
-    263           //     else
-    264           //     {
-    265           //       P3OUT &= ~L_Dir;
-    266           //       P3OUT &= ~R_Dir;
-    267           //     }
-    268           //   }
-    269           // }
-    270           // //ADC_Process();
-    271           // //if(Time_Sequence > TSEQ_250){
-    272           // //  Time_Sequence = RESET;
-    273           // //}
-    274           }
-    275          //------------------------------------------------------------------------------
-    276          }
+   \   00009E   1C43         MOV.W   #0x1, R12
+   \   0000A0   ........     CALLA   #newFM
+   \   0000A4   9242........ MOV.W   &usb_rx_ring_wr, &test1
+   \   0000AA   9242........ MOV.W   &usb_rx_ring_rd, &test2
+   \   0000B0   9292........ CMP.W   &test2, &test1
+   \   0000B6   F327         JEQ     ??main_1
+   \   0000B8   9253....     ADD.W   #0x1, &usb_rx_ring_rd
+   \   0000BC   1F42....     MOV.W   &usb_rx_ring_wr, R15
+   \   0000C0   D24F........ MOV.B   USB_Char_Rx(R15), &test
+   \   0000C6   1F42....     MOV.W   &serial, R15
+   \   0000CA   0F5A         ADD.W   R10, R15
+   \   0000CC   DF42....0700 MOV.B   &test, 0x7(R15)
+   \   0000D2   1A53         ADD.W   #0x1, R10
+   \                     ??main_5:
+   \   0000D4   3A900600     CMP.W   #0x6, R10
+   \   0000D8   2E34         JGE     ??main_6
+   \   0000DA   0F4A         MOV.W   R10, R15
+   \   0000DC   0F83         SUB.W   #0x0, R15
+   \   0000DE   0B24         JEQ     ??main_7
+   \   0000E0   1F83         SUB.W   #0x1, R15
+   \   0000E2   0D24         JEQ     ??main_8
+   \   0000E4   1F83         SUB.W   #0x1, R15
+   \   0000E6   0F24         JEQ     ??main_9
+   \   0000E8   1F83         SUB.W   #0x1, R15
+   \   0000EA   1124         JEQ     ??main_10
+   \   0000EC   1F83         SUB.W   #0x1, R15
+   \   0000EE   1324         JEQ     ??main_11
+   \   0000F0   1F83         SUB.W   #0x1, R15
+   \   0000F2   1524         JEQ     ??main_12
+   \   0000F4   173C         JMP     ??main_4
+   \                     ??main_7:
+   \   0000F6   B2404E00EE05 MOV.W   #0x4e, &0x5ee
+   \   0000FC   133C         JMP     ??main_4
+   \                     ??main_8:
+   \   0000FE   B2404300EE05 MOV.W   #0x43, &0x5ee
+   \   000104   0F3C         JMP     ??main_4
+   \                     ??main_9:
+   \   000106   B2405300EE05 MOV.W   #0x53, &0x5ee
+   \   00010C   0B3C         JMP     ??main_4
+   \                     ??main_10:
+   \   00010E   B2405500EE05 MOV.W   #0x55, &0x5ee
+   \   000114   073C         JMP     ??main_4
+   \                     ??main_11:
+   \   000116   B2402300EE05 MOV.W   #0x23, &0x5ee
+   \   00011C   033C         JMP     ??main_4
+   \                     ??main_12:
+   \   00011E   B2403100EE05 MOV.W   #0x31, &0x5ee
+   \                     ??main_4:
+   \   000124   3C401400     MOV.W   #0x14, R12
+   \   000128   ........     CALLA   #newFM
+   \   00012C   8293....     CMP.W   #0x0, &usb_rx_ring_wr
+   \   000130   B623         JNE     ??main_1
+   \   000132   9243....     MOV.W   #0x1, &dontWrite
+   \                     ??main_6:
+   \   000136   ........     CALLA   #lcd_clear
+   \   00013A   8293....     CMP.W   #0x0, &dontWrite
+   \   00013E   9923         JNE     ??main_2
+   \   000140   7D408000     MOV.B   #0x80, R13
+   \   000144   1C42....     MOV.W   &serial, R12
+   \   000148   ........     CALLA   #lcd_out
+   \   00014C   943F         JMP     ??main_3
+   \   00014E   0343         NOP
+   \   000150                REQUIRE _A_PJOUT_L
+   \   000150                REQUIRE _A_UCA1TXBUF_L
+    177             }
+    178             }
+    179              //Code for tx rx
+    180          
+    181              //
+    182          
+    183           // //switch(Time_Sequence){
+    184           // //  case TSEQ_250:                               // 1000 msec  
+    185           // //    if(one_time){
+    186           // //      //Init_LEDs();                      // Initialize LEDs
+    187           // //      one_time = RESET;
+    188           // //    }
+    189           // //    Time_Sequence = RESET;                    // 
+    190           // //  case TSEQ_200:                               // 1000 msec  
+    191           // //    if(one_time){
+    192           // //      //PJOUT |= LED4;                      // Change State of LED 4
+    193           // //      //P3OUT |= LED5;                      // Change State of LED 5
+    194           // //      one_time = RESET;
+    195           // //    }
+    196           // //  case TSEQ_150:                               // 750 msec  
+    197           // //    if(one_time){
+    198           // //      //PJOUT |= LED3;                      // Change State of LED 3
+    199           // //      //P3OUT |= LED6;                      // Change State of LED 6
+    200           // //      one_time = RESET;
+    201           // //    }
+    202           // //  case TSEQ_100:                               // 500 msec  
+    203           // //    if(one_time){
+    204           // //      //PJOUT |= LED2;                      // Change State of LED 2
+    205           // //      //P3OUT |= LED7;                      // Change State of LED 7
+    206           // //      one_time = RESET;
+    207           // //    }
+    208           // //  case  TSEQ_50:                               // 250 msec  
+    209           // //    if(one_time){
+    210           //  //     //PJOUT |= LED1;                      // Change State of LED 1
+    211           //  //     //P3OUT |= LED8;                      // Change State of LED 8
+    212           // //      one_time = RESET;
+    213           // //    }
+    214           // //    break;                                // 
+    215           // //  default: break; 
+    216           // //}
+    217           // //Switches_Process();                       // Check for switch state change
+    218           // 
+    219           // if (starting)
+    220           // {
+    221           //   newFM(HALF_SEC);
+    222           //   starting = RESET;
+    223           // }
+    224           // 
+    225           // if ((drive) && ~(driving))
+    226           // {
+    227           //     //newFM(200);
+    228           //     driving = START;
+    229           // }
+    230           // if (driving)
+    231           // {
+    232           //   
+    233           //   //if ((ADC_LD > (LED_Black_LD-350)) && (ADC_RD < (LED_Black_RD-350)))
+    234           //   //{
+    235           //   //  P3OUT &= ~L_FORWARD;
+    236           //   //  P3OUT |= R_FORWARD;
+    237           //   //  newFM(20);
+    238           //   //  P3OUT &= ~L_FORWARD;
+    239           //   //  P3OUT &= ~R_FORWARD;
+    240           //   //}
+    241           //   
+    242           //   //else if ((ADC_LD < (LED_Black_LD-350)) && (ADC_RD > (LED_Black_RD-350)))
+    243           //   //{
+    244           //   //  P3OUT |= L_FORWARD;
+    245           //   //  P3OUT &= ~R_FORWARD;
+    246           //   //  newFM(20);
+    247           //   //  P3OUT &= ~L_FORWARD;
+    248           //   //  P3OUT &= ~R_FORWARD;
+    249           //   //}
+    250           //   
+    251           //   if ((ADC_LD < (LED_Black_LD - offLine)) && (ADC_RD < (LED_Black_RD - offLine)))
+    252           //   {
+    253           //     P3OUT |= L_Dir;
+    254           //     P3OUT |= R_Dir;
+    255           //     newFM(SEVENTH);
+    256           //     P3OUT &= ~L_Dir;
+    257           //     P3OUT &= ~R_Dir;
+    258           //   }
+    259           //   
+    260           //   else
+    261           //   {
+    262           //     P3OUT &= ~L_Dir;
+    263           //     P3OUT &= ~R_Dir;
+    264           //     if (reverse == RESET)
+    265           //     {
+    266           //       newFM(HALF_SEC);
+    267           //       L_Dir = L_REVERSE;
+    268           //       R_Dir = R_REVERSE;
+    269           //       
+    270           //       startTimer = START;
+    271           //       P3OUT |= L_Dir;
+    272           //       P3OUT |= R_Dir;
+    273           //       newFM(seventy);
+    274           //       P3OUT &= ~L_Dir;
+    275           //       P3OUT &= ~R_Dir;
+    276           //       
+    277           //       reverse++;
+    278           //     }
+    279           //     else if (reverse == START)
+    280           //     {
+    281           //       
+    282           //       startTimer = RESET;
+    283           //       P3OUT &= ~L_Dir;
+    284           //       P3OUT &= ~R_Dir;
+    285           //       
+    286           //       L_Dir = L_FORWARD;
+    287           //       R_Dir = R_FORWARD;
+    288           //       
+    289           //       newFM(HALF_SEC);
+    290           //       
+    291           //       P3OUT |= L_Dir;
+    292           //       P3OUT |= R_Dir;
+    293           //       newFM(timerCount/HALF);
+    294           //       P3OUT &= ~L_Dir;
+    295           //       P3OUT &= ~R_Dir;
+    296           //       
+    297           //       newFM(ONE_SEC);
+    298           //       
+    299           //       L_Dir = R_FORWARD;
+    300           //       R_Dir = L_REVERSE;
+    301           //       P3OUT |= L_Dir;
+    302           //       P3OUT |= R_Dir;
+    303           //       newFM(twoLoop);
+    304           //       P3OUT &= ~L_Dir;
+    305           //       P3OUT &= ~R_Dir;
+    306           //       
+    307           //       newFM(ONE_SEC);
+    308           //       
+    309           //       L_Dir = R_REVERSE;
+    310           //       R_Dir = L_FORWARD;
+    311           //       P3OUT |= L_Dir;
+    312           //       P3OUT |= R_Dir;
+    313           //       newFM(twoLoop);
+    314           //       P3OUT &= ~L_Dir;
+    315           //       P3OUT &= ~R_Dir;
+    316           //       
+    317           //       
+    318           //       reverse++;
+    319           //       driving = RESET;
+    320           //       drive = RESET;
+    321           //     }
+    322           //     
+    323           //     else
+    324           //     {
+    325           //       P3OUT &= ~L_Dir;
+    326           //       P3OUT &= ~R_Dir;
+    327           //     }
+    328           //   }
+    329           // }
+    330           // //ADC_Process();
+    331           // //if(Time_Sequence > TSEQ_250){
+    332           // //  Time_Sequence = RESET;
+    333           // //}
+    334           }
+    335          //------------------------------------------------------------------------------
+    336          }
 
    \                                 In  segment DATA16_C, align 1, align-sorted
    \                     `?<Constant "   Callibrate   ">`:
@@ -458,36 +596,45 @@ Warning[Pe177]: variable "stop" was declared but never referenced
    \            2000        
 
    \                                 In  segment DATA16_C, align 1, align-sorted
-   \                     `?<Constant "Make Selection">`:
-   \   000000   4D616B652053 DC8 "Make Selection"
-   \            656C65637469
-   \            6F6E00      
+   \                     `?<Constant "1-Display 2-Clear">`:
+   \   000000   312D44697370 DC8 "1-Display 2-Clear"
+   \            6C617920322D
+   \            436C65617200
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "               ">`:
+   \   000000   202020202020 DC8 "               "
+   \            202020202020
+   \            20202000    
 
    Maximum stack usage in bytes:
 
    CSTACK Function
    ------ --------
-      4   main
-        4   -> ADC_Process
-        4   -> Init_Clocks
-        4   -> Init_Conditions
-        4   -> Init_LCD
-        4   -> Init_LEDs
-        4   -> Init_Ports
-        4   -> Init_Serial_UCA1
-        4   -> Init_Timers
-        4   -> five_msec_sleep
-        4   -> init_adc
-        4   -> lcd_out
+      6   main
+        6   -> ADC_Process
+        6   -> Init_Clocks
+        6   -> Init_Conditions
+        6   -> Init_LCD
+        6   -> Init_LEDs
+        6   -> Init_Ports
+        6   -> Init_Serial_UCA1
+        6   -> Init_Timers
+        6   -> five_msec_sleep
+        6   -> init_adc
+        6   -> lcd_clear
+        6   -> lcd_out
+        6   -> newFM
 
 
    Segment part sizes:
 
    Bytes  Function/Label
    -----  --------------
+      16  ?<Constant "               ">
       17  ?<Constant "   Callibrate   ">
       14  ?<Constant "  IR Em Off  ">
-      15  ?<Constant "Make Selection">
+      18  ?<Constant "1-Display 2-Clear">
        2  L_Dir
        2  R_Dir
        2  Time_Sequence
@@ -495,28 +642,31 @@ Warning[Pe177]: variable "stop" was declared but never referenced
        2  _A_UCA1TXBUF_L
        2  display_HW3
        2  display_NCSU
+       2  dontWrite
        2  driving
        2  five_msec_count
        2  halfTimer
-     160  main
+     336  main
        1  one_time
        2  reverse
+       2  serial
        2  startHalf
        2  startTimer
        1  test
        2  test1
        2  test2
+       2  timeOut
        2  writeNext
 
  
- 160 bytes in segment CODE
+ 336 bytes in segment CODE
    4 bytes in segment DATA16_AN
-  46 bytes in segment DATA16_C
-  30 bytes in segment DATA16_Z
+  65 bytes in segment DATA16_C
+  36 bytes in segment DATA16_Z
  
- 160 bytes of CODE  memory
-  46 bytes of CONST memory
-  30 bytes of DATA  memory (+ 4 bytes shared)
+ 336 bytes of CODE  memory
+  65 bytes of CONST memory
+  36 bytes of DATA  memory (+ 4 bytes shared)
 
 Errors: none
-Warnings: 1
+Warnings: none

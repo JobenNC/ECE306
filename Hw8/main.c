@@ -27,12 +27,17 @@ unsigned int halfTimer = RESET;
 
 unsigned int L_Dir;
 unsigned int R_Dir;
+char *serial;
 
 char *display_NCSU;
 char *display_HW3;
 
 int test1=0;
 int test2=0;
+
+int timeOut = 0;
+int dontWrite = 0;
+
 
 extern volatile int writeNext = 0;
 
@@ -72,7 +77,7 @@ void main(void){
   
 //  lcd_command(CLEAR_DISPLAY);
   five_msec_sleep(SLEEP_10); 
-  lcd_out("Make Selection",LCD_LINE_1);       // 16 characters max between quotes - line 1
+  lcd_out("1-Display 2-Clr",LCD_LINE_1);       // 16 characters max between quotes - line 1
   //lcd_out("LED On       ",LCD_LINE_2);
     //lcd_out(display_NCSU,LCD_LINE_1);       // 16 characters max between quotes - line 1
     //lcd_out(display_HW3,LCD_LINE_2);        // 16 characters max between quotes - line 2
@@ -83,25 +88,63 @@ void main(void){
  ADC_Process();
  L_Dir = L_FORWARD;
  R_Dir = R_FORWARD;
+ serial="               ";
  while(ALWAYS) {    
    
    // Can the Operating system run
    //newFM(20);
    
    //UCA1TXBUF = 'U';
-   
+   serial="               ";
    if (writeNext)
    {
       //UCA1TXBUF = 'u';
-      writeNext = 0;
-      
-      while (!UCTXIFG)
+   writeNext = 0;
+   //while ((!UCTXIFG) || (timeOut < 100))
+   //{
+   //     newFM(1);
+   //     timeOut++;
+   //}
+   if ((UCTXIFG))
+   {
+   timeOut = 0;
+   for (int j = 0; j < 6; j++)
+   {
+      switch (j)
       {
+      case 0:
+        UCA1TXBUF = 'N';
+        break;
+      case 1:
+        UCA1TXBUF = 'C';
+        break;
+      case 2:
+        UCA1TXBUF = 'S';
+        break;
+      case 3:
+        UCA1TXBUF = 'U';
+        break;
+      case 4:
+        UCA1TXBUF = '#';
+        break;
+      case 5:
+        UCA1TXBUF = '1';
+        break;
+      default:
+        break;
       }
-      UCA1TXBUF = 'u';
+      
+      newFM(20);
+      if (usb_rx_ring_wr == 0)
+      {
+        dontWrite = 1;
+        break;
+      }
+   
       
       while (1)
       {
+        newFM(1);
         test1 = usb_rx_ring_wr;
         test2 = usb_rx_ring_rd;
         if (test1 != test2) break;
@@ -112,9 +155,26 @@ void main(void){
       ////}
       ////UCA1TXBUF = 'u';
       
+
       usb_rx_ring_rd++;
       test = USB_Char_Rx[usb_rx_ring_wr];
-      int stop = 0;
+      //int stop = 0;
+      
+      //if (test < numRange) test = test + numOffset;
+      //else test = test + charOffset;
+      //display_One="            ";
+      serial[char1-1+j]=test;
+      }
+   
+   lcd_clear();
+   if (!dontWrite) lcd_out(serial, LCD_LINE_1);
+   else dontWrite = 0;
+   //else dontWrite = 0;
+   usb_rx_ring_wr = 0;
+   usb_rx_ring_rd = 0;
+   usb_tx_ring_wr = 0;
+   usb_tx_ring_rd = 0;
+   }
    }
     //Code for tx rx
 

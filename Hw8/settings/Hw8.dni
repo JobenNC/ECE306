@@ -22,7 +22,7 @@ State Storage=0
 [NumberOfSequencerBp]
 Number=4
 [DebugChecksum]
-Checksum=-1951554621
+Checksum=-726783645
 [CallStack]
 ShowArgs=0
 [Disassembly]
@@ -30,8 +30,7 @@ MixedMode=1
 [EEM Sequencer]
 Buffer=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 [Breakpoints]
-Bp0=_ "STD_CODE" "{$PROJ_DIR$\main.c}.117.11" 1 0 0 0 "" 0 ""
-Count=1
+Count=0
 [FET]
 Clock mode=46
 Extended Clock mode=1
