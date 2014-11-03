@@ -1,0 +1,339 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         30/Oct/2014  18:41:42
+# Copyright 1996-2014 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Serial.c
+#    Command line  =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Serial.c -lC
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\List\ -o
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\Obj\ --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -Ol --multiplier=32
+#        --multiplier_location=4C0 --hw_workaround=CPU40 --hw_workaround=CPU39
+#        --code_model=large
+#    List file     =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\List\Serial.lst
+#    Object file   =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\Obj\Serial.r43
+#
+###############################################################################
+
+C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Serial.c
+      1          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x5e0
+   \   union <unnamed> _A_UCA1CTLW0_L
+   \                     _A_UCA1CTLW0_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5e6
+   \   union <unnamed> _A_UCA1BRW_L
+   \                     _A_UCA1BRW_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5e8
+   \   union <unnamed> _A_UCA1MCTLW_L
+   \                     _A_UCA1MCTLW_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5ec
+   \   union <unnamed> _A_UCA1RXBUF_L
+   \                     _A_UCA1RXBUF_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5fa
+   \   union <unnamed> _A_UCA1IE_L
+   \                     _A_UCA1IE_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5fe
+   \   unsigned short volatile UCA1IV
+   \                     UCA1IV:
+   \   000000                DS8 2
+      2          #include  "functions.h"
+      3          #include "macros.h"
+      4          
+
+   \                                 In  segment DATA16_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+      5          int SMALL_RING_SIZE = 8;
+   \                     SMALL_RING_SIZE:
+   \   000000                DS8 2
+   \   000002                REQUIRE `?<Initializer for SMALL_RING_SIZE>`
+
+   \                                 In  segment DATA16_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+      6          int LARGE_RING_SIZE = 16;
+   \                     LARGE_RING_SIZE:
+   \   000000                DS8 2
+   \   000002                REQUIRE `?<Initializer for LARGE_RING_SIZE>`
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+      7          int BEGINNING = 0;
+   \                     BEGINNING:
+   \   000000                DS8 2
+      8          
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+      9          extern volatile char USB_Char_Tx[8] = {0};
+   \                     USB_Char_Tx:
+   \   000000                DS8 8
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     10          extern volatile char USB_Char_Rx[16] = {0};
+   \                     USB_Char_Rx:
+   \   000000                DS8 16
+     11          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     12          extern volatile int usb_tx_ring_wr = 0;
+   \                     usb_tx_ring_wr:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     13          extern volatile int usb_tx_ring_rd = 0;
+   \                     usb_tx_ring_rd:
+   \   000000                DS8 2
+     14          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     15          extern volatile int usb_rx_ring_wr = 0;
+   \                     usb_rx_ring_wr:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     16          extern volatile int usb_rx_ring_rd = 0;
+   \                     usb_rx_ring_rd:
+   \   000000                DS8 2
+     17          
+     18          //----------------------------------------------------------------------------
+
+   \                                 In  segment CODE, align 2
+     19          void Init_Serial_UCA1(void){
+   \                     Init_Serial_UCA1:
+     20           int i;
+     21           for(i=0; i<SMALL_RING_SIZE; i++){
+   \   000000   0F43         MOV.W   #0x0, R15
+   \   000002   033C         JMP     ??Init_Serial_UCA1_2
+     22           USB_Char_Rx[i] = 0x00;// USB Character
+   \                     ??Init_Serial_UCA1_0:
+   \   000004   CF43....     MOV.B   #0x0, USB_Char_Rx(R15)
+     23           }
+   \   000008   1F53         ADD.W   #0x1, R15
+   \                     ??Init_Serial_UCA1_2:
+   \   00000A   1F92....     CMP.W   &SMALL_RING_SIZE, R15
+   \   00000E   FA3B         JL      ??Init_Serial_UCA1_0
+     24           usb_rx_ring_wr = 0;
+   \   000010   8243....     MOV.W   #0x0, &usb_rx_ring_wr
+     25           usb_rx_ring_rd = 0;
+   \   000014   8243....     MOV.W   #0x0, &usb_rx_ring_rd
+     26           
+     27           for(i=0; i<LARGE_RING_SIZE; i++){
+   \   000018   0F43         MOV.W   #0x0, R15
+   \   00001A   033C         JMP     ??Init_Serial_UCA1_3
+     28           USB_Char_Tx[i] = 0x00;// USB Character
+   \                     ??Init_Serial_UCA1_1:
+   \   00001C   CF43....     MOV.B   #0x0, USB_Char_Tx(R15)
+     29           }
+   \   000020   1F53         ADD.W   #0x1, R15
+   \                     ??Init_Serial_UCA1_3:
+   \   000022   1F92....     CMP.W   &LARGE_RING_SIZE, R15
+   \   000026   FA3B         JL      ??Init_Serial_UCA1_1
+     30           usb_tx_ring_wr = 0;
+   \   000028   8243....     MOV.W   #0x0, &usb_tx_ring_wr
+     31           usb_tx_ring_rd = 0;
+   \   00002C   8243....     MOV.W   #0x0, &usb_tx_ring_rd
+     32           // Configure UART 0
+     33           UCA1CTLW0 = 0; // Use word register
+   \   000030   8243E005     MOV.W   #0x0, &0x5e0
+     34           UCA1CTLW0 |= UCSSEL__SMCLK; // Set SMCLK as fBRCLK
+   \   000034   B2D08000E005 BIS.W   #0x80, &0x5e0
+     35           UCA1CTLW0 |= UCSWRST; // Set Software reset enable
+   \   00003A   92D3E005     BIS.W   #0x1, &0x5e0
+     36           // 9,600 Baud Rate
+     37          // 1. Calculate N = fBRCLK/Baudrate [if N > 16 continue with step 3, otherwise with step 2]
+     38          // N = SMCLK / 9,600 => 8,000,000 / 9,600 = 833.3333333
+     39          // 2. OS16 = 0, UCBRx = INT(N) [continue with step 4]
+     40          // 3. OS16 = 1, UCx = INT(N/16), UCFx = INT([(N/16) – INT(N/16)] × 16)
+     41          // UCx = INT(N/16) = 833.333/16 => 52
+     42          // UCFx = INT([(N/16) – INT(N/16)] × 16) = ([833.333/16-INT(833.333/16)]*16) => 
+     43          // (52.08333333-52)*16=>0.083*16=1
+     44          // 4. UCSx can be found by looking up the fractional part of N ( = N - INT(N) ) in Table 18-4
+     45          // Decicmal of SMCLK / 8,000,000 / 9,600 = 833.3333333 => 0.333 yields 0x25
+     46          // 5. If OS16 = 0 was chosen, a detailed error calculation is recommended to be performed
+     47          // TX error (%) RX error (%)
+     48          // BRCLK Baudrate UCOS16 UCBRx UCFx UCSx neg pos neg pos
+     49          // 8000000 9600 1 52 1 0x49 -0.08 0.04 -0.10 0.14
+     50          // UCA1BRW = 52 ; // 9,600 baud
+     51          // UCA0MCTLW = UCSx concatenate UCFx concatenate UCOS16; 
+     52          // UCA0MCTLW = 0x49 concatenate 1 concatenate 1; 
+     53          // UCA1MCTLW = 0x4911 ; 
+     54           
+     55           UCA1BRW = 104 ; // 4800 baud
+   \   00003E   B2406800E605 MOV.W   #0x68, &0x5e6
+     56          // UCA0MCTLW = UCSx concatenate UCFx concatenate UCOS16; 
+     57          // UCA0MCTLW = 0x-- concatenate - concatenate -; 
+     58           UCA1MCTLW = 0xD621 ; 
+   \   000044   B24021D6E805 MOV.W   #0xd621, &0x5e8
+     59           
+     60           UCA1CTL1 &= ~UCSWRST; // Release from reset
+   \   00004A   D2C3E005     BIC.B   #0x1, &0x5e0
+     61           UCA1IE |= UCRXIE; // Enable RX interrupt
+   \   00004E   92D3FA05     BIS.W   #0x1, &0x5fa
+     62          }
+   \   000052   1001         RETA
+   \   000054                REQUIRE _A_UCA1CTLW0_L
+   \   000054                REQUIRE _A_UCA1BRW_L
+   \   000054                REQUIRE _A_UCA1MCTLW_L
+   \   000054                REQUIRE _A_UCA1IE_L
+     63          
+     64          //------------------------------------------------------------------------------
+     65          #pragma vector=USCI_A1_VECTOR
+
+   \                                 In  segment ISR_CODE, align 2
+     66          __interrupt void USCI_A1_ISR(void){
+   \                     USCI_A1_ISR:
+   \   000000   1F15         PUSHM.W #0x2, R15
+     67           unsigned int temp;
+     68           switch(__even_in_range(UCA1IV,0x08)){
+   \   000002   1F42FE05     MOV.W   &0x5fe, R15
+   \   000006   E00F         ADDA    R15, PC
+   \                     `?<Jumptable for USCI_A1_ISR>_0`:
+   \   000008   173C         JMP     ??USCI_A1_ISR_0
+   \   00000A   033C         JMP     ??USCI_A1_ISR_2
+   \   00000C   143C         JMP     ??USCI_A1_ISR_3
+   \   00000E   143C         JMP     ??USCI_A1_ISR_0
+   \   000010   133C         JMP     ??USCI_A1_ISR_0
+     69           case 0: // Vector 0 - no interrupt
+     70           break;
+     71           case 2: // Vector 2 - RXIFG
+     72           temp = usb_rx_ring_wr++;
+   \                     ??USCI_A1_ISR_2:
+   \   000012   1F42....     MOV.W   &usb_rx_ring_wr, R15
+   \   000016   0E4F         MOV.W   R15, R14
+   \   000018   1E53         ADD.W   #0x1, R14
+   \   00001A   824E....     MOV.W   R14, &usb_rx_ring_wr
+     73           USB_Char_Rx[temp] = UCA1RXBUF; // RX -> USB_Char_Rx character
+   \   00001E   1E42EC05     MOV.W   &0x5ec, R14
+   \   000022   CF4E....     MOV.B   R14, USB_Char_Rx(R15)
+     74           if (usb_rx_ring_wr >= (SMALL_RING_SIZE)){
+   \   000026   9292........ CMP.W   &SMALL_RING_SIZE, &usb_rx_ring_wr
+   \   00002C   0538         JL      ??USCI_A1_ISR_0
+     75              usb_rx_ring_wr = BEGINNING; // Circular buffer back to beginning
+   \   00002E   9242........ MOV.W   &BEGINNING, &usb_rx_ring_wr
+     76           }
+     77          
+     78           break;
+   \   000034   013C         JMP     ??USCI_A1_ISR_0
+     79           case 4: // Vector 4 – TXIFG
+     80             //write to UCAxTXBUF x=0
+     81             int i = 0;
+                    ^
+Warning[Pe1072]: a declaration cannot have a label
+
+     int i = 0;
+         ^
+"C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Serial.c",81  Warning[Pe177]: 
+          variable "i" was declared but never referenced
+
+   switch(__even_in_range(UCA1IV,0x08)){
+   ^
+"C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Serial.c",68  Warning[Pe546]: 
+          transfer of control bypasses initialization of:
+            variable "i" (declared at line 81 of
+                      "C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Serial
+                      .c")
+   \                     ??USCI_A1_ISR_3:
+   \   000036   0F43         MOV.W   #0x0, R15
+     82             
+     83           break;
+     84           default: break; 
+     85           }
+     86          }
+   \                     ??USCI_A1_ISR_0:
+   \   000038   1E17         POPM.W  #0x2, R15
+   \   00003A   0013         RETI
+   \   00003C                REQUIRE _A_UCA1RXBUF_L
+   \   00003C                REQUIRE UCA1IV
+
+   \                                 In  segment INTVEC, offset 0x56, root
+   \                     `??USCI_A1_ISR??INTVEC 86`:
+   \   000056   ....         DC16    USCI_A1_ISR
+
+   \                                 In  segment DATA16_ID, align 2, align-sorted
+   \                     `?<Initializer for SMALL_RING_SIZE>`:
+   \   000000   0800         DC16 8
+
+   \                                 In  segment DATA16_ID, align 2, align-sorted
+   \                     `?<Initializer for LARGE_RING_SIZE>`:
+   \   000000   1000         DC16 16
+     87          //------------------------------------------------------------------------------
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Init_Serial_UCA1
+      8   USCI_A1_ISR
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       2  ?<Initializer for LARGE_RING_SIZE>
+       2  ?<Initializer for SMALL_RING_SIZE>
+       2  ??USCI_A1_ISR??INTVEC 86
+       2  BEGINNING
+      84  Init_Serial_UCA1
+       2  LARGE_RING_SIZE
+       2  SMALL_RING_SIZE
+       2  UCA1IV
+      16  USB_Char_Rx
+       8  USB_Char_Tx
+      60  USCI_A1_ISR
+       2  _A_UCA1BRW_L
+       2  _A_UCA1CTLW0_L
+       2  _A_UCA1IE_L
+       2  _A_UCA1MCTLW_L
+       2  _A_UCA1RXBUF_L
+       2  usb_rx_ring_rd
+       2  usb_rx_ring_wr
+       2  usb_tx_ring_rd
+       2  usb_tx_ring_wr
+
+ 
+ 84 bytes in segment CODE
+ 12 bytes in segment DATA16_AN
+  4 bytes in segment DATA16_I
+  4 bytes in segment DATA16_ID
+ 34 bytes in segment DATA16_Z
+  2 bytes in segment INTVEC
+ 60 bytes in segment ISR_CODE
+ 
+ 144 bytes of CODE  memory
+   4 bytes of CONST memory (+  2 bytes shared)
+  38 bytes of DATA  memory (+ 12 bytes shared)
+
+Errors: none
+Warnings: 3

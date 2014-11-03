@@ -1,0 +1,880 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         30/Oct/2014  18:17:42
+# Copyright 1996-2014 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\ports.c
+#    Command line  =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\ports.c -lC
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\List\ -o
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\Obj\ --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -Ol --multiplier=32
+#        --multiplier_location=4C0 --hw_workaround=CPU40 --hw_workaround=CPU39
+#        --code_model=large
+#    List file     =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\List\ports.lst
+#    Object file   =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\Obj\ports.r43
+#
+###############################################################################
+
+C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\ports.c
+      1          //===========================================================================
+      2          // File Name : ports.c
+      3          //
+      4          // Description: This file contains the Initialization for all port pins
+      5          //      All bit masks are #defined in "macros.h"
+      6          //
+      7          // Author: Joseph Jarriel
+      8          // Date: Sep 2014
+      9          // Compiler: Built with IAR Embedded Workbench (6.10.5)
+     10          // Globals: No globals defined in this file
+     11          // Functions: Init_Ports, Init_Ports1, Init_Ports2, Init_Ports3, Init_Ports2,
+     12          //      Init_PortsJ
+     13          //===========================================================================
+     14          
+     15          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x202
+   \   union <unnamed> _A_PAOUT_L
+   \                     _A_PAOUT_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x204
+   \   union <unnamed> _A_PADIR_L
+   \                     _A_PADIR_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x206
+   \   union <unnamed> _A_PAREN_L
+   \                     _A_PAREN_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x20a
+   \   union <unnamed> _A_PASEL0_L
+   \                     _A_PASEL0_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x20c
+   \   union <unnamed> _A_PASEL1_L
+   \                     _A_PASEL1_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x216
+   \   union <unnamed> _A_PASELC_L
+   \                     _A_PASELC_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x222
+   \   union <unnamed> _A_PBOUT_L
+   \                     _A_PBOUT_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x224
+   \   union <unnamed> _A_PBDIR_L
+   \                     _A_PBDIR_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x226
+   \   union <unnamed> _A_PBREN_L
+   \                     _A_PBREN_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x236
+   \   union <unnamed> _A_PBSELC_L
+   \                     _A_PBSELC_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x238
+   \   union <unnamed> _A_PBIES_L
+   \                     _A_PBIES_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x23a
+   \   union <unnamed> _A_PBIE_L
+   \                     _A_PBIE_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x23c
+   \   union <unnamed> _A_PBIFG_L
+   \                     _A_PBIFG_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x322
+   \   union <unnamed> _A_PJOUT_L
+   \                     _A_PJOUT_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x324
+   \   union <unnamed> _A_PJDIR_L
+   \                     _A_PJDIR_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x326
+   \   union <unnamed> _A_PJREN_L
+   \                     _A_PJREN_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x336
+   \   union <unnamed> _A_PJSELC_L
+   \                     _A_PJSELC_L:
+   \   000000                DS8 2
+     16          #include  "functions.h"
+     17          #include "macros.h"
+     18          
+
+   \                                 In  segment CODE, align 2
+     19          void Init_Ports1(void)
+   \                     Init_Ports1:
+     20          //===========================================================================
+     21          // Function name: Init_Ports1
+     22          //
+     23          // Description: Init all pins on port 1
+     24          // 
+     25          // Passed : no variables passed
+     26          // Locals: no variables declared
+     27          // Returned: no values returned
+     28          // Globals: no globals modified
+     29          // Calls: none
+     30          //
+     31          // Various options for Pin 0
+     32          // SEL0 SEL1 DIR
+     33          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+     34          // 0 1 0 - TA0 CCR1 capture: CCI1A input
+     35          // 0 1 1 - TA0 CCR1 compare: Out1
+     36          // 1 0 0 - External DMA trigger
+     37          // 1 0 1 - RTC clock calibration output
+     38          // 1 1 X - Analog input A0 - ADC, Comparator_D input CD0, Vref- External applied reference
+     39          //
+     40          // Various options for Pin 1
+     41          // SEL0 SEL1 DIR
+     42          // 0 0 I:0 0:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+     43          // 0 1 0 - TA0 CCR2 capture: CCI2A input,
+     44          // 0 1 1 - TA0 CCR2 compare: Out2
+     45          // 1 0 0 - TA1 input clock
+     46          // 1 0 1 - Comparator_D output
+     47          // 1 1 X - Analog input A1 - ADC, Comparator_D input CD1, Input for an external reference voltage to the ADC
+     48          //
+     49          // Various options for Pin 2
+     50          // SEL0 SEL1 DIR
+     51          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+     52          // 0 1 0 - TA1 CCR1 capture: CCI1A input
+     53          // 0 1 1 - TA1 CCR1 compare: Out1
+     54          // 1 0 0 - TA0 input clock
+     55          // 1 0 1 - Comparator_D output
+     56          // 1 1 X - Analog input A2 - ADC, Comparator_D input CD2
+     57          //
+     58          // Various options for Pin 3
+     59          // SEL0 SEL1 DIR
+     60          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+     61          // 0 1 0 - TA1 CCR2 capture: CCI2A input
+     62          // 0 1 1 - TA1 CCR2 compare: Out2
+     63          // 1 0 X - Slave transmit enable - eUSCI_B0 SPI mode
+     64          // 1 1 X - Analog input A3 - ADC, Comparator_D input CD3
+     65          //
+     66          // Various options for Pin 4
+     67          // SEL0 SEL1 DIR
+     68          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+     69          // 0 1 0 - TB0 CCR1 capture: CCI1A input
+     70          // 0 1 1 - TB0 CCR1 compare: Out1
+     71          // 1 0 X - Slave transmit enable - eUSCI_A0 SPI mode
+     72          //
+     73          // Various options for Pin 5
+     74          // SEL0 SEL1 DIR
+     75          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+     76          // 0 1 0 - TB0 CCl2A
+     77          // 0 1 1 - TB0.2
+     78          // 1 0 X - UCA0CLK
+     79          // 1 1 X - A5/CD5
+     80          //
+     81          // Various options for Pin 6
+     82          // SEL0 SEL1 DIR
+     83          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+     84          // 0 1 0 - TB1.CCl1A
+     85          // 0 1 1 - TB1.1
+     86          // 1 0 X - UCB0SIM0
+     87          // 1 1 0 - TA0.CCI0A
+     88          // 1 1 1 - TA0.0
+     89          //
+     90          // Various options for Pin 7
+     91          // SEL0 SEL1 DIR
+     92          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+     93          // 0 1 0 - TB1.CCI2A
+     94          // 0 1 1 - TB1.2
+     95          // 1 0 X - UCB0SOMI
+     96          // 1 1 0 - TA1.CCI0A
+     97          // 1 1 1 - TA1.0
+     98          //
+     99          // Pins:
+    100          // P10 - V Detect Right
+    101          //      - ADC, Out=0
+    102          // P11 - V Detect Left
+    103          //      - ADC, Out=0
+    104          // P12 - IR LED
+    105          //      - Output, Out=0
+    106          // P13 - V Thumb
+    107          //      - ADC, Out=1
+    108          // P14 - SPI_CS_LCD
+    109          //      - Output, Out=1
+    110          // P15 - RESET LCD
+    111          //      - Output, Out=1
+    112          // P16 - SPI SIMO
+    113          //      - UCB0SIMO, Out=0
+    114          // P17 - RS LCD
+    115          //      - Output, Out=1
+    116          //
+    117          // Author: Joseph Jarriel
+    118          // Date: Sep 2014
+    119          // Compiler: Built with IAR Embedded Workbench Version: (6.10.5)
+    120          //===========================================================================
+    121          {
+    122          
+    123           P1SELC = CLEAR_REG; // Default to I/0
+   \   000000   C2431602     MOV.B   #0x0, &0x216
+    124           P1DIR = DIR_INPUT; // Default to input
+   \   000004   C2430402     MOV.B   #0x0, &0x204
+    125           
+    126           P1SEL0 |= V_DETECT_R; // 1 V_DETECT_R selected
+   \   000008   D2D30A02     BIS.B   #0x1, &0x20a
+    127           P1SEL1 |= V_DETECT_R; // 1 V_DETECT_R selected
+   \   00000C   D2D30C02     BIS.B   #0x1, &0x20c
+    128           
+    129           P1SEL0 |= V_DETECT_L; // 1 V_DETECT_L selected
+   \   000010   E2D30A02     BIS.B   #0x2, &0x20a
+    130           P1SEL1 |= V_DETECT_L; // 1 V_DETECT_L selected
+   \   000014   E2D30C02     BIS.B   #0x2, &0x20c
+    131           
+    132           P1SEL0 &= ~SPI_SIMO; // 0 SIMO_B selected
+   \   000018   F2C040000A02 BIC.B   #0x40, &0x20a
+    133           P1SEL1 |= SPI_SIMO; // 1 SIMO_B selected
+   \   00001E   F2D040000C02 BIS.B   #0x40, &0x20c
+    134          // P1SEL0 &= ~SOMI_B; // 0 SOMI_B is unused on the LCD
+    135          // P1SEL1 |= SOMI_B; // 1 SOMI_B is unused on the LCD
+    136           
+    137           P1OUT &= ~IR_LED; // 0 P1 IR_LED Port Pin set low
+   \   000024   E2C20202     BIC.B   #0x4, &0x202
+    138           P1DIR |= IR_LED; // 1 Set P1 IR_LED direction to output
+   \   000028   E2D20402     BIS.B   #0x4, &0x204
+    139           P1OUT |= IR_LED;
+   \   00002C   E2D20202     BIS.B   #0x4, &0x202
+    140          
+    141           P1SEL0 |= V_THUMB; // 1 V_THUMB selected
+   \   000030   F2D20A02     BIS.B   #0x8, &0x20a
+    142           P1SEL1 |= V_THUMB; // 1 V_THUMB selected
+   \   000034   F2D20C02     BIS.B   #0x8, &0x20c
+    143           
+    144           P1OUT |= SPI_CS_LCD; // 1 P1 SPI_CS_LCD Port Pin set high
+   \   000038   F2D010000202 BIS.B   #0x10, &0x202
+    145           P1DIR |= SPI_CS_LCD; // 1 Set SPI_CS_LCD output direction
+   \   00003E   F2D010000402 BIS.B   #0x10, &0x204
+    146           P1REN |= SPI_CS_LCD; // 1 Enable pullup resistor
+   \   000044   F2D010000602 BIS.B   #0x10, &0x206
+    147           
+    148           P1OUT &= ~RESET_LCD; // 0 P1 SPI_CS_LCD Port Pin set low
+   \   00004A   F2C020000202 BIC.B   #0x20, &0x202
+    149           P1DIR |= RESET_LCD; // 1 Set RESET_LCD output direction
+   \   000050   F2D020000402 BIS.B   #0x20, &0x204
+    150           P1REN |= RESET_LCD; // 1 Enable pullup resistor
+   \   000056   F2D020000602 BIS.B   #0x20, &0x206
+    151           
+    152          // P1DIR &= ~SOMI_B; // SOMI_B is unused on the LCD
+    153           P1DIR |= SPI_SIMO; // 1 SIMO_B set to Output
+   \   00005C   F2D040000402 BIS.B   #0x40, &0x204
+    154           P1REN |= SPI_SIMO; // 1 Enable pullup resistor
+   \   000062   F2D040000602 BIS.B   #0x40, &0x206
+    155           
+    156           P1OUT |= RS_LCD; // 1 P1 RS_LCD Port Pin set high
+   \   000068   F2D080000202 BIS.B   #0x80, &0x202
+    157           P1DIR |= RS_LCD; // 1 Set RS_LCD output direction
+   \   00006E   F2D080000402 BIS.B   #0x80, &0x204
+    158           P1REN |= RS_LCD; // 1 Enable pullup resistor
+   \   000074   F2D080000602 BIS.B   #0x80, &0x206
+    159          }
+   \   00007A   1001         RETA
+   \   00007C                REQUIRE _A_PASELC_L
+   \   00007C                REQUIRE _A_PADIR_L
+   \   00007C                REQUIRE _A_PASEL0_L
+   \   00007C                REQUIRE _A_PASEL1_L
+   \   00007C                REQUIRE _A_PAOUT_L
+   \   00007C                REQUIRE _A_PAREN_L
+    160          
+
+   \                                 In  segment CODE, align 2
+    161          void Init_Ports2(void)
+   \                     Init_Ports2:
+    162          //===========================================================================
+    163          // Function name: Init_Ports2
+    164          //
+    165          // Description: Init all pins on port 2
+    166          // 
+    167          // Passed : no variables passed
+    168          // Locals: no variables declared
+    169          // Returned: no values returned
+    170          // Globals: no globals modified
+    171          // Calls: none
+    172          //
+    173          // Various options for Pin 0
+    174          // SEL0 SEL1 DIR
+    175          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    176          // 0 1 0 - TB2.CCI0A
+    177          // 0 1 1 - TB2.0
+    178          // 1 0 X - UCA0TXD
+    179          // 1 1 0 - TB0CLK
+    180          // 1 1 1 - ACLK
+    181          //
+    182          // Various options for Pin 1
+    183          // SEL0 SEL1 DIR
+    184          // 0 0 I:0 0:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    185          // 0 1 0 - TB2.CCl1A,
+    186          // 0 1 1 - TB2.1
+    187          // 1 0 X - UCA0RXD
+    188          // 1 1 0 - TB0.CC10A
+    189          // 1 1 1 - TB0.0
+    190          //
+    191          // Various options for Pin 2
+    192          // SEL0 SEL1 DIR
+    193          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    194          // 0 1 0 - TB2.CCl2A
+    195          // 0 1 1 - TB2.2
+    196          // 1 0 X - UCB0CLK
+    197          // 1 1 0 - TB1.CCl0A
+    198          // 1 1 1 - TB1.0
+    199          //
+    200          // Various options for Pin 3
+    201          // SEL0 SEL1 DIR
+    202          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    203          // 0 1 0 - TA0.CCl0B
+    204          // 0 1 1 - TA0.0
+    205          // 1 0 X - UCA1STE
+    206          // 1 1 X - A6/CD10
+    207          //
+    208          // Various options for Pin 4
+    209          // SEL0 SEL1 DIR
+    210          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    211          // 0 1 0 - TA1.CCl0B
+    212          // 0 1 1 - TA1.0
+    213          // 1 0 X - UCA1CLK
+    214          // 1 1 X - A6/CD11
+    215          //
+    216          // Various options for Pin 5
+    217          // SEL0 SEL1 DIR
+    218          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    219          // 0 1 0 - TB0.CCIOB
+    220          // 0 1 1 - TB0.0
+    221          // 1 0 X - UCA1TXD
+    222          //
+    223          // Various options for Pin 6
+    224          // SEL0 SEL1 DIR
+    225          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    226          // 0 1 0 - TB1.CCl0B
+    227          // 0 1 1 - TB1.0
+    228          // 1 0 X - UCA1RXD
+    229          //
+    230          // Various options for Pin 7
+    231          // SEL0 SEL1 DIR
+    232          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    233          //
+    234          // Pins:
+    235          // P20 - USB TXD
+    236          //      - UCA0TXD, Out=0
+    237          // P21 - USB RXD
+    238          //      - UCA0RXD, Out=0
+    239          // P22 - SPI_SCK
+    240          //      - UCB0CLK, Out=0
+    241          // P23 - Unused
+    242          //      - Input, no pull up/down
+    243          // P24 - Unused
+    244          //      - Input, no pull up/down
+    245          // P25 - CPU TXD
+    246          //      - UCA1TXD, Out=0
+    247          // P26 - CPU RXD
+    248          //      - UCA1RXD, Out=0
+    249          // P27 - Unknown
+    250          //      - Input, no pull up/down
+    251          //
+    252          // Author: Joseph Jarriel
+    253          // Date: Sep 2014
+    254          // Compiler: Built with IAR Embedded Workbench Version: (6.10.5)
+    255          //===========================================================================
+    256          {
+    257           P2SELC = CLEAR_REG; // Default to I/0 
+   \   000000   C2431702     MOV.B   #0x0, &0x217
+    258           P2DIR = DIR_INPUT; // Default to input
+   \   000004   C2430502     MOV.B   #0x0, &0x205
+    259           
+    260           P2SEL1 |= USB_TXD;
+   \   000008   D2D30D02     BIS.B   #0x1, &0x20d
+    261           P2SEL0 &= ~USB_TXD;
+   \   00000C   D2C30B02     BIC.B   #0x1, &0x20b
+    262           //P2DIR
+    263           P2OUT &= ~USB_TXD;
+   \   000010   D2C30302     BIC.B   #0x1, &0x203
+    264           
+    265           P2SEL1 |= USB_RXD;
+   \   000014   E2D30D02     BIS.B   #0x2, &0x20d
+    266           P2SEL0 &= ~USB_RXD;
+   \   000018   E2C30B02     BIC.B   #0x2, &0x20b
+    267           //P2DIR
+    268           P2OUT &= ~USB_RXD;
+   \   00001C   E2C30302     BIC.B   #0x2, &0x203
+    269           
+    270           P2SEL1 |= SPI_SCK;
+   \   000020   E2D20D02     BIS.B   #0x4, &0x20d
+    271           P2SEL0 &= ~SPI_SCK;
+   \   000024   E2C20B02     BIC.B   #0x4, &0x20b
+    272           //P2DIR
+    273           P2OUT |= SPI_SCK;
+   \   000028   E2D20302     BIS.B   #0x4, &0x203
+    274           P2REN |= SPI_SCK;
+   \   00002C   E2D20702     BIS.B   #0x4, &0x207
+    275           
+    276           P2DIR &= ~P_2_3;
+   \   000030   F2C20502     BIC.B   #0x8, &0x205
+    277           
+    278           P2DIR &= ~P_2_4;
+   \   000034   F2C010000502 BIC.B   #0x10, &0x205
+    279          
+    280          P2SEL1 |= CPU_TXD;
+   \   00003A   F2D020000D02 BIS.B   #0x20, &0x20d
+    281          P2SEL0 &= ~CPU_TXD;
+   \   000040   F2C020000B02 BIC.B   #0x20, &0x20b
+    282           
+    283          //P2DIR
+    284          P2OUT &= ~CPU_TXD;
+   \   000046   F2C020000302 BIC.B   #0x20, &0x203
+    285          
+    286          P2SEL1 |= CPU_RXD;
+   \   00004C   F2D040000D02 BIS.B   #0x40, &0x20d
+    287          P2SEL0 &= ~CPU_RXD;
+   \   000052   F2C040000B02 BIC.B   #0x40, &0x20b
+    288          //P2DIR
+    289          P2OUT &= ~CPU_RXD;
+   \   000058   F2C040000302 BIC.B   #0x40, &0x203
+    290          
+    291          P2DIR &= ~P_2_7;
+   \   00005E   F2C080000502 BIC.B   #0x80, &0x205
+    292          }
+   \   000064   1001         RETA
+   \   000066                REQUIRE _A_PASELC_L
+   \   000066                REQUIRE _A_PADIR_L
+   \   000066                REQUIRE _A_PASEL1_L
+   \   000066                REQUIRE _A_PASEL0_L
+   \   000066                REQUIRE _A_PAOUT_L
+   \   000066                REQUIRE _A_PAREN_L
+    293          
+
+   \                                 In  segment CODE, align 2
+    294          void Init_Ports3(void)
+   \                     Init_Ports3:
+    295          //===========================================================================
+    296          // Function name: Init_Ports3
+    297          //
+    298          // Description: Init all pins on port 3
+    299          // 
+    300          // Passed : no variables passed
+    301          // Locals: no variables declared
+    302          // Returned: no values returned
+    303          // Globals: no globals modified
+    304          // Calls: none
+    305          //
+    306          // Various options for Pin 0
+    307          // SEL0 SEL1 DIR
+    308          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    309          // 1 1 X - A12/CD12
+    310          //
+    311          // Various options for Pin 1
+    312          // SEL0 SEL1 DIR
+    313          // 0 0 I:0 0:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    314          // 1 1 X - A13/CD13
+    315          //
+    316          // Various options for Pin 2
+    317          // SEL0 SEL1 DIR
+    318          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    319          // 1 1 X - A14/CD14
+    320          //
+    321          // Various options for Pin 3
+    322          // SEL0 SEL1 DIR
+    323          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    324          // 1 1 X - A15/CD15
+    325          //
+    326          // Various options for Pin 4
+    327          // SEL0 SEL1 DIR
+    328          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    329          // 0 1 0 - TB1.CCl1B
+    330          // 0 1 1 - TB1.1
+    331          // 1 1 0 - TB2CLK
+    332          // 1 1 1 - SMCLK
+    333          //
+    334          // Various options for Pin 5
+    335          // SEL0 SEL1 DIR
+    336          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    337          // 0 1 0 - TB1.CCl2B
+    338          // 0 1 1 - TB1.2
+    339          // 1 1 1 - CDOUT
+    340          //
+    341          // Various options for Pin 6
+    342          // SEL0 SEL1 DIR
+    343          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    344          // 0 1 0 - TB2.CCl1B
+    345          // 0 1 1 - TB2.1
+    346          // 1 1 0 - TB1CLK
+    347          //
+    348          // Various options for Pin 7
+    349          // SEL0 SEL1 DIR
+    350          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    351          // 0 1 0 - TB2.CCl2B
+    352          // 0 1 1 - TB2.2
+    353          //
+    354          // Pins:
+    355          // P30 - Var X
+    356          //      - Input, no pull-up/down res
+    357          // P31 - Var Y
+    358          //      - Input, no pull-up/down resistor
+    359          // P32 - Var Z
+    360          //      - Input, no pull-up/down resistor
+    361          // P33 - LED_BACKLITE
+    362          //      - Output, Initialized to 1
+    363          // P34 - R Forward
+    364          //      - Output, Initialzied to 0
+    365          // P35 - R Reverse
+    366          //      - Output, Initialized to 0
+    367          // P36 - L Forward
+    368          //      - Output, Initialized to 0
+    369          // P37 - L Reverse
+    370          //      - Output, Initialized to 0
+    371          //
+    372          // Author: Joseph Jarriel
+    373          // Date: Sep 2014
+    374          // Compiler: Built with IAR Embedded Workbench Version: (6.10.5)
+    375          //===========================================================================
+    376          {
+    377           P3SELC = CLEAR_REG; // Default to I/0 
+   \   000000   C2433602     MOV.B   #0x0, &0x236
+    378           P3DIR = DIR_INPUT; // Default to input
+   \   000004   C2432402     MOV.B   #0x0, &0x224
+    379           
+    380           P3OUT &= ~VAR_X;
+   \   000008   D2C32202     BIC.B   #0x1, &0x222
+    381           P3OUT &= ~VAR_Y;
+   \   00000C   E2C32202     BIC.B   #0x2, &0x222
+    382           P3OUT &= ~VAR_Z;
+   \   000010   E2C22202     BIC.B   #0x4, &0x222
+    383           
+    384           P3DIR |= LCD_BACKLITE;
+   \   000014   F2D22402     BIS.B   #0x8, &0x224
+    385           P3OUT |= LCD_BACKLITE;
+   \   000018   F2D22202     BIS.B   #0x8, &0x222
+    386           
+    387           P3DIR |= R_FORWARD;
+   \   00001C   F2D010002402 BIS.B   #0x10, &0x224
+    388           P3OUT &= ~R_FORWARD;
+   \   000022   F2C010002202 BIC.B   #0x10, &0x222
+    389           
+    390           P3DIR |= R_REVERSE;
+   \   000028   F2D020002402 BIS.B   #0x20, &0x224
+    391           P3OUT &= ~R_REVERSE;
+   \   00002E   F2C020002202 BIC.B   #0x20, &0x222
+    392           
+    393           P3DIR |= L_FORWARD;
+   \   000034   F2D040002402 BIS.B   #0x40, &0x224
+    394           P3OUT &= ~L_FORWARD;
+   \   00003A   F2C040002202 BIC.B   #0x40, &0x222
+    395           
+    396           P3DIR |= L_REVERSE;
+   \   000040   F2D080002402 BIS.B   #0x80, &0x224
+    397           P3OUT &= ~L_REVERSE; 
+   \   000046   F2C080002202 BIC.B   #0x80, &0x222
+    398          }
+   \   00004C   1001         RETA
+   \   00004E                REQUIRE _A_PBSELC_L
+   \   00004E                REQUIRE _A_PBDIR_L
+   \   00004E                REQUIRE _A_PBOUT_L
+    399          
+
+   \                                 In  segment CODE, align 2
+    400          void Init_Ports4(void)
+   \                     Init_Ports4:
+    401          {
+    402          //===========================================================================
+    403          // Function name: Init_Ports4
+    404          //
+    405          // Description: Init all pins on port 4
+    406          // 
+    407          // Passed : no variables passed
+    408          // Locals: no variables declared
+    409          // Returned: no values returned
+    410          // Globals: no globals modified
+    411          // Calls: none
+    412          //
+    413          // Various options for Pin 0
+    414          // SEL0 SEL1 DIR
+    415          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    416          // 0 1 0 - TB2.CCI0B
+    417          // 0 1 1 - TB2.0
+    418          //
+    419          // Various options for Pin 1
+    420          // SEL0 SEL1 DIR
+    421          // 0 0 I:0 0:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    422          //
+    423          // Pins:
+    424          // P40 - Switch 1
+    425          //      - Input, pull-up resistor
+    426          // P41 - Switch 2
+    427          //      - Input, pull-up resistor
+    428          //
+    429          // Author: Joseph Jarriel
+    430          // Date: Sep 2014
+    431          // Compiler: Built with IAR Embedded Workbench Version: (6.10.5)
+    432          //===========================================================================
+    433           P4SELC = CLEAR_REG; // Default all to I/0 
+   \   000000   C2433702     MOV.B   #0x0, &0x237
+    434           P4DIR = DIR_INPUT; // Default all to input
+   \   000004   C2432502     MOV.B   #0x0, &0x225
+    435           
+    436           //Init switch 1
+    437           P4DIR &= ~SW1;
+   \   000008   D2C32502     BIC.B   #0x1, &0x225
+    438           P4OUT |= SW1;
+   \   00000C   D2D32302     BIS.B   #0x1, &0x223
+    439           P4REN |= SW1;
+   \   000010   D2D32702     BIS.B   #0x1, &0x227
+    440           
+    441           //Init switch 2
+    442           P4DIR &= ~SW2;
+   \   000014   E2C32502     BIC.B   #0x2, &0x225
+    443           P4OUT |= SW2;
+   \   000018   E2D32302     BIS.B   #0x2, &0x223
+    444           P4REN |= SW2;
+   \   00001C   E2D32702     BIS.B   #0x2, &0x227
+    445           
+    446           // Configure the interrupt
+    447           P4IES |= SW1; // P4.0 Hi/Lo edge interrupt
+   \   000020   D2D33902     BIS.B   #0x1, &0x239
+    448           P4IES |= SW2; // P4.0 Hi/Lo edge interrupt
+   \   000024   E2D33902     BIS.B   #0x2, &0x239
+    449           P4IFG &= ~SW1; // P4 IFG SW1 cleared
+   \   000028   D2C33D02     BIC.B   #0x1, &0x23d
+    450           P4IFG &= ~SW2; // P4 IFG SW2 cleared
+   \   00002C   E2C33D02     BIC.B   #0x2, &0x23d
+    451          // Start / Enable Interrupt 
+    452           P4IE |= SW1; // P4.0 SW1 interrupt Enabled
+   \   000030   D2D33B02     BIS.B   #0x1, &0x23b
+    453           P4IE |= SW2; // P4.0 SW2 interrupt enabled
+   \   000034   E2D33B02     BIS.B   #0x2, &0x23b
+    454          
+    455          }
+   \   000038   1001         RETA
+   \   00003A                REQUIRE _A_PBSELC_L
+   \   00003A                REQUIRE _A_PBDIR_L
+   \   00003A                REQUIRE _A_PBOUT_L
+   \   00003A                REQUIRE _A_PBREN_L
+   \   00003A                REQUIRE _A_PBIES_L
+   \   00003A                REQUIRE _A_PBIFG_L
+   \   00003A                REQUIRE _A_PBIE_L
+    456          
+
+   \                                 In  segment CODE, align 2
+    457          void Init_PortsJ(void)
+   \                     Init_PortsJ:
+    458          //===========================================================================
+    459          // Function name: Init_PortsJ
+    460          //
+    461          // Description: Init all pins on port J
+    462          // 
+    463          // Passed : no variables passed
+    464          // Locals: no variables declared
+    465          // Returned: no values returned
+    466          // Globals: no globals modified
+    467          // Calls: none
+    468          //
+    469          // Various options for Pin 0
+    470          // SEL0 SEL1 DIR
+    471          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    472          // 0 1 0 - TA0 CCR1 capture: CCI1A input
+    473          // 0 1 1 - TA0 CCR1 compare: Out1
+    474          // 1 0 0 - External DMA trigger
+    475          // 1 0 1 - RTC clock calibration output
+    476          // 1 1 X - Analog input A0 - ADC, Comparator_D input CD0, Vref- External applied reference
+    477          //
+    478          // Various options for Pin 1
+    479          // SEL0 SEL1 DIR
+    480          // 0 0 I:0 0:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    481          // 0 1 0 - TA0 CCR2 capture: CCI2A input,
+    482          // 0 1 1 - TA0 CCR2 compare: Out2
+    483          // 1 0 0 - TA1 input clock
+    484          // 1 0 1 - Comparator_D output
+    485          // 1 1 X - Analog input A1 - ADC, Comparator_D input CD1, Input for an external reference voltage to 
+    486          //
+    487          // Various options for Pin 2
+    488          // SEL0 SEL1 DIR
+    489          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    490          // 0 1 0 - TA1 CCR1 capture: CCI1A input
+    491          // 0 1 1 - TA1 CCR1 compare: Out1
+    492          // 1 0 0 - TA0 input clock
+    493          // 1 0 1 - Comparator_D output
+    494          // 1 1 X - Analog input A2 - ADC, Comparator_D input CD2
+    495          //
+    496          // Various options for Pin 3
+    497          // SEL0 SEL1 DIR
+    498          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    499          // 0 1 0 - TA1 CCR2 capture: CCI2A input
+    500          // 0 1 1 - TA1 CCR2 compare: Out2
+    501          // 1 0 X - Slave transmit enable - eUSCI_B0 SPI mode
+    502          // 1 1 X - Analog input A3 - ADC, Comparator_D input CD3
+    503          //
+    504          // Various options for Pin 4
+    505          // SEL0 SEL1 DIR
+    506          // 0 0 I:0 O:1 - *General-purpose digital I/O with port interrupt and wake up from LPMx.5
+    507          // 0 1 0 - TB0 CCR1 capture: CCI1A input
+    508          // 0 1 1 - TB0 CCR1 compare: Out1
+    509          // 1 0 X - Slave transmit enable - eUSCI_A0 SPI mode
+    510          //
+    511          // Pins:
+    512          // PJ0 - GPS Power
+    513          //      - Output, initially 0
+    514          // PJ1 - GPS Reset
+    515          //      - Output, initially 0
+    516          // PJ2 - GPS Power Control
+    517          //      - Output, initially 0
+    518          // PJ3 GPS Power Check
+    519          //      - Input, no pull up/down Res
+    520          //
+    521          // Author: Joseph Jarriel
+    522          // Date: Sep 2014
+    523          // Compiler: Built with IAR Embedded Workbench Version: (6.10.5)
+    524          //===========================================================================
+    525          {
+    526           PJSELC = CLEAR_REG; // Default to I/0 
+   \   000000   82433603     MOV.W   #0x0, &0x336
+    527           PJDIR = DIR_INPUT; // Default to input
+   \   000004   82432403     MOV.W   #0x0, &0x324
+    528          
+    529           PJDIR |= GPS_PWR; //Select GPS Power
+   \   000008   92D32403     BIS.W   #0x1, &0x324
+    530           PJOUT &= ~GPS_PWR;
+   \   00000C   92C32203     BIC.W   #0x1, &0x322
+    531           
+    532           PJDIR |= GPS_RESET; //Select GPS Reset
+   \   000010   A2D32403     BIS.W   #0x2, &0x324
+    533           PJOUT &= ~GPS_RESET;
+   \   000014   A2C32203     BIC.W   #0x2, &0x322
+    534           
+    535           PJDIR |= GPS_PWRCNTL; //Select GPS Power Control
+   \   000018   A2D22403     BIS.W   #0x4, &0x324
+    536           PJOUT &= ~GPS_PWRCNTL;
+   \   00001C   A2C22203     BIC.W   #0x4, &0x322
+    537           
+    538           PJDIR &= ~GPS_PWRCHK; //Select GPS Power Check
+   \   000020   B2C22403     BIC.W   #0x8, &0x324
+    539           PJREN &= ~GPS_PWRCHK;
+   \   000024   B2C22603     BIC.W   #0x8, &0x326
+    540           
+    541          }
+   \   000028   1001         RETA
+   \   00002A                REQUIRE _A_PJSELC_L
+   \   00002A                REQUIRE _A_PJDIR_L
+   \   00002A                REQUIRE _A_PJOUT_L
+   \   00002A                REQUIRE _A_PJREN_L
+    542          
+    543          
+
+   \                                 In  segment CODE, align 2
+    544          void Init_Ports(void)
+   \                     Init_Ports:
+    545          //===========================================================================
+    546          // Function name: Init_Ports
+    547          //
+    548          // Description: Call init functions for each port
+    549          // 
+    550          // Passed : no variables passed
+    551          // Locals: no variables declared
+    552          // Returned: no values returned
+    553          // Globals: none
+    554          // Calls: void Init_Ports1(void), void Init_Ports2(void), void Init_Ports3(void)
+    555          // void Init_Ports4(void), void Init_PortsJ(void)
+    556          //
+    557          // Author: Joseph Jarriel
+    558          // Date: Sep 2014
+    559          // Compiler: Built with IAR Embedded Workbench Version: (6.10.5)
+    560          //===========================================================================
+    561          {
+    562           
+    563           Init_Ports1();
+   \   000000   ........     CALLA   #Init_Ports1
+    564           Init_Ports2();
+   \   000004   ........     CALLA   #Init_Ports2
+    565           Init_Ports3();
+   \   000008   ........     CALLA   #Init_Ports3
+    566           Init_Ports4();
+   \   00000C   ........     CALLA   #Init_Ports4
+    567           Init_PortsJ();
+   \   000010   ........     BRA     #Init_PortsJ
+    568           
+    569          }
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Init_Ports
+        4   -> Init_Ports1
+        4   -> Init_Ports2
+        4   -> Init_Ports3
+        4   -> Init_Ports4
+        4   -> Init_PortsJ
+      4   Init_Ports1
+      4   Init_Ports2
+      4   Init_Ports3
+      4   Init_Ports4
+      4   Init_PortsJ
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      20  Init_Ports
+     124  Init_Ports1
+     102  Init_Ports2
+      78  Init_Ports3
+      58  Init_Ports4
+      42  Init_PortsJ
+       2  _A_PADIR_L
+       2  _A_PAOUT_L
+       2  _A_PAREN_L
+       2  _A_PASEL0_L
+       2  _A_PASEL1_L
+       2  _A_PASELC_L
+       2  _A_PBDIR_L
+       2  _A_PBIES_L
+       2  _A_PBIE_L
+       2  _A_PBIFG_L
+       2  _A_PBOUT_L
+       2  _A_PBREN_L
+       2  _A_PBSELC_L
+       2  _A_PJDIR_L
+       2  _A_PJOUT_L
+       2  _A_PJREN_L
+       2  _A_PJSELC_L
+
+ 
+ 424 bytes in segment CODE
+  34 bytes in segment DATA16_AN
+ 
+ 424 bytes of CODE memory
+   0 bytes of DATA memory (+ 34 bytes shared)
+
+Errors: none
+Warnings: none

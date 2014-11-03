@@ -1,0 +1,215 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         30/Oct/2014  18:17:41
+# Copyright 1996-2014 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\init_adc.c
+#    Command line  =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\init_adc.c -lC
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\List\ -o
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\Obj\ --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -Ol --multiplier=32
+#        --multiplier_location=4C0 --hw_workaround=CPU40 --hw_workaround=CPU39
+#        --code_model=large
+#    List file     =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\List\init_adc.lst
+#    Object file   =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\Obj\init_adc.r43
+#
+###############################################################################
+
+C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\init_adc.c
+      1          //===========================================================================
+      2          // File Name : init_adc.c
+      3          //
+      4          // Description: function declarations
+      5          //
+      6          // Author: Joseph Jarriel
+      7          // Date: Sep 2014
+      8          // Compiler: Built with IAR Embedded Workbench (6.10.5)
+      9          // Globals: None
+     10          // Functions: None defined
+     11          //===========================================================================
+     12          
+     13          
+     14          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x700
+   \   union <unnamed> _A_ADC10CTL0_L
+   \                     _A_ADC10CTL0_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x702
+   \   union <unnamed> _A_ADC10CTL1_L
+   \                     _A_ADC10CTL1_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x704
+   \   union <unnamed> _A_ADC10CTL2_L
+   \                     _A_ADC10CTL2_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x70a
+   \   union <unnamed> _A_ADC10MCTL0_L
+   \                     _A_ADC10MCTL0_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x71a
+   \   union <unnamed> _A_ADC10IE_L
+   \                     _A_ADC10IE_L:
+   \   000000                DS8 2
+     15          #include  "functions.h"
+     16          #include "macros.h"
+     17          
+
+   \                                 In  segment CODE, align 2
+     18          void ADC_Process(void){
+   \                     ADC_Process:
+   \                     ??ADC_Process_0:
+     19          //===========================================================================
+     20          // function name: adc_process
+     21          //
+     22          // Description: This handles initial adc reading
+     23          // 
+     24          // Passed : no variables passed
+     25          // Locals: no variables declared
+     26          // Returned: no values returned
+     27          // Globals: switchPress, isDebounce, bounceCount
+     28          // Calls: lcd_out, lcd_clear
+     29          //
+     30          // Author: Joseph Jarriel
+     31          // Date: Sep 2014
+     32          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+     33          // ==========================================================================
+     34           while (ADC10CTL1 & BUSY); // Wait if ADC10 core is active
+   \   000000   92B30207     BIT.W   #0x1, &0x702
+   \   000004   FD2F         JC      ??ADC_Process_0
+     35              ADC10CTL0 |= ADC10ENC + ADC10SC; // Sampling and conversion start
+   \   000006   B2D003000007 BIS.W   #0x3, &0x700
+     36          }
+   \   00000C   1001         RETA
+   \   00000E                REQUIRE _A_ADC10CTL1_L
+   \   00000E                REQUIRE _A_ADC10CTL0_L
+     37          
+
+   \                                 In  segment CODE, align 2
+     38          void init_adc(void)
+   \                     init_adc:
+     39          {
+     40            //===========================================================================
+     41          // function name: init_adc
+     42          //
+     43          // Description: This ISR handles switch events
+     44          // 
+     45          // Passed : no variables passed
+     46          // Locals: no variables declared
+     47          // Returned: no values returned
+     48          // Globals: switchPress, isDebounce, bounceCount
+     49          // Calls: lcd_out, lcd_clear
+     50          //
+     51          // Author: Joseph Jarriel
+     52          // Date: Sep 2014
+     53          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+     54          // ==========================================================================
+     55           //Will go to init_ADC
+     56           //ADC10CTL0 = RESET_STATE; // Clear ADC10CTL0 
+     57           ADC10CTL0 = RESET; // Clear ADC10CTL0 
+   \   000000   82430007     MOV.W   #0x0, &0x700
+     58           ADC10CTL0 |= ADC10SHT_2; // 16 ADC clocks
+   \   000004   B2D000020007 BIS.W   #0x200, &0x700
+     59           ADC10CTL0 &= ~ADC10MSC; // Single Sequence
+   \   00000A   B2C080000007 BIC.W   #0x80, &0x700
+     60           ADC10CTL0 |= ADC10ON; // ADC ON - Core Enabled
+   \   000010   B2D010000007 BIS.W   #0x10, &0x700
+     61           //ADC10CTL1 = RESET_STATE; // Clear ADC10CTL1 
+     62           ADC10CTL1 = RESET; // Clear ADC10CTL1 
+   \   000016   82430207     MOV.W   #0x0, &0x702
+     63           ADC10CTL1 |= ADC10SHS_0; // ADC10SC bit
+   \   00001A   924202070207 MOV.W   &0x702, &0x702
+     64           ADC10CTL1 |= ADC10SHP; // SAMPCON signal sourced from sampling timer
+   \   000020   B2D000020207 BIS.W   #0x200, &0x702
+     65           ADC10CTL1 &= ~ADC10ISSH; // The sample-input signal is not inverted.
+   \   000026   B2C000010207 BIC.W   #0x100, &0x702
+     66           ADC10CTL1 |= ADC10DIV_0; // ADC10_B clock divider – Divide by 1.
+   \   00002C   924202070207 MOV.W   &0x702, &0x702
+     67           ADC10CTL1 |= ADC10SSEL_0; // MODCLK
+   \   000032   924202070207 MOV.W   &0x702, &0x702
+     68           ADC10CTL1 |= ADC10CONSEQ_0; // Single-channel, single-conversion
+   \   000038   924202070207 MOV.W   &0x702, &0x702
+     69           //ADC10CTL1 |= 1; // sequence-of-channels, single-conversion
+     70           //ADC10CTL2 = RESET_STATE; // Clear ADC10CTL2
+     71           ADC10CTL2 = RESET; // Clear ADC10CTL2 
+   \   00003E   82430407     MOV.W   #0x0, &0x704
+     72           ADC10CTL2 |= ADC10DIV_0; // Pre-divide by 1
+   \   000042   924204070407 MOV.W   &0x704, &0x704
+     73           ADC10CTL2 |= ADC10RES; // 10-bit resolution
+   \   000048   B2D010000407 BIS.W   #0x10, &0x704
+     74           ADC10CTL2 &= ~ADC10DF; // Binary unsigned
+   \   00004E   B2C20407     BIC.W   #0x8, &0x704
+     75           ADC10CTL2 &= ~ADC10SR; // supports up to approximately 200 ksps
+   \   000052   A2C20407     BIC.W   #0x4, &0x704
+     76           
+     77           
+     78           //ADC10MCTL0 = RESET_STATE; // Clear ADC10MCTL0
+     79           ADC10MCTL0 = RESET; // Clear ADC10MCTL0 
+   \   000056   82430A07     MOV.W   #0x0, &0x70a
+     80           ADC10MCTL0 |= ADC10SREF_0; // V(R+) = AVCC and V(R-) = AVSS
+   \   00005A   92420A070A07 MOV.W   &0x70a, &0x70a
+     81           
+     82           //ADC10MCTL0 |= ADC10INCH_0; // Channel A1
+     83           //ADC10MCTL0 |= ADC10INCH_1; // Channel A2
+     84           ADC10MCTL0 |= ADC10INCH_0; // Channel A3 Thumb Wheel 
+   \   000060   92420A070A07 MOV.W   &0x70a, &0x70a
+     85          
+     86           ADC10IE |= ADC10IE0; // Enable ADC conversion complete interrupt 
+   \   000066   92D31A07     BIS.W   #0x1, &0x71a
+     87          }
+   \   00006A   1001         RETA
+   \   00006C                REQUIRE _A_ADC10CTL0_L
+   \   00006C                REQUIRE _A_ADC10CTL1_L
+   \   00006C                REQUIRE _A_ADC10CTL2_L
+   \   00006C                REQUIRE _A_ADC10MCTL0_L
+   \   00006C                REQUIRE _A_ADC10IE_L
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   ADC_Process
+      4   init_adc
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      14  ADC_Process
+       2  _A_ADC10CTL0_L
+       2  _A_ADC10CTL1_L
+       2  _A_ADC10CTL2_L
+       2  _A_ADC10IE_L
+       2  _A_ADC10MCTL0_L
+     108  init_adc
+
+ 
+ 122 bytes in segment CODE
+  10 bytes in segment DATA16_AN
+ 
+ 122 bytes of CODE memory
+   0 bytes of DATA memory (+ 10 bytes shared)
+
+Errors: none
+Warnings: none

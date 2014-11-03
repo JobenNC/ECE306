@@ -1,0 +1,933 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         30/Oct/2014  18:17:42
+# Copyright 1996-2014 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\swtich.c
+#    Command line  =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\swtich.c -lC
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\List\ -o
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\Obj\ --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -Ol --multiplier=32
+#        --multiplier_location=4C0 --hw_workaround=CPU40 --hw_workaround=CPU39
+#        --code_model=large
+#    List file     =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\List\swtich.lst
+#    Object file   =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\Obj\swtich.r43
+#
+###############################################################################
+
+C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\swtich.c
+      1          //===========================================================================
+      2          // File Name : switch.c
+      3          //
+      4          // Description: Handle switch 1 & 2 presses and debouncing, also handle
+      5          //      events on swtich presses
+      6          //
+      7          // Author: Joseph Jarriel
+      8          // Date: Sep 2014
+      9          // Compiler: Built with IAR Embedded Workbench (6.10.5)
+     10          // Globals: int buttOne, int buttTwo, volatile int waitCount
+     11          // Functions: changeDisplay, Switch_Process
+     12          //===========================================================================
+     13          
+     14          #include  "functions.h"
+     15          #include "macros.h"
+     16          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x220
+   \   union <unnamed> _A_PBIN_L
+   \                     _A_PBIN_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x222
+   \   union <unnamed> _A_PBOUT_L
+   \                     _A_PBOUT_L:
+   \   000000                DS8 2
+     17          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     18          int buttOne = OFF;
+   \                     buttOne:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     19          int buttTwo = OFF;
+   \                     buttTwo:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+     20          volatile int waitCount = TIME_START;
+   \                     waitCount:
+   \   000000                DS8 2
+   \   000002                REQUIRE `?<Initializer for waitCount>`
+     21          
+
+   \                                 In  segment CODE, align 2
+     22          void move(int count)
+   \                     move:
+     23          //===========================================================================
+     24          // Function name: move
+     25          //
+     26          // Description: This function handles car movement shapes
+     27          // 
+     28          // Passed : no variables passed
+     29          // Locals: no variables declared
+     30          // Returned: no values returned
+     31          // Globals: None
+     32          // Calls: void Init_Timer_B2(void)
+     33          //
+     34          // Author: Joseph Jarriel
+     35          // Date: Sep 2014
+     36          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+     37          // ==========================================================================
+     38          {
+   \   000000   1B15         PUSHM.W #0x2, R11
+   \   000002   0A4C         MOV.W   R12, R10
+     39              int i;
+     40              if (buttOne == START)
+   \   000004   9293....     CMP.W   #0x1, &buttOne
+   \   000008   8F20         JNE     ??move_12
+     41              {
+     42                newFM(ONE_SEC);
+   \   00000A   3C40C800     MOV.W   #0xc8, R12
+   \   00000E   ........     CALLA   #newFM
+     43                
+     44                P3OUT &= ~L_FORWARD;
+   \   000012   F2C040002202 BIC.B   #0x40, &0x222
+     45                P3OUT &= ~R_FORWARD;
+   \   000018   F2C010002202 BIC.B   #0x10, &0x222
+     46                P3OUT &= ~L_REVERSE;
+   \   00001E   F2C080002202 BIC.B   #0x80, &0x222
+     47                P3OUT &= ~R_REVERSE;
+   \   000024   F2C020002202 BIC.B   #0x20, &0x222
+     48                
+     49                P3OUT |= L_FORWARD;
+   \   00002A   F2D040002202 BIS.B   #0x40, &0x222
+     50                P3OUT |= R_FORWARD;
+   \   000030   F2D010002202 BIS.B   #0x10, &0x222
+     51                newFM(ONE_SEC);
+   \   000036   3C40C800     MOV.W   #0xc8, R12
+   \   00003A   ........     CALLA   #newFM
+     52                
+     53                P3OUT &= ~L_FORWARD;
+   \   00003E   F2C040002202 BIC.B   #0x40, &0x222
+     54                P3OUT &= ~R_FORWARD;
+   \   000044   F2C010002202 BIC.B   #0x10, &0x222
+     55                P3OUT &= ~L_REVERSE;
+   \   00004A   F2C080002202 BIC.B   #0x80, &0x222
+     56                P3OUT &= ~R_REVERSE;
+   \   000050   F2C020002202 BIC.B   #0x20, &0x222
+     57                
+     58                newFM(ONE_SEC);
+   \   000056   3C40C800     MOV.W   #0xc8, R12
+   \   00005A   ........     CALLA   #newFM
+     59                
+     60                P3OUT |= L_REVERSE;
+   \   00005E   F2D080002202 BIS.B   #0x80, &0x222
+     61                P3OUT |= R_REVERSE;
+   \   000064   F2D020002202 BIS.B   #0x20, &0x222
+     62                newFM(TWO_SEC);
+   \   00006A   3C409001     MOV.W   #0x190, R12
+   \   00006E   ........     CALLA   #newFM
+     63                
+     64                P3OUT &= ~L_REVERSE;
+   \   000072   F2C080002202 BIC.B   #0x80, &0x222
+     65                P3OUT &= ~R_REVERSE;
+   \   000078   F2C020002202 BIC.B   #0x20, &0x222
+     66                P3OUT &= ~L_FORWARD;
+   \   00007E   F2C040002202 BIC.B   #0x40, &0x222
+     67                P3OUT &= ~R_FORWARD;
+   \   000084   F2C010002202 BIC.B   #0x10, &0x222
+     68                
+     69                newFM(ONE_SEC);
+   \   00008A   3C40C800     MOV.W   #0xc8, R12
+   \   00008E   ........     CALLA   #newFM
+     70                
+     71                P3OUT |= L_FORWARD;
+   \   000092   F2D040002202 BIS.B   #0x40, &0x222
+     72                P3OUT |= R_FORWARD;
+   \   000098   F2D010002202 BIS.B   #0x10, &0x222
+     73                newFM(ONE_SEC);
+   \   00009E   3C40C800     MOV.W   #0xc8, R12
+   \   0000A2   ........     CALLA   #newFM
+     74                
+     75                
+     76                P3OUT &= ~L_REVERSE;
+   \   0000A6   F2C080002202 BIC.B   #0x80, &0x222
+     77                P3OUT &= ~R_REVERSE;
+   \   0000AC   F2C020002202 BIC.B   #0x20, &0x222
+     78                P3OUT &= ~L_FORWARD;
+   \   0000B2   F2C040002202 BIC.B   #0x40, &0x222
+     79                P3OUT &= ~R_FORWARD;
+   \   0000B8   F2C010002202 BIC.B   #0x10, &0x222
+     80                
+     81                newFM(ONE_SEC);
+   \   0000BE   3C40C800     MOV.W   #0xc8, R12
+   \   0000C2   ........     CALLA   #newFM
+     82                
+     83                P3OUT |= L_FORWARD;
+   \   0000C6   F2D040002202 BIS.B   #0x40, &0x222
+     84                P3OUT |= R_REVERSE;
+   \   0000CC   F2D020002202 BIS.B   #0x20, &0x222
+     85                newFM(ONE_SEC);
+   \   0000D2   3C40C800     MOV.W   #0xc8, R12
+   \   0000D6   ........     CALLA   #newFM
+     86                
+     87                P3OUT &= ~L_REVERSE;
+   \   0000DA   F2C080002202 BIC.B   #0x80, &0x222
+     88                P3OUT &= ~R_REVERSE;
+   \   0000E0   F2C020002202 BIC.B   #0x20, &0x222
+     89                P3OUT &= ~L_FORWARD;
+   \   0000E6   F2C040002202 BIC.B   #0x40, &0x222
+     90                P3OUT &= ~R_FORWARD;
+   \   0000EC   F2C010002202 BIC.B   #0x10, &0x222
+     91                
+     92                newFM(ONE_SEC);
+   \   0000F2   3C40C800     MOV.W   #0xc8, R12
+   \   0000F6   ........     CALLA   #newFM
+     93                
+     94                P3OUT |= R_FORWARD;
+   \   0000FA   F2D010002202 BIS.B   #0x10, &0x222
+     95                P3OUT |= L_REVERSE;
+   \   000100   F2D080002202 BIS.B   #0x80, &0x222
+     96                newFM(ONE_SEC);
+   \   000106   3C40C800     MOV.W   #0xc8, R12
+   \   00010A   ........     CALLA   #newFM
+     97                
+     98                P3OUT &= ~L_REVERSE;
+   \   00010E   F2C080002202 BIC.B   #0x80, &0x222
+     99                P3OUT &= ~R_REVERSE;
+   \   000114   F2C020002202 BIC.B   #0x20, &0x222
+    100                P3OUT &= ~L_FORWARD;
+   \   00011A   F2C040002202 BIC.B   #0x40, &0x222
+    101                P3OUT &= ~R_FORWARD;
+   \   000120   F2C010002202 BIC.B   #0x10, &0x222
+   \   000126   4D3D         JMP     ??move_13
+    102                /*
+    103                //straight line
+    104                //five_msec_sleep(100);
+    105                newFM(100);
+    106                for (i=0; i<count; i++)
+    107                {
+    108                  P3OUT |= L_FORWARD;
+    109                  P3OUT |= R_FORWARD;
+    110                  //five_msec_sleep(65);
+    111                  newFM(65);
+    112                  P3OUT &= ~L_FORWARD;
+    113                  //five_msec_sleep(35);
+    114                  newFM(35);
+    115                    //P3OUT &= ~R_FORWARD
+    116                }
+    117                */
+    118              }
+    119              else if (buttOne == 2)
+   \                     ??move_12:
+   \   000128   A293....     CMP.W   #0x2, &buttOne
+   \   00012C   1A20         JNE     ??move_14
+    120              {
+    121                //Two Left circles
+    122                //five_msec_sleep(100);
+    123                newFM(100);
+   \   00012E   3C406400     MOV.W   #0x64, R12
+   \   000132   ........     CALLA   #newFM
+    124                for (i=0; i<62; i++)
+   \   000136   0B43         MOV.W   #0x0, R11
+   \                     ??move_0:
+   \   000138   3B903E00     CMP.W   #0x3e, R11
+   \   00013C   4235         JGE     ??move_13
+    125                {
+    126                  P3OUT |= L_FORWARD;
+   \   00013E   F2D040002202 BIS.B   #0x40, &0x222
+    127                  P3OUT |= R_FORWARD;
+   \   000144   F2D010002202 BIS.B   #0x10, &0x222
+    128                  //five_msec_sleep(2);
+    129                  newFM(2);
+   \   00014A   2C43         MOV.W   #0x2, R12
+   \   00014C   ........     CALLA   #newFM
+    130                  P3OUT &= ~L_FORWARD;
+   \   000150   F2C040002202 BIC.B   #0x40, &0x222
+    131                  //five_msec_sleep(12);
+    132                  newFM(12);
+   \   000156   3C400C00     MOV.W   #0xc, R12
+   \   00015A   ........     CALLA   #newFM
+    133                    //P3OUT &= ~R_FORWARD
+    134                }
+   \   00015E   1B53         ADD.W   #0x1, R11
+   \   000160   EB3F         JMP     ??move_0
+    135              }
+    136              else if (buttOne == 3)
+   \                     ??move_14:
+   \   000162   B2900300.... CMP.W   #0x3, &buttOne
+   \   000168   1A20         JNE     ??move_15
+    137              {
+    138                //Right circle
+    139                //five_msec_sleep(100);
+    140                newFM(100);
+   \   00016A   3C406400     MOV.W   #0x64, R12
+   \   00016E   ........     CALLA   #newFM
+    141                //Right circle
+    142                for (i=0; i<38; i++)
+   \   000172   0B43         MOV.W   #0x0, R11
+   \                     ??move_1:
+   \   000174   3B902600     CMP.W   #0x26, R11
+   \   000178   2435         JGE     ??move_13
+    143                {
+    144                  P3OUT |= L_FORWARD;
+   \   00017A   F2D040002202 BIS.B   #0x40, &0x222
+    145                  P3OUT |= R_FORWARD;
+   \   000180   F2D010002202 BIS.B   #0x10, &0x222
+    146                  //five_msec_sleep(2);
+    147                  newFM(2);
+   \   000186   2C43         MOV.W   #0x2, R12
+   \   000188   ........     CALLA   #newFM
+    148                  P3OUT &= ~R_FORWARD;
+   \   00018C   F2C010002202 BIC.B   #0x10, &0x222
+    149                  //five_msec_sleep(12);
+    150                  newFM(12);
+   \   000192   3C400C00     MOV.W   #0xc, R12
+   \   000196   ........     CALLA   #newFM
+    151                  //P3OUT &= ~R_FORWARD
+    152                }
+   \   00019A   1B53         ADD.W   #0x1, R11
+   \   00019C   EB3F         JMP     ??move_1
+    153              }
+    154              else if (buttOne == 4)
+   \                     ??move_15:
+   \   00019E   A292....     CMP.W   #0x4, &buttOne
+   \   0001A2   5C20         JNE     ??move_16
+    155              {
+    156                  //Figure 8
+    157                //Left Circle
+    158                //five_msec_sleep(100);
+    159                newFM(100);
+   \   0001A4   3C406400     MOV.W   #0x64, R12
+   \   0001A8   ........     CALLA   #newFM
+    160                //Left circles
+    161                //five_msec_sleep(100);
+    162                for (i=0; i<37; i++)
+   \   0001AC   0B43         MOV.W   #0x0, R11
+   \   0001AE   113C         JMP     ??move_17
+    163                {
+    164                  P3OUT |= L_FORWARD;
+   \                     ??move_2:
+   \   0001B0   F2D040002202 BIS.B   #0x40, &0x222
+    165                  P3OUT |= R_FORWARD;
+   \   0001B6   F2D010002202 BIS.B   #0x10, &0x222
+    166                  //five_msec_sleep(2);
+    167                  newFM(2);
+   \   0001BC   2C43         MOV.W   #0x2, R12
+   \   0001BE   ........     CALLA   #newFM
+    168                  P3OUT &= ~L_FORWARD;
+   \   0001C2   F2C040002202 BIC.B   #0x40, &0x222
+    169                  //five_msec_sleep(12);
+    170                  newFM(12);
+   \   0001C8   3C400C00     MOV.W   #0xc, R12
+   \   0001CC   ........     CALLA   #newFM
+    171                    //P3OUT &= ~R_FORWARD
+    172                }
+   \   0001D0   1B53         ADD.W   #0x1, R11
+   \                     ??move_17:
+   \   0001D2   3B902500     CMP.W   #0x25, R11
+   \   0001D6   EC3B         JL      ??move_2
+    173                //for (i=0; i<count; i++)
+    174                //{
+    175                //  P3OUT |= L_FORWARD;
+    176                //  P3OUT |= R_FORWARD;
+    177                //  five_msec_sleep(10);
+    178                //  P3OUT &= ~L_FORWARD;
+    179                //  five_msec_sleep(90);
+    180                    //P3OUT &= ~R_FORWARD
+    181                //}
+    182                //Right circle
+    183                for (i=0; i<38; i++)
+   \   0001D8   0B43         MOV.W   #0x0, R11
+   \   0001DA   113C         JMP     ??move_18
+    184                {
+    185                  P3OUT |= L_FORWARD;
+   \                     ??move_3:
+   \   0001DC   F2D040002202 BIS.B   #0x40, &0x222
+    186                  P3OUT |= R_FORWARD;
+   \   0001E2   F2D010002202 BIS.B   #0x10, &0x222
+    187                  //five_msec_sleep(2);
+    188                  newFM(2);
+   \   0001E8   2C43         MOV.W   #0x2, R12
+   \   0001EA   ........     CALLA   #newFM
+    189                  P3OUT &= ~R_FORWARD;
+   \   0001EE   F2C010002202 BIC.B   #0x10, &0x222
+    190                  //five_msec_sleep(14);
+    191                  newFM(14);
+   \   0001F4   3C400E00     MOV.W   #0xe, R12
+   \   0001F8   ........     CALLA   #newFM
+    192                  //P3OUT &= ~R_FORWARD
+    193                }
+   \   0001FC   1B53         ADD.W   #0x1, R11
+   \                     ??move_18:
+   \   0001FE   3B902600     CMP.W   #0x26, R11
+   \   000202   EC3B         JL      ??move_3
+    194                for (i=0; i<40; i++)
+   \   000204   0B43         MOV.W   #0x0, R11
+   \   000206   113C         JMP     ??move_19
+    195                {
+    196                  P3OUT |= L_FORWARD;
+   \                     ??move_4:
+   \   000208   F2D040002202 BIS.B   #0x40, &0x222
+    197                  P3OUT |= R_FORWARD;
+   \   00020E   F2D010002202 BIS.B   #0x10, &0x222
+    198                  //five_msec_sleep(2);
+    199                  newFM(2);
+   \   000214   2C43         MOV.W   #0x2, R12
+   \   000216   ........     CALLA   #newFM
+    200                  P3OUT &= ~L_FORWARD;
+   \   00021A   F2C040002202 BIC.B   #0x40, &0x222
+    201                  //five_msec_sleep(12);
+    202                  newFM(12);
+   \   000220   3C400C00     MOV.W   #0xc, R12
+   \   000224   ........     CALLA   #newFM
+    203                    //P3OUT &= ~R_FORWARD
+    204                }
+   \   000228   1B53         ADD.W   #0x1, R11
+   \                     ??move_19:
+   \   00022A   3B902800     CMP.W   #0x28, R11
+   \   00022E   EC3B         JL      ??move_4
+    205                //for (i=0; i<count; i++)
+    206                //{
+    207                //  P3OUT |= L_FORWARD;
+    208                //  P3OUT |= R_FORWARD;
+    209                //  five_msec_sleep(10);
+    210                //  P3OUT &= ~L_FORWARD;
+    211                //  five_msec_sleep(90);
+    212                    //P3OUT &= ~R_FORWARD
+    213                //}
+    214                //Right circle
+    215                for (i=0; i<38; i++)
+   \   000230   0B43         MOV.W   #0x0, R11
+   \                     ??move_5:
+   \   000232   3B902600     CMP.W   #0x26, R11
+   \   000236   C534         JGE     ??move_13
+    216                {
+    217                  P3OUT |= L_FORWARD;
+   \   000238   F2D040002202 BIS.B   #0x40, &0x222
+    218                  P3OUT |= R_FORWARD;
+   \   00023E   F2D010002202 BIS.B   #0x10, &0x222
+    219                  //five_msec_sleep(2);
+    220                  newFM(2);
+   \   000244   2C43         MOV.W   #0x2, R12
+   \   000246   ........     CALLA   #newFM
+    221                  P3OUT &= ~R_FORWARD;
+   \   00024A   F2C010002202 BIC.B   #0x10, &0x222
+    222                  //five_msec_sleep(14);
+    223                  newFM(14);
+   \   000250   3C400E00     MOV.W   #0xe, R12
+   \   000254   ........     CALLA   #newFM
+    224                  //P3OUT &= ~R_FORWARD
+    225                }
+   \   000258   1B53         ADD.W   #0x1, R11
+   \   00025A   EB3F         JMP     ??move_5
+    226                
+    227              }
+    228              else if (buttOne == -1)
+   \                     ??move_16:
+   \   00025C   B293....     CMP.W   #0xffff, &buttOne
+   \   000260   B020         JNE     ??move_13
+    229              {
+    230                  //Triangle
+    231                  //five_msec_sleep(100);
+    232                  newFM(100);
+   \   000262   3C406400     MOV.W   #0x64, R12
+   \   000266   ........     CALLA   #newFM
+    233                  
+    234                  for (i=2; i<count; i++)
+   \   00026A   2B43         MOV.W   #0x2, R11
+   \   00026C   0B3C         JMP     ??move_20
+    235                  {
+    236                    P3OUT |= L_FORWARD;
+   \                     ??move_6:
+   \   00026E   F2D040002202 BIS.B   #0x40, &0x222
+    237                    P3OUT |= R_FORWARD;
+   \   000274   F2D010002202 BIS.B   #0x10, &0x222
+    238                    //five_msec_sleep(40);
+    239                    newFM(40);
+   \   00027A   3C402800     MOV.W   #0x28, R12
+   \   00027E   ........     CALLA   #newFM
+    240                    //P3OUT &= ~L_FORWARD;
+    241                    //five_msec_sleep(5);
+    242                  }
+   \   000282   1B53         ADD.W   #0x1, R11
+   \                     ??move_20:
+   \   000284   0B9A         CMP.W   R10, R11
+   \   000286   F33B         JL      ??move_6
+    243                  
+    244                  P3OUT &= ~R_FORWARD;
+   \   000288   F2C010002202 BIC.B   #0x10, &0x222
+    245                  //five_msec_sleep(110);
+    246                  newFM(110);
+   \   00028E   3C406E00     MOV.W   #0x6e, R12
+   \   000292   ........     CALLA   #newFM
+    247                  
+    248                  for (i=2; i<count; i++)
+   \   000296   2B43         MOV.W   #0x2, R11
+   \   000298   123C         JMP     ??move_21
+    249                  {
+    250                    P3OUT |= L_FORWARD;
+   \                     ??move_7:
+   \   00029A   F2D040002202 BIS.B   #0x40, &0x222
+    251                    P3OUT |= R_FORWARD;
+   \   0002A0   F2D010002202 BIS.B   #0x10, &0x222
+    252                    //five_msec_sleep(30);
+    253                    newFM(30);
+   \   0002A6   3C401E00     MOV.W   #0x1e, R12
+   \   0002AA   ........     CALLA   #newFM
+    254                    P3OUT &= ~L_FORWARD;
+   \   0002AE   F2C040002202 BIC.B   #0x40, &0x222
+    255                    //five_msec_sleep(10);
+    256                    newFM(10);
+   \   0002B4   3C400A00     MOV.W   #0xa, R12
+   \   0002B8   ........     CALLA   #newFM
+    257                  }
+   \   0002BC   1B53         ADD.W   #0x1, R11
+   \                     ??move_21:
+   \   0002BE   0B9A         CMP.W   R10, R11
+   \   0002C0   EC3B         JL      ??move_7
+    258                  
+    259                  P3OUT |= L_FORWARD;
+   \   0002C2   F2D040002202 BIS.B   #0x40, &0x222
+    260                  P3OUT &= ~R_FORWARD;
+   \   0002C8   F2C010002202 BIC.B   #0x10, &0x222
+    261                  //five_msec_sleep(110);
+    262                  newFM(110);
+   \   0002CE   3C406E00     MOV.W   #0x6e, R12
+   \   0002D2   ........     CALLA   #newFM
+    263                  
+    264                  for (i=2; i<count; i++)
+   \   0002D6   2B43         MOV.W   #0x2, R11
+   \   0002D8   123C         JMP     ??move_22
+    265                  {
+    266                    P3OUT |= L_FORWARD;
+   \                     ??move_8:
+   \   0002DA   F2D040002202 BIS.B   #0x40, &0x222
+    267                    P3OUT |= R_FORWARD;
+   \   0002E0   F2D010002202 BIS.B   #0x10, &0x222
+    268                    //five_msec_sleep(40);
+    269                    //P3OUT &= ~L_FORWARD;
+    270                    //five_msec_sleep(5);
+    271                    //five_msec_sleep(30);
+    272                    newFM(30);
+   \   0002E6   3C401E00     MOV.W   #0x1e, R12
+   \   0002EA   ........     CALLA   #newFM
+    273                    P3OUT &= ~L_FORWARD;
+   \   0002EE   F2C040002202 BIC.B   #0x40, &0x222
+    274                    //five_msec_sleep(10);
+    275                    newFM(10);
+   \   0002F4   3C400A00     MOV.W   #0xa, R12
+   \   0002F8   ........     CALLA   #newFM
+    276                  }
+   \   0002FC   1B53         ADD.W   #0x1, R11
+   \                     ??move_22:
+   \   0002FE   0B9A         CMP.W   R10, R11
+   \   000300   EC3B         JL      ??move_8
+    277                  
+    278                  P3OUT |= L_FORWARD;
+   \   000302   F2D040002202 BIS.B   #0x40, &0x222
+    279                  P3OUT &= ~R_FORWARD;
+   \   000308   F2C010002202 BIC.B   #0x10, &0x222
+    280                  //five_msec_sleep(110);
+    281                  newFM(110);
+   \   00030E   3C406E00     MOV.W   #0x6e, R12
+   \   000312   ........     CALLA   #newFM
+    282                  //Triangle
+    283                  //five_msec_sleep(100);
+    284                  
+    285                  for (i=2; i<count; i++)
+   \   000316   2B43         MOV.W   #0x2, R11
+   \   000318   123C         JMP     ??move_23
+    286                  {
+    287                    P3OUT |= L_FORWARD;
+   \                     ??move_9:
+   \   00031A   F2D040002202 BIS.B   #0x40, &0x222
+    288                    P3OUT |= R_FORWARD;
+   \   000320   F2D010002202 BIS.B   #0x10, &0x222
+    289                    //five_msec_sleep(40);
+    290                    //P3OUT &= ~L_FORWARD;
+    291                    //five_msec_sleep(5);
+    292                    //five_msec_sleep(30);
+    293                    newFM(30);
+   \   000326   3C401E00     MOV.W   #0x1e, R12
+   \   00032A   ........     CALLA   #newFM
+    294                    P3OUT &= ~L_FORWARD;
+   \   00032E   F2C040002202 BIC.B   #0x40, &0x222
+    295                    //five_msec_sleep(10);
+    296                    newFM(10);
+   \   000334   3C400A00     MOV.W   #0xa, R12
+   \   000338   ........     CALLA   #newFM
+    297                  }
+   \   00033C   1B53         ADD.W   #0x1, R11
+   \                     ??move_23:
+   \   00033E   0B9A         CMP.W   R10, R11
+   \   000340   EC3B         JL      ??move_9
+    298                  
+    299                  P3OUT |= L_FORWARD;
+   \   000342   F2D040002202 BIS.B   #0x40, &0x222
+    300                  P3OUT &= ~R_FORWARD;
+   \   000348   F2C010002202 BIC.B   #0x10, &0x222
+    301                  //five_msec_sleep(110);
+    302                  newFM(110);
+   \   00034E   3C406E00     MOV.W   #0x6e, R12
+   \   000352   ........     CALLA   #newFM
+    303                  
+    304                  for (i=2; i<count; i++)
+   \   000356   2B43         MOV.W   #0x2, R11
+   \   000358   123C         JMP     ??move_24
+    305                  {
+    306                    P3OUT |= L_FORWARD;
+   \                     ??move_10:
+   \   00035A   F2D040002202 BIS.B   #0x40, &0x222
+    307                    P3OUT |= R_FORWARD;
+   \   000360   F2D010002202 BIS.B   #0x10, &0x222
+    308                    //five_msec_sleep(40);
+    309                    //P3OUT &= ~L_FORWARD;
+    310                    //five_msec_sleep(5);
+    311                    //five_msec_sleep(30);
+    312                    newFM(30);
+   \   000366   3C401E00     MOV.W   #0x1e, R12
+   \   00036A   ........     CALLA   #newFM
+    313                    P3OUT &= ~L_FORWARD;
+   \   00036E   F2C040002202 BIC.B   #0x40, &0x222
+    314                    //five_msec_sleep(10);
+    315                    newFM(10);
+   \   000374   3C400A00     MOV.W   #0xa, R12
+   \   000378   ........     CALLA   #newFM
+    316                  }
+   \   00037C   1B53         ADD.W   #0x1, R11
+   \                     ??move_24:
+   \   00037E   0B9A         CMP.W   R10, R11
+   \   000380   EC3B         JL      ??move_10
+    317                  
+    318                  P3OUT |= L_FORWARD;
+   \   000382   F2D040002202 BIS.B   #0x40, &0x222
+    319                  P3OUT &= ~R_FORWARD;
+   \   000388   F2C010002202 BIC.B   #0x10, &0x222
+    320                  //five_msec_sleep(110);
+    321                  newFM(110);
+   \   00038E   3C406E00     MOV.W   #0x6e, R12
+   \   000392   ........     CALLA   #newFM
+    322                  
+    323                  for (i=2; i<count; i++)
+   \   000396   2B43         MOV.W   #0x2, R11
+   \   000398   123C         JMP     ??move_25
+    324                  {
+    325                    P3OUT |= L_FORWARD;
+   \                     ??move_11:
+   \   00039A   F2D040002202 BIS.B   #0x40, &0x222
+    326                    P3OUT |= R_FORWARD;
+   \   0003A0   F2D010002202 BIS.B   #0x10, &0x222
+    327                    //five_msec_sleep(40);
+    328                    //P3OUT &= ~L_FORWARD;
+    329                    //five_msec_sleep(5);
+    330                    //five_msec_sleep(30);
+    331                    newFM(30);
+   \   0003A6   3C401E00     MOV.W   #0x1e, R12
+   \   0003AA   ........     CALLA   #newFM
+    332                    P3OUT &= ~L_FORWARD;
+   \   0003AE   F2C040002202 BIC.B   #0x40, &0x222
+    333                    //five_msec_sleep(10);
+    334                    newFM(10);
+   \   0003B4   3C400A00     MOV.W   #0xa, R12
+   \   0003B8   ........     CALLA   #newFM
+    335                  }
+   \   0003BC   1B53         ADD.W   #0x1, R11
+   \                     ??move_25:
+   \   0003BE   0B9A         CMP.W   R10, R11
+   \   0003C0   EC3B         JL      ??move_11
+    336              }
+    337              P3OUT &= ~R_FORWARD;
+   \                     ??move_13:
+   \   0003C2   F2C010002202 BIC.B   #0x10, &0x222
+    338              P3OUT &= ~L_FORWARD;
+   \   0003C8   F2C040002202 BIC.B   #0x40, &0x222
+    339          }
+   \   0003CE   1A17         POPM.W  #0x2, R11
+   \   0003D0   1001         RETA
+   \   0003D2                REQUIRE _A_PBOUT_L
+    340          
+
+   \                                 In  segment CODE, align 2
+    341          void changeDisplay(void)
+   \                     changeDisplay:
+    342          //===========================================================================
+    343          // Function name: changeDisplay
+    344          //
+    345          // Description: This function manages altering the LCD display
+    346          // based on the current values of buttOne and buttTwo
+    347          // 
+    348          // Passed : no variables passed
+    349          // Locals: no variables declared
+    350          // Returned: no values returned
+    351          // Globals: int buttOne, int buttTwo, volatile int waitCount
+    352          // Calls: lcd_out(char *s, char line)
+    353          //
+    354          // Author: Joseph Jarriel
+    355          // Date: Sep 2014
+    356          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+    357          //===========================================================================
+    358          {
+    359              if (buttOne == 0)
+   \   000000   8293....     CMP.W   #0x0, &buttOne
+   \   000004   0620         JNE     ??changeDisplay_0
+    360              {
+    361                  lcd_out("     Make Selection", LCD_LINE_1);
+   \   000006   7D408000     MOV.B   #0x80, R13
+   \   00000A   3C40....     MOV.W   #`?<Constant "     Make Selection">`, R12
+   \   00000E   ........     CALLA   #lcd_out
+    362              }
+    363              if (buttOne == 1)
+   \                     ??changeDisplay_0:
+   \   000012   9293....     CMP.W   #0x1, &buttOne
+   \   000016   0620         JNE     ??changeDisplay_1
+    364              {
+    365                   lcd_out("    Straight Line", LCD_LINE_1);
+   \   000018   7D408000     MOV.B   #0x80, R13
+   \   00001C   3C40....     MOV.W   #`?<Constant "    Straight Line">`, R12
+   \   000020   ........     CALLA   #lcd_out
+    366              }
+    367              if (buttOne == 2)
+   \                     ??changeDisplay_1:
+   \   000024   A293....     CMP.W   #0x2, &buttOne
+   \   000028   0620         JNE     ??changeDisplay_2
+    368              {
+    369                   lcd_out("    Two Circles", LCD_LINE_1);
+   \   00002A   7D408000     MOV.B   #0x80, R13
+   \   00002E   3C40....     MOV.W   #`?<Constant "    Two Circles">`, R12
+   \   000032   ........     CALLA   #lcd_out
+    370              }
+    371              if (buttOne == 3)
+   \                     ??changeDisplay_2:
+   \   000036   B2900300.... CMP.W   #0x3, &buttOne
+   \   00003C   0620         JNE     ??changeDisplay_3
+    372              {
+    373                   lcd_out("    Right Circle", LCD_LINE_1);
+   \   00003E   7D408000     MOV.B   #0x80, R13
+   \   000042   3C40....     MOV.W   #`?<Constant "    Right Circle">`, R12
+   \   000046   ........     CALLA   #lcd_out
+    374              }
+    375              if (buttOne == 4)
+   \                     ??changeDisplay_3:
+   \   00004A   A292....     CMP.W   #0x4, &buttOne
+   \   00004E   0620         JNE     ??changeDisplay_4
+    376              {
+    377                   lcd_out("    Figure 8", LCD_LINE_1);
+   \   000050   7D408000     MOV.B   #0x80, R13
+   \   000054   3C40....     MOV.W   #`?<Constant "    Figure 8">`, R12
+   \   000058   ........     CALLA   #lcd_out
+    378                   
+    379              }
+    380              if (buttOne == 5)
+   \                     ??changeDisplay_4:
+   \   00005C   B2900500.... CMP.W   #0x5, &buttOne
+   \   000062   0820         JNE     ??changeDisplay_5
+    381              {
+    382                  lcd_out("    Triangle", LCD_LINE_1);
+   \   000064   7D408000     MOV.B   #0x80, R13
+   \   000068   3C40....     MOV.W   #`?<Constant "    Triangle">`, R12
+   \   00006C   ........     CALLA   #lcd_out
+    383                  buttOne = -1;
+   \   000070   B243....     MOV.W   #0xffff, &buttOne
+    384              }
+    385            
+    386              //if ((buttOne == OFF) && (buttTwo == OFF))
+    387              //{
+    388              //   lcd_out("    Lt Forward Rt   ",LCD_LINE_1);       // 16 characters max between quotes - line 1
+    389              //   lcd_out("Off       Off",LCD_LINE_2);
+    390              //   P3OUT &= ~L_FORWARD;
+    391              //   P3OUT &= ~R_FORWARD;
+    392              //}
+    393          
+    394              //if ((buttOne == OFF) && (buttTwo == ON))
+    395              //{
+    396              //   lcd_out("    Lt Forward Rt   ",LCD_LINE_1);       // 16 characters max between quotes - line 1
+    397              //   lcd_out("Off       On",LCD_LINE_2);
+    398              //   P3OUT &= ~L_FORWARD;
+    399              //   P3OUT |= R_FORWARD;
+    400              //}
+    401          
+    402              //if ((buttOne == ON) && (buttTwo == OFF))
+    403              //{
+    404              //   lcd_out("    Lt Forward Rt   ",LCD_LINE_1);       // 16 characters max between quotes - line 1
+    405              //   lcd_out("On        Off",LCD_LINE_2);
+    406              //   P3OUT |= L_FORWARD;
+    407              //   P3OUT &= ~R_FORWARD;
+    408              //}
+    409          
+    410              //if ((buttOne == ON) && (buttTwo == ON))
+    411              //{
+    412              //   lcd_out("    Lt Forward Rt   ",LCD_LINE_1);       // 16 characters max between quotes - line 1
+    413              //   lcd_out("On        On",LCD_LINE_2);
+    414              //   P3OUT |= L_FORWARD;
+    415              //   P3OUT |= R_FORWARD;
+    416              //}
+    417          }
+   \                     ??changeDisplay_5:
+   \   000074   1001         RETA
+    418          
+
+   \                                 In  segment CODE, align 2
+    419          void Switches_Process(void){
+   \                     Switches_Process:
+    420          //------------------------------------------------------------------------------
+    421          //===========================================================================
+    422          // Function name: Switches_Process
+    423          //
+    424          // Description: Handle and debounce switch 1 and 2
+    425          // 
+    426          // Passed : no variables passed
+    427          // Locals: no variables declared
+    428          // Returned: no values returned
+    429          // Globals: waitCount, buttOne, buttTwo
+    430          // Calls: lcd_clear, changeDisplay
+    431          //
+    432          // Author: Joseph Jarriel
+    433          // Date: Sep 2014
+    434          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+    435          // ==========================================================================
+    436          //------------------------------------------------------------------------------
+    437            if ((!(P4IN & SW1)) && (waitCount > TIME_UP)){
+   \   000000   D2B32102     BIT.B   #0x1, &0x221
+   \   000004   0C2C         JC      ??Switches_Process_0
+   \   000006   B2901A00.... CMP.W   #0x1a, &waitCount
+   \   00000C   0838         JL      ??Switches_Process_0
+    438              waitCount = RESTART;
+   \   00000E   8243....     MOV.W   #0x0, &waitCount
+    439              lcd_clear();
+   \   000012   ........     CALLA   #lcd_clear
+    440              //buttOne = !buttOne;
+    441              buttOne++;
+   \   000016   9253....     ADD.W   #0x1, &buttOne
+    442              changeDisplay();
+   \   00001A   ........     CALLA   #changeDisplay
+    443            }
+    444            if ((!(P4IN & SW2)) && (waitCount > TIME_UP)) {
+   \                     ??Switches_Process_0:
+   \   00001E   E2B32102     BIT.B   #0x2, &0x221
+   \   000022   0A2C         JC      ??Switches_Process_1
+   \   000024   B2901A00.... CMP.W   #0x1a, &waitCount
+   \   00002A   0638         JL      ??Switches_Process_1
+    445              waitCount = RESTART;
+   \   00002C   8243....     MOV.W   #0x0, &waitCount
+    446              //lcd_clear();
+    447              //buttTwo = !buttTwo;
+    448              move(5);
+   \   000030   3C400500     MOV.W   #0x5, R12
+   \   000034   ........     CALLA   #move
+    449            }
+    450          //------------------------------------------------------------------------------
+    451          }
+   \                     ??Switches_Process_1:
+   \   000038   1001         RETA
+   \   00003A                REQUIRE _A_PBIN_L
+
+   \                                 In  segment DATA16_ID, align 2, align-sorted
+   \                     `?<Initializer for waitCount>`:
+   \   000000   1A00         DC16 26
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "     Make Selection">`:
+   \   000000   20202020204D DC8 "     Make Selection"
+   \            616B65205365
+   \            6C656374696F
+   \            6E00        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "    Straight Line">`:
+   \   000000   202020205374 DC8 "    Straight Line"
+   \            726169676874
+   \            204C696E6500
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "    Two Circles">`:
+   \   000000   202020205477 DC8 "    Two Circles"
+   \            6F2043697263
+   \            6C657300    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "    Right Circle">`:
+   \   000000   202020205269 DC8 "    Right Circle"
+   \            676874204369
+   \            72636C6500  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "    Figure 8">`:
+   \   000000   202020204669 DC8 "    Figure 8"
+   \            677572652038
+   \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "    Triangle">`:
+   \   000000   202020205472 DC8 "    Triangle"
+   \            69616E676C65
+   \            00          
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Switches_Process
+        4   -> changeDisplay
+        4   -> lcd_clear
+        4   -> move
+      4   changeDisplay
+        4   -> lcd_out
+      8   move
+        8   -> newFM
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      20  ?<Constant "     Make Selection">
+      13  ?<Constant "    Figure 8">
+      17  ?<Constant "    Right Circle">
+      18  ?<Constant "    Straight Line">
+      13  ?<Constant "    Triangle">
+      16  ?<Constant "    Two Circles">
+       2  ?<Initializer for waitCount>
+      58  Switches_Process
+       2  _A_PBIN_L
+       2  _A_PBOUT_L
+       2  buttOne
+       2  buttTwo
+     118  changeDisplay
+     978  move
+       2  waitCount
+
+ 
+ 1 154 bytes in segment CODE
+     4 bytes in segment DATA16_AN
+    97 bytes in segment DATA16_C
+     2 bytes in segment DATA16_I
+     2 bytes in segment DATA16_ID
+     4 bytes in segment DATA16_Z
+ 
+ 1 154 bytes of CODE  memory
+    99 bytes of CONST memory
+     6 bytes of DATA  memory (+ 4 bytes shared)
+
+Errors: none
+Warnings: none

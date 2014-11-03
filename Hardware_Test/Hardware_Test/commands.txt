@@ -1,0 +1,184 @@
+// FRAM commands
+
+.. // Check communication
+
+// ADC Values
+.A // Dump ADC_Right_Detector ADC_Left_Detector ADC_Thumb ADC_Temp ADC_Bat
+
+// Build Information
+.B
+
+// Control Words
+.C
+
+// Write Display
+.d112345678901234567 // Sample text for line 1
+.d2 Test Line 2 // Sample text for line 2
+
+.d1ABCDEF // Sample text for line 1
+.d1 ABC // Sample text for line 1
+
+.d1abcdefghijklmnop
+.d21234567890123456
+
+.d1  Jim Carlson
+.d2   Test Code
+
+// Emmitter
+.E0 // Emmitter off
+.E1 // Emmitter on
+
+// Status
+.SL // Status of LED 5 to 8
+.SW // Status of Wheel Control
+
+// LED 
+.L10 // LED1 off
+.L11 // LED1 on
+.L20 // LED2 off
+.L21 // LED2 on
+.L30 // LED3 off
+.L31 // LED3 on
+.L40 // LED4 off
+.L41 // LED4 on
+.L50 // LED5 off
+.L51 // LED5 on
+.L60 // LED6 off
+.L61 // LED6 on
+.L70 // LED7 off
+.L71 // LED7 on
+.L80 // LED8 off
+.L81 // LED8 on
+
+.LF0 // Disable Blink
+.LF1 // Enable Blink
+
+.LA0 // All off
+.LA1 // All On 
+
+/// LCD
+.LB0 // Bias Set
+.LB4 // Bias Set Fourth
+
+.LC0 // Set Contrast to 0
+.LC1 // Set Contrast to 1
+.LC2 // Set Contrast to 3
+.LC3 // Set Contrast to 7
+.LC4 // Set Contrast to f
+
+.LD  // Clear Display
+
+.LP0 // Power Set to Default
+.LP1 // Power Set to C4
+.LP2 // Power Set to C5
+.LP3 // Power Set to C4/C5
+.LP4 // POWER_SET_BOOST      
+.LP5 // POWER_SET_ICON
+
+.LI // Initialize the Dispjay
+
+.LT // Init Display alternate approach
+
+// GPS
+.GO0 // Turn GPS off
+.GO1 // Turn GPS on
+
+.G0 // Turn off GPS simple output
+.G1 // Turn on GPS simple output
+
+.GF0 // No Filter
+.GF10 // GPRMC Filter off
+.GF11 // GPRMC Filter on
+.GF20 // GPGGA Filter off
+.GF22 // GPGGA Filter on
+
+.GC // State of Wake-up Signal [GPS_PWRCHK]
+.GI // Init GPS
+
+.GP0 // Power Control Low
+.GP1 // Power Control High
+
+.GR0 // Reset Low
+.GR1 // Reset High
+
+.GS // GPS Status
+
+.GW // Cycle GPS Wake-up
+
+.GD0 // Simple
+.GD1 // Complex 
+
+.GF0 // No Filter
+.GF10 // GPRMC Filter off
+.GF11 // GPRMC Filter on
+.GF20 // GPGGA Filter off
+.GF22 // GPGGA Filter on
+
+.G0 .GF11 .G1 
+
+// SMCLK Option
+
+.M0 // Select SMCLK
+.M1 // Select LED 5
+
+// off // Status LEDs / Wheels
+// .SL // LED
+// .SW // Wheel
+
+// Wheels
+
+.WA0 // All wheels off
+.WA1 // Wheels forward
+
+.W50 // R_FORWARD off
+.W51 // R_FORWARD on
+.W60 // R_REVERSE off
+.W61 // R_REVERSE on
+.W70 // L_FORWARD off
+.W71 // L_FORWARD on
+.W80 // L_REVERSE off
+.W81 // L_REVERSE on
+
+
+// Visual Studio sequence
+.. I.m Here
+.B ...
+,lF0
+.LAo
+.W1
+.C 86 00 00
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

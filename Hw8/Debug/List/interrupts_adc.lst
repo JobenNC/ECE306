@@ -1,0 +1,292 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         30/Oct/2014  18:17:41
+# Copyright 1996-2014 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\interrupts_adc.c
+#    Command line  =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\interrupts_adc.c -lC
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\List\ -o
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\Obj\ --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -Ol --multiplier=32
+#        --multiplier_location=4C0 --hw_workaround=CPU40 --hw_workaround=CPU39
+#        --code_model=large
+#    List file     =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\List\interrupts_adc.lst
+#    Object file   =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\Obj\interrupts_adc.r43
+#
+###############################################################################
+
+C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\interrupts_adc.c
+      1          //===========================================================================
+      2          // File Name : interrupts_adc.c
+      3          //
+      4          // Description: function declarations
+      5          //
+      6          // Author: Joseph Jarriel
+      7          // Date: Sep 2014
+      8          // Compiler: Built with IAR Embedded Workbench (6.10.5)
+      9          // Globals: None
+     10          // Functions: None defined
+     11          //===========================================================================
+     12          
+     13          
+     14          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x700
+   \   union <unnamed> _A_ADC10CTL0_L
+   \                     _A_ADC10CTL0_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x70a
+   \   union <unnamed> _A_ADC10MCTL0_L
+   \                     _A_ADC10MCTL0_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x712
+   \   union <unnamed> _A_ADC10MEM0_L
+   \                     _A_ADC10MEM0_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x71e
+   \   union <unnamed> _A_ADC10IV_L
+   \                     _A_ADC10IV_L:
+   \   000000                DS8 2
+     15          #include  "functions.h"
+     16          #include "macros.h"
+     17          
+
+   \                                 In  segment DATA16_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+     18          volatile unsigned int ADC_Thumb = BEFORE_START;
+   \                     ADC_Thumb:
+   \   000000                DS8 2
+   \   000002                REQUIRE `?<Initializer for ADC_Thumb>`
+
+   \                                 In  segment DATA16_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+     19          volatile unsigned int ADC_RD = BEFORE_START;
+   \                     ADC_RD:
+   \   000000                DS8 2
+   \   000002                REQUIRE `?<Initializer for ADC_RD>`
+
+   \                                 In  segment DATA16_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+     20          volatile unsigned int ADC_LD = BEFORE_START;
+   \                     ADC_LD:
+   \   000000                DS8 2
+   \   000002                REQUIRE `?<Initializer for ADC_LD>`
+
+   \                                 In  segment DATA16_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+     21          volatile unsigned int chan = START;
+   \                     chan:
+   \   000000                DS8 2
+   \   000002                REQUIRE `?<Initializer for chan>`
+     22          
+     23          #pragma vector=ADC10_VECTOR
+
+   \                                 In  segment ISR_CODE, align 2
+     24          __interrupt void ADC10_ISR(void){
+   \                     ADC10_ISR:
+   \   000000   0F12         PUSH.W  R15
+     25            
+     26          //===========================================================================
+     27          // ISR name: adc interrupt
+     28          //
+     29          // Description: This ISR handles adc
+     30          // 
+     31          // Passed : no variables passed
+     32          // Locals: no variables declared
+     33          // Returned: no values returned
+     34          // Globals: switchPress, isDebounce, bounceCount
+     35          // Calls: lcd_out, lcd_clear
+     36          //
+     37          // Author: Joseph Jarriel
+     38          // Date: Sep 2014
+     39          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+     40          // ==========================================================================
+     41           switch(__even_in_range(ADC10IV,TWELFTH)) {
+   \   000002   1F421E07     MOV.W   &0x71e, R15
+   \   000006   E00F         ADDA    R15, PC
+   \                     `?<Jumptable for ADC10_ISR>_0`:
+   \   000008   483C         JMP     ??ADC10_ISR_0
+   \   00000A   473C         JMP     ??ADC10_ISR_0
+   \   00000C   463C         JMP     ??ADC10_ISR_0
+   \   00000E   453C         JMP     ??ADC10_ISR_0
+   \   000010   443C         JMP     ??ADC10_ISR_0
+   \   000012   433C         JMP     ??ADC10_ISR_0
+   \   000014   003C         JMP     ??ADC10_ISR_5
+     42           case RESET: break; // No interrupt
+     43           case SECOND: break; // conversion result overflow
+     44           case FOURTH: break; // conversion time overflow
+     45           case SIXTH: break; // ADC10HI
+     46           case EIGHTH: break; // ADC10LO
+     47           case TENTH: break; // ADC10IN
+     48           case TWELFTH: 
+     49              //ADC_Thumb = ADC10MEM0; // Channel A3
+     50              
+     51              
+     52              switch(chan)
+   \                     ??ADC10_ISR_5:
+   \   000016   1F42....     MOV.W   &chan, R15
+   \   00001A   0F83         SUB.W   #0x0, R15
+   \   00001C   0524         JEQ     ??ADC10_ISR_2
+   \   00001E   1F83         SUB.W   #0x1, R15
+   \   000020   1724         JEQ     ??ADC10_ISR_3
+   \   000022   1F83         SUB.W   #0x1, R15
+   \   000024   2824         JEQ     ??ADC10_ISR_4
+   \   000026   393C         JMP     ??ADC10_ISR_0
+     53              {
+     54              case RESET: 
+     55                ADC_Thumb = ADC10MEM0;
+   \                     ??ADC10_ISR_2:
+   \   000028   92421207.... MOV.W   &0x712, &ADC_Thumb
+     56                
+     57                ADC10CTL0 &= ~ADC10ENC;
+   \   00002E   A2C30007     BIC.W   #0x2, &0x700
+     58                ADC10CTL0 &= ~ADC10SC;
+   \   000032   92C30007     BIC.W   #0x1, &0x700
+     59                ADC10MCTL0 &= ~ADC10INCH_3;
+   \   000036   B2F0FCFF0A07 AND.W   #0xfffc, &0x70a
+     60                ADC10MCTL0 |= ADC10INCH_0;
+   \   00003C   92420A070A07 MOV.W   &0x70a, &0x70a
+     61                ADC10CTL0 |= ADC10ENC;
+   \   000042   A2D30007     BIS.W   #0x2, &0x700
+     62                ADC10CTL0 |= ADC10SC;
+   \   000046   92D30007     BIS.W   #0x1, &0x700
+     63                chan++;
+   \   00004A   9253....     ADD.W   #0x1, &chan
+     64                break;
+   \   00004E   253C         JMP     ??ADC10_ISR_0
+     65              case START: 
+     66                ADC_LD = ADC10MEM0;
+   \                     ??ADC10_ISR_3:
+   \   000050   92421207.... MOV.W   &0x712, &ADC_LD
+     67                
+     68                ADC10CTL0 &= ~ADC10ENC;
+   \   000056   A2C30007     BIC.W   #0x2, &0x700
+     69                ADC10CTL0 &= ~ADC10SC;
+   \   00005A   92C30007     BIC.W   #0x1, &0x700
+     70                ADC10MCTL0 &= ~ADC10INCH_0;
+   \   00005E   92420A070A07 MOV.W   &0x70a, &0x70a
+     71                ADC10MCTL0 |= ADC10INCH_1;
+   \   000064   92D30A07     BIS.W   #0x1, &0x70a
+     72                ADC10CTL0 |= ADC10ENC;
+   \   000068   A2D30007     BIS.W   #0x2, &0x700
+     73                ADC10CTL0 |= ADC10SC;
+   \   00006C   92D30007     BIS.W   #0x1, &0x700
+     74                chan++;
+   \   000070   9253....     ADD.W   #0x1, &chan
+     75                break;
+   \   000074   123C         JMP     ??ADC10_ISR_0
+     76              case SECOND: 
+     77                ADC_RD = ADC10MEM0;
+   \                     ??ADC10_ISR_4:
+   \   000076   92421207.... MOV.W   &0x712, &ADC_RD
+     78                
+     79                ADC10CTL0 &= ~ADC10ENC;
+   \   00007C   A2C30007     BIC.W   #0x2, &0x700
+     80                ADC10CTL0 &= ~ADC10SC;
+   \   000080   92C30007     BIC.W   #0x1, &0x700
+     81                ADC10MCTL0 &= ~ADC10INCH_1;
+   \   000084   92C30A07     BIC.W   #0x1, &0x70a
+     82                ADC10MCTL0 |= ADC10INCH_3;
+   \   000088   B2D003000A07 BIS.W   #0x3, &0x70a
+     83                ADC10CTL0 |= ADC10ENC;
+   \   00008E   A2D30007     BIS.W   #0x2, &0x700
+     84                ADC10CTL0 |= ADC10SC;
+   \   000092   92D30007     BIS.W   #0x1, &0x700
+     85                chan=RESET;
+   \   000096   8243....     MOV.W   #0x0, &chan
+     86                break;
+     87              default: break;
+     88              }
+     89              break; 
+     90           default: break; 
+     91           } 
+     92          }
+   \                     ??ADC10_ISR_0:
+   \   00009A   3F41         POP.W   R15
+   \   00009C   0013         RETI
+   \   00009E                REQUIRE _A_ADC10MEM0_L
+   \   00009E                REQUIRE _A_ADC10CTL0_L
+   \   00009E                REQUIRE _A_ADC10MCTL0_L
+   \   00009E                REQUIRE _A_ADC10IV_L
+
+   \                                 In  segment INTVEC, offset 0x5c, root
+   \                     `??ADC10_ISR??INTVEC 92`:
+   \   00005C   ....         DC16    ADC10_ISR
+
+   \                                 In  segment DATA16_ID, align 2, align-sorted
+   \                     `?<Initializer for ADC_Thumb>`:
+   \   000000   FFFF         DC16 65535
+
+   \                                 In  segment DATA16_ID, align 2, align-sorted
+   \                     `?<Initializer for ADC_RD>`:
+   \   000000   FFFF         DC16 65535
+
+   \                                 In  segment DATA16_ID, align 2, align-sorted
+   \                     `?<Initializer for ADC_LD>`:
+   \   000000   FFFF         DC16 65535
+
+   \                                 In  segment DATA16_ID, align 2, align-sorted
+   \                     `?<Initializer for chan>`:
+   \   000000   0100         DC16 1
+     93          
+     94          //chan 1 is R det
+     95          //chan 2 is L det
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      6   ADC10_ISR
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       2  ?<Initializer for ADC_LD>
+       2  ?<Initializer for ADC_RD>
+       2  ?<Initializer for ADC_Thumb>
+       2  ?<Initializer for chan>
+       2  ??ADC10_ISR??INTVEC 92
+     158  ADC10_ISR
+       2  ADC_LD
+       2  ADC_RD
+       2  ADC_Thumb
+       2  _A_ADC10CTL0_L
+       2  _A_ADC10IV_L
+       2  _A_ADC10MCTL0_L
+       2  _A_ADC10MEM0_L
+       2  chan
+
+ 
+   8 bytes in segment DATA16_AN
+   8 bytes in segment DATA16_I
+   8 bytes in segment DATA16_ID
+   2 bytes in segment INTVEC
+ 158 bytes in segment ISR_CODE
+ 
+ 158 bytes of CODE  memory
+   8 bytes of CONST memory (+ 2 bytes shared)
+   8 bytes of DATA  memory (+ 8 bytes shared)
+
+Errors: none
+Warnings: none

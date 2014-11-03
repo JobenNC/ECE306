@@ -1,0 +1,502 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         30/Oct/2014  18:49:46
+# Copyright 1996-2014 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\main.c
+#    Command line  =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\main.c -lC
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\List\ -o
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\Obj\ --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -Ol --multiplier=32
+#        --multiplier_location=4C0 --hw_workaround=CPU40 --hw_workaround=CPU39
+#        --code_model=large
+#    List file     =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\List\main.lst
+#    Object file   =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\Obj\main.r43
+#
+###############################################################################
+
+C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\main.c
+      1          //===========================================================================
+      2          // File Name : main.c
+      3          //
+      4          // Description: The main, 'while' operating system
+      5          //
+      6          // Author: Joseph Jarriel
+      7          // Date: Sep 2014
+      8          // Compiler: Built with IAR Embedded Workbench (6.10.5)
+      9          // Globals: volatile unsigned int Time_Sequence, volatile char one_time,
+     10          // volatile unsigned int five_msec_count, char *display_NCSU, char *display_HW3
+     11          // Functions: main
+     12          //===========================================================================
+     13          
+     14          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x322
+   \   union <unnamed> _A_PJOUT_L
+   \                     _A_PJOUT_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5ee
+   \   union <unnamed> _A_UCA1TXBUF_L
+   \                     _A_UCA1TXBUF_L:
+   \   000000                DS8 2
+     15          #include  "functions.h"
+     16          #include "macros.h"
+     17          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     18          volatile unsigned int Time_Sequence;
+   \                     Time_Sequence:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     19          volatile char one_time;
+   \                     one_time:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     20          volatile unsigned int five_msec_count;
+   \                     five_msec_count:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     21          volatile unsigned int startTimer = RESET;
+   \                     startTimer:
+   \   000000                DS8 2
+     22          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     23          unsigned int driving = RESET;
+   \                     driving:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     24          unsigned int reverse = RESET;
+   \                     reverse:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     25          unsigned int startHalf = RESET;
+   \                     startHalf:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     26          unsigned int halfTimer = RESET;
+   \                     halfTimer:
+   \   000000                DS8 2
+     27          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     28          unsigned int L_Dir;
+   \                     L_Dir:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     29          unsigned int R_Dir;
+   \                     R_Dir:
+   \   000000                DS8 2
+     30          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     31          char *display_NCSU;
+   \                     display_NCSU:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     32          char *display_HW3;
+   \                     display_HW3:
+   \   000000                DS8 2
+     33          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     34          int test1=0;
+   \                     test1:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     35          int test2=0;
+   \                     test2:
+   \   000000                DS8 2
+     36          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     37          extern volatile int writeNext = 0;
+   \                     writeNext:
+   \   000000                DS8 2
+     38          
+
+   \                                 In  segment CODE, align 2
+     39          void main(void){
+   \                     main:
+     40          //===========================================================================
+     41          // Function name: main
+     42          //
+     43          // Description: The main function.  Our 'while' OS
+     44          // 
+     45          // Passed : no variables passed
+     46          // Locals: no variables declared
+     47          // Returned: no values returned
+     48          // Globals: Time_Sequence, one_time, five_msec_count
+     49          // Calls: Init_Ports, Init_Clocks, Init_Conditions, Init_Timers, Init_LEDs,
+     50          //      Init_LCD, five_msec_sleep, Switch_Process
+     51          //
+     52          // Author: Joseph Jarriel
+     53          // Date: Sep 2014
+     54          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+     55          //===========================================================================
+     56            Init_Ports();                             // Initialize Ports
+   \   000000   ........     CALLA   #Init_Ports
+     57            Init_Clocks();                            // Initialize Clock System 
+   \   000004   ........     CALLA   #Init_Clocks
+     58            init_adc();
+   \   000008   ........     CALLA   #init_adc
+     59            Init_Serial_UCA1();                        // Initialize Serial Comms
+   \   00000C   ........     CALLA   #Init_Serial_UCA1
+     60            Init_Conditions();
+   \   000010   ........     CALLA   #Init_Conditions
+     61            PJOUT |= LED1;                            // Turn LED 1 on to indicate boot
+   \   000014   92D32203     BIS.W   #0x1, &0x322
+     62            Time_Sequence = RESET;                        // 
+   \   000018   8243....     MOV.W   #0x0, &Time_Sequence
+     63            Init_Timers();                            // Initialize Timers
+   \   00001C   ........     CALLA   #Init_Timers
+     64            five_msec_sleep(SLEEP_50);                      // 250 msec delay for the clock to settle
+   \   000020   3C403200     MOV.W   #0x32, R12
+   \   000024   ........     CALLA   #five_msec_sleep
+     65            Init_LCD();                               // Initialize LCD
+   \   000028   ........     CALLA   #Init_LCD
+     66            five_msec_sleep(SLEEP_75);                      // 375 msec delay for the clock to settle
+   \   00002C   3C404B00     MOV.W   #0x4b, R12
+   \   000030   ........     CALLA   #five_msec_sleep
+     67            Init_LEDs();                              // Initialize LEDs
+   \   000034   ........     CALLA   #Init_LEDs
+     68            display_NCSU = "   Callibrate   ";
+   \   000038   B240........ MOV.W   #`?<Constant "   Callibrate   ">`, &display_NCSU
+     69            display_HW3 =  "  IR Em Off  ";
+   \   00003E   B240........ MOV.W   #`?<Constant "  IR Em Off  ">`, &display_HW3
+     70            
+     71          //  lcd_command(CLEAR_DISPLAY);
+     72            five_msec_sleep(SLEEP_10); 
+   \   000044   3C400A00     MOV.W   #0xa, R12
+   \   000048   ........     CALLA   #five_msec_sleep
+     73            lcd_out("Make Selection",LCD_LINE_1);       // 16 characters max between quotes - line 1
+   \   00004C   7D408000     MOV.B   #0x80, R13
+   \   000050   3C40....     MOV.W   #`?<Constant "Make Selection">`, R12
+   \   000054   ........     CALLA   #lcd_out
+     74            //lcd_out("LED On       ",LCD_LINE_2);
+     75              //lcd_out(display_NCSU,LCD_LINE_1);       // 16 characters max between quotes - line 1
+     76              //lcd_out(display_HW3,LCD_LINE_2);        // 16 characters max between quotes - line 2
+     77              
+     78          //------------------------------------------------------------------------------
+     79          // Begining of the "While" Operating System
+     80          //------------------------------------------------------------------------------
+     81           ADC_Process();
+   \   000058   ........     CALLA   #ADC_Process
+     82           L_Dir = L_FORWARD;
+   \   00005C   B2404000.... MOV.W   #0x40, &L_Dir
+     83           R_Dir = R_FORWARD;
+   \   000062   B2401000.... MOV.W   #0x10, &R_Dir
+     84           while(ALWAYS) {    
+     85             
+     86             // Can the Operating system run
+     87             newFM(20);
+   \                     ??main_0:
+   \   000068   3C401400     MOV.W   #0x14, R12
+   \   00006C   ........     CALLA   #newFM
+     88             
+     89             UCA1TXBUF = 'U';
+   \   000070   B2405500EE05 MOV.W   #0x55, &0x5ee
+   \   000076   F83F         JMP     ??main_0
+   \   000078   0343         NOP
+   \   00007A                REQUIRE _A_PJOUT_L
+   \   00007A                REQUIRE _A_UCA1TXBUF_L
+     90             
+     91             //if (writeNext)
+     92             //{
+     93                //UCA1TXBUF = 'u';
+     94                //writeNext = 0;
+     95                
+     96                //while (!UCTXIFG)
+     97                //{
+     98                //}
+     99                //UCA1TXBUF = 'u';
+    100                
+    101                //while (1)
+    102                //{
+    103                //  test1 = usb_rx_ring_wr;
+    104                //  test2 = usb_rx_ring_rd;
+    105                //  if (test1 != test2) break;
+    106                //}
+    107                
+    108                /////while (!UCTXIFG)
+    109                ////{
+    110                ////}
+    111                ////UCA1TXBUF = 'u';
+    112                
+    113                //usb_rx_ring_rd++;
+    114                //char test = USB_Char_Rx[usb_rx_ring_wr];
+    115             //}
+    116              //Code for tx rx
+    117          
+    118              //
+    119          
+    120           // //switch(Time_Sequence){
+    121           // //  case TSEQ_250:                               // 1000 msec  
+    122           // //    if(one_time){
+    123           // //      //Init_LEDs();                      // Initialize LEDs
+    124           // //      one_time = RESET;
+    125           // //    }
+    126           // //    Time_Sequence = RESET;                    // 
+    127           // //  case TSEQ_200:                               // 1000 msec  
+    128           // //    if(one_time){
+    129           // //      //PJOUT |= LED4;                      // Change State of LED 4
+    130           // //      //P3OUT |= LED5;                      // Change State of LED 5
+    131           // //      one_time = RESET;
+    132           // //    }
+    133           // //  case TSEQ_150:                               // 750 msec  
+    134           // //    if(one_time){
+    135           // //      //PJOUT |= LED3;                      // Change State of LED 3
+    136           // //      //P3OUT |= LED6;                      // Change State of LED 6
+    137           // //      one_time = RESET;
+    138           // //    }
+    139           // //  case TSEQ_100:                               // 500 msec  
+    140           // //    if(one_time){
+    141           // //      //PJOUT |= LED2;                      // Change State of LED 2
+    142           // //      //P3OUT |= LED7;                      // Change State of LED 7
+    143           // //      one_time = RESET;
+    144           // //    }
+    145           // //  case  TSEQ_50:                               // 250 msec  
+    146           // //    if(one_time){
+    147           //  //     //PJOUT |= LED1;                      // Change State of LED 1
+    148           //  //     //P3OUT |= LED8;                      // Change State of LED 8
+    149           // //      one_time = RESET;
+    150           // //    }
+    151           // //    break;                                // 
+    152           // //  default: break; 
+    153           // //}
+    154           // //Switches_Process();                       // Check for switch state change
+    155           // 
+    156           // if (starting)
+    157           // {
+    158           //   newFM(HALF_SEC);
+    159           //   starting = RESET;
+    160           // }
+    161           // 
+    162           // if ((drive) && ~(driving))
+    163           // {
+    164           //     //newFM(200);
+    165           //     driving = START;
+    166           // }
+    167           // if (driving)
+    168           // {
+    169           //   
+    170           //   //if ((ADC_LD > (LED_Black_LD-350)) && (ADC_RD < (LED_Black_RD-350)))
+    171           //   //{
+    172           //   //  P3OUT &= ~L_FORWARD;
+    173           //   //  P3OUT |= R_FORWARD;
+    174           //   //  newFM(20);
+    175           //   //  P3OUT &= ~L_FORWARD;
+    176           //   //  P3OUT &= ~R_FORWARD;
+    177           //   //}
+    178           //   
+    179           //   //else if ((ADC_LD < (LED_Black_LD-350)) && (ADC_RD > (LED_Black_RD-350)))
+    180           //   //{
+    181           //   //  P3OUT |= L_FORWARD;
+    182           //   //  P3OUT &= ~R_FORWARD;
+    183           //   //  newFM(20);
+    184           //   //  P3OUT &= ~L_FORWARD;
+    185           //   //  P3OUT &= ~R_FORWARD;
+    186           //   //}
+    187           //   
+    188           //   if ((ADC_LD < (LED_Black_LD - offLine)) && (ADC_RD < (LED_Black_RD - offLine)))
+    189           //   {
+    190           //     P3OUT |= L_Dir;
+    191           //     P3OUT |= R_Dir;
+    192           //     newFM(SEVENTH);
+    193           //     P3OUT &= ~L_Dir;
+    194           //     P3OUT &= ~R_Dir;
+    195           //   }
+    196           //   
+    197           //   else
+    198           //   {
+    199           //     P3OUT &= ~L_Dir;
+    200           //     P3OUT &= ~R_Dir;
+    201           //     if (reverse == RESET)
+    202           //     {
+    203           //       newFM(HALF_SEC);
+    204           //       L_Dir = L_REVERSE;
+    205           //       R_Dir = R_REVERSE;
+    206           //       
+    207           //       startTimer = START;
+    208           //       P3OUT |= L_Dir;
+    209           //       P3OUT |= R_Dir;
+    210           //       newFM(seventy);
+    211           //       P3OUT &= ~L_Dir;
+    212           //       P3OUT &= ~R_Dir;
+    213           //       
+    214           //       reverse++;
+    215           //     }
+    216           //     else if (reverse == START)
+    217           //     {
+    218           //       
+    219           //       startTimer = RESET;
+    220           //       P3OUT &= ~L_Dir;
+    221           //       P3OUT &= ~R_Dir;
+    222           //       
+    223           //       L_Dir = L_FORWARD;
+    224           //       R_Dir = R_FORWARD;
+    225           //       
+    226           //       newFM(HALF_SEC);
+    227           //       
+    228           //       P3OUT |= L_Dir;
+    229           //       P3OUT |= R_Dir;
+    230           //       newFM(timerCount/HALF);
+    231           //       P3OUT &= ~L_Dir;
+    232           //       P3OUT &= ~R_Dir;
+    233           //       
+    234           //       newFM(ONE_SEC);
+    235           //       
+    236           //       L_Dir = R_FORWARD;
+    237           //       R_Dir = L_REVERSE;
+    238           //       P3OUT |= L_Dir;
+    239           //       P3OUT |= R_Dir;
+    240           //       newFM(twoLoop);
+    241           //       P3OUT &= ~L_Dir;
+    242           //       P3OUT &= ~R_Dir;
+    243           //       
+    244           //       newFM(ONE_SEC);
+    245           //       
+    246           //       L_Dir = R_REVERSE;
+    247           //       R_Dir = L_FORWARD;
+    248           //       P3OUT |= L_Dir;
+    249           //       P3OUT |= R_Dir;
+    250           //       newFM(twoLoop);
+    251           //       P3OUT &= ~L_Dir;
+    252           //       P3OUT &= ~R_Dir;
+    253           //       
+    254           //       
+    255           //       reverse++;
+    256           //       driving = RESET;
+    257           //       drive = RESET;
+    258           //     }
+    259           //     
+    260           //     else
+    261           //     {
+    262           //       P3OUT &= ~L_Dir;
+    263           //       P3OUT &= ~R_Dir;
+    264           //     }
+    265           //   }
+    266           // }
+    267           // //ADC_Process();
+    268           // //if(Time_Sequence > TSEQ_250){
+    269           // //  Time_Sequence = RESET;
+    270           // //}
+    271           }
+    272          //------------------------------------------------------------------------------
+    273          }
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "   Callibrate   ">`:
+   \   000000   20202043616C DC8 "   Callibrate   "
+   \            6C6962726174
+   \            6520202000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "  IR Em Off  ">`:
+   \   000000   202049522045 DC8 "  IR Em Off  "
+   \            6D204F666620
+   \            2000        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Make Selection">`:
+   \   000000   4D616B652053 DC8 "Make Selection"
+   \            656C65637469
+   \            6F6E00      
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   main
+        4   -> ADC_Process
+        4   -> Init_Clocks
+        4   -> Init_Conditions
+        4   -> Init_LCD
+        4   -> Init_LEDs
+        4   -> Init_Ports
+        4   -> Init_Serial_UCA1
+        4   -> Init_Timers
+        4   -> five_msec_sleep
+        4   -> init_adc
+        4   -> lcd_out
+        4   -> newFM
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      17  ?<Constant "   Callibrate   ">
+      14  ?<Constant "  IR Em Off  ">
+      15  ?<Constant "Make Selection">
+       2  L_Dir
+       2  R_Dir
+       2  Time_Sequence
+       2  _A_PJOUT_L
+       2  _A_UCA1TXBUF_L
+       2  display_HW3
+       2  display_NCSU
+       2  driving
+       2  five_msec_count
+       2  halfTimer
+     122  main
+       1  one_time
+       2  reverse
+       2  startHalf
+       2  startTimer
+       2  test1
+       2  test2
+       2  writeNext
+
+ 
+ 122 bytes in segment CODE
+   4 bytes in segment DATA16_AN
+  46 bytes in segment DATA16_C
+  29 bytes in segment DATA16_Z
+ 
+ 122 bytes of CODE  memory
+  46 bytes of CONST memory
+  29 bytes of DATA  memory (+ 4 bytes shared)
+
+Errors: none
+Warnings: none

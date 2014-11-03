@@ -1,0 +1,61 @@
+// FRAM commands
+
+.. // Check communication
+
+// Status
+.SL // Status of LED 5 to 8
+.SW // Status of Wheel Control
+
+// LED / LCD
+.L10 // LED1 off
+.L11 // LED1 on
+.L20 // LED2 off
+.L21 // LED2 on
+.L30 // LED3 off
+.L31 // LED3 on
+.L40 // LED4 off
+.L41 // LED4 on
+.L50 // LED5 off
+.L51 // LED5 on
+.L60 // LED6 off
+.L61 // LED6 on
+.L70 // LED7 off
+.L71 // LED7 on
+.L80 // LED8 off
+.L81 // LED8 on
+
+.LF0 // Disable Flash
+.LF1 // Enable Flash
+
+.LA0 // All off
+.LA1 // All On
+
+.LD  // Clear Display
+.LC0 // Set Contrast to 0
+.LC1 // Set Contrast to 1
+.LC2 // Set Contrast to 3
+.LC3 // Set Contrast to 7
+.LC4 // Set Contrast to f
+
+.LP0 // Power Set to Default
+.LP1 // Power Set to C4
+.LP2 // Power Set to C5
+.LP3 // Power Set to C4/C5
+.LP4 // POWER_SET_BOOST      
+.LP5 // POWER_SET_ICON
+
+
+.LT 
+
+.d112345678901234567 // Sample text for line 1
+.d2 Test Line 2 // Sample text for line 2
+
+.d1ABCDEF // Sample text for line 1
+.d1 ABC // Sample text for line 1
+
+.d1abcdefghijklmnop
+.d21234567890123456
+
+.d1  Jim Carlson
+.d2   Test Code
+

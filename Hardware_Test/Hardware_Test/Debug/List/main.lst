@@ -1,0 +1,248 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         26/Aug/2014  16:40:55
+# Copyright 1996-2014 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        C:\Users\Joseph\Desktop\ECE306\Hardware_Test\Hardware_Test\main.c
+#    Command line  =  
+#        C:\Users\Joseph\Desktop\ECE306\Hardware_Test\Hardware_Test\main.c -lC
+#        C:\Users\Joseph\Desktop\ECE306\Hardware_Test\Hardware_Test\Debug\List\
+#        -o
+#        C:\Users\Joseph\Desktop\ECE306\Hardware_Test\Hardware_Test\Debug\Obj\
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -Ol --multiplier=32
+#        --multiplier_location=4C0 --hw_workaround=CPU40 --hw_workaround=CPU39
+#        --code_model=large
+#    List file     =  
+#        C:\Users\Joseph\Desktop\ECE306\Hardware_Test\Hardware_Test\Debug\List\main.lst
+#    Object file   =  
+#        C:\Users\Joseph\Desktop\ECE306\Hardware_Test\Hardware_Test\Debug\Obj\main.r43
+#
+###############################################################################
+
+C:\Users\Joseph\Desktop\ECE306\Hardware_Test\Hardware_Test\main.c
+      1          //******************************************************************************
+      2          //
+      3          //  Description: This file contains the Main Routine - "While" Operating System
+      4          //
+      5          //
+      6          //  Jim Carlson
+      7          //  Aug 2013
+      8          //  Built with IAR Embedded Workbench Version: V4.10A/W32 (5.40.1)
+      9          //******************************************************************************
+     10          
+     11          //------------------------------------------------------------------------------
+     12          #include  "msp430.h"
+     13          #include  "functions.h"
+     14          
+     15          // Required defines
+     16          // In the event the universe no longer exists, this bit will reset
+     17          #define ALWAYS                  (1)
+     18          #define LED1                 (0x01) // LED 1
+     19          #define BLINK_LED            (0x01) // Allow LED to Blink
+     20          #define CNTL_STATE_INDEX        (3) // Control States
+     21          #define LCD_LINE_1           (0x80) // Position Cursor at Character 01 of Line 1
+     22          #define LCD_LINE_2           (0xC0) // Position Cursor at Character 01 of Line 2
+     23          #define GPS_ONOFF            (0x08) //
+     24          #define USE_LED5             (0x40)  //
+     25          #define USE_SMCLK            (0x00)  //
+     26          #define USE_NFETS            (0xA0)  //
+     27          #define CLEAR_DISPLAY        (0x01)
+     28          
+     29          #define CSLOCK               (0x01) // Any incorrect password locks registers
+     30          
+     31          // Display Modes
+     32          #define ORIGINAL             (0x00) //
+     33          
+     34          // Global Variables
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     35          volatile unsigned char control_state[CNTL_STATE_INDEX];
+   \                     control_state:
+   \   000000                DS8 3
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     36          volatile char slow_input_down;
+   \                     slow_input_down:
+   \   000000                DS8 1
+     37          extern char display_line_1[17];
+     38          extern char display_line_2[17];
+     39          extern char *display_1;
+     40          extern char *display_2;
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     41          char led_smclk;
+   \                     led_smclk:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     42          unsigned char display_mode;
+   \                     display_mode:
+   \   000000                DS8 1
+     43          
+     44          //------------------------------------------------------------------------------
+     45          // Main Program
+     46          // This is the main routine for the program. Execution of code starts here.
+     47          // The operating system is Back Ground Fore Ground.
+     48          //
+     49          //------------------------------------------------------------------------------
+
+   \                                 In  segment CODE, align 2
+     50          void main(void){
+   \                     main:
+     51          //  led_smclk = USE_LED5;
+     52          //  led_smclk = USE_SMCLK;
+     53            led_smclk = USE_NFETS;
+   \   000000   F240A000.... MOV.B   #0xa0, &led_smclk
+     54            Init_Ports();                             // Initialize Ports
+   \   000006   ........     CALLA   #Init_Ports
+     55            Init_Clocks();                            // Initialize Clock System 
+   \   00000A   ........     CALLA   #Init_Clocks
+     56            Init_Conditions();                        // Initialize Variables and Initial Conditions
+   \   00000E   ........     CALLA   #Init_Conditions
+     57            Init_Timers();                            // Initialize Timers
+   \   000012   ........     CALLA   #Init_Timers
+     58            five_msec_sleep(50);                      // 250 msec delay for the clock to settle
+   \   000016   3C403200     MOV.W   #0x32, R12
+   \   00001A   ........     CALLA   #five_msec_sleep
+     59            Init_ADC();                               // Initialize Analog-to-Digital Converter
+   \   00001E   ........     CALLA   #Init_ADC
+     60            Init_Serial_UCA0();                       // Initialize Serial Port for USB 
+   \   000022   ........     CALLA   #Init_Serial_UCA0
+     61            Init_Serial_UCA1();                       // Initialize Serial Port for GPS
+   \   000026   ........     CALLA   #Init_Serial_UCA1
+     62            Init_SPI_B0();                            // Initialize SPI Bus
+   \   00002A   ........     CALLA   #Init_SPI_B0
+     63            Init_LEDs();                              // Initialize LEDs
+   \   00002E   ........     CALLA   #Init_LEDs
+     64            Init_LCD();                               // Initialize LCD
+   \   000032   ........     CALLA   #Init_LCD
+     65            five_msec_sleep(75);                      // 375 msec delay for the clock to settle
+   \   000036   3C404B00     MOV.W   #0x4b, R12
+   \   00003A   ........     CALLA   #five_msec_sleep
+     66            Init_Switches();                          // Initialize Switches
+   \   00003E   ........     CALLA   #Init_Switches
+     67          
+     68            lcd_command(CLEAR_DISPLAY);
+   \   000042   5C43         MOV.B   #0x1, R12
+   \   000044   ........     CALLA   #lcd_command
+     69          // Place the contents of what you want on the display, in between the quotes
+     70          // Limited to 16 characters per line  
+     71          //
+     72            five_msec_sleep(10); 
+   \   000048   3C400A00     MOV.W   #0xa, R12
+   \   00004C   ........     CALLA   #five_msec_sleep
+     73            display_mode = ORIGINAL;
+   \   000050   C243....     MOV.B   #0x0, &display_mode
+     74            control_state[0] |= GPS_ONOFF;
+   \   000054   F2D2....     BIS.B   #0x8, &control_state
+     75            
+     76            display_1 = "   N.C. State   ";
+   \   000058   B240........ MOV.W   #`?<Constant "   N.C. State   ">`, &display_1
+     77            display_2 = "ECE-306  HW Test";
+   \   00005E   B240........ MOV.W   #`?<Constant "ECE-306  HW Test">`, &display_2
+     78          //             1234567890123456
+     79            Display_Process();                      // Update Display 
+   \   000064   ........     CALLA   #Display_Process
+     80          //------------------------------------------------------------------------------
+     81          
+     82          // Begining of the "While" Operating System
+     83          //------------------------------------------------------------------------------
+     84           while(ALWAYS) {                            // Can the Operating system run
+     85              if(slow_input_down){
+   \                     ??main_0:
+   \   000068   C293....     CMP.B   #0x0, &slow_input_down
+   \   00006C   0624         JEQ     ??main_1
+     86                slow_input_down = 0;                  // No need to check for changes in commands
+   \   00006E   C243....     MOV.B   #0x0, &slow_input_down
+     87                menu();                               // Check for user commands
+   \   000072   ........     CALLA   #menu
+     88                Display_Process();                    // Update Display 
+   \   000076   ........     CALLA   #Display_Process
+     89              }
+     90              Switches_Process();                     // Check for switch state change 
+   \                     ??main_1:
+   \   00007A   ........     CALLA   #Switches_Process
+     91              ADC_Process();                          // Update based on change in ADC variable
+   \   00007E   ........     CALLA   #ADC_Process
+   \   000082   F23F         JMP     ??main_0
+   \   000084   0343         NOP
+     92            }
+     93          }
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "   N.C. State   ">`:
+   \   000000   2020204E2E43 DC8 "   N.C. State   "
+   \            2E2053746174
+   \            6520202000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "ECE-306  HW Test">`:
+   \   000000   4543452D3330 DC8 "ECE-306  HW Test"
+   \            362020485720
+   \            5465737400  
+     94          //------------------------------------------------------------------------------
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   main
+        4   -> ADC_Process
+        4   -> Display_Process
+        4   -> Init_ADC
+        4   -> Init_Clocks
+        4   -> Init_Conditions
+        4   -> Init_LCD
+        4   -> Init_LEDs
+        4   -> Init_Ports
+        4   -> Init_SPI_B0
+        4   -> Init_Serial_UCA0
+        4   -> Init_Serial_UCA1
+        4   -> Init_Switches
+        4   -> Init_Timers
+        4   -> Switches_Process
+        4   -> five_msec_sleep
+        4   -> lcd_command
+        4   -> menu
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      17  ?<Constant "   N.C. State   ">
+      17  ?<Constant "ECE-306  HW Test">
+       3  control_state
+       1  display_mode
+       1  led_smclk
+     134  main
+       1  slow_input_down
+
+ 
+ 134 bytes in segment CODE
+  34 bytes in segment DATA16_C
+   6 bytes in segment DATA16_Z
+ 
+ 134 bytes of CODE  memory
+  34 bytes of CONST memory
+   6 bytes of DATA  memory
+
+Errors: none
+Warnings: none

@@ -1,0 +1,1049 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         30/Oct/2014  18:18:28
+# Copyright 1996-2014 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\interrupt_ports.c
+#    Command line  =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\interrupt_ports.c
+#        -lC C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\List\ -o
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\Obj\ --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -Ol --multiplier=32
+#        --multiplier_location=4C0 --hw_workaround=CPU40 --hw_workaround=CPU39
+#        --code_model=large
+#    List file     =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\List\interrupt_ports.lst
+#    Object file   =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\Debug\Obj\interrupt_ports.r43
+#
+###############################################################################
+
+C:\Users\Joseph\Desktop\CurrentClasses\ECE306\Hw8\interrupt_ports.c
+      1          //===========================================================================
+      2          // File Name : functions.h
+      3          //
+      4          // Description: function declarations
+      5          //
+      6          // Author: Joseph Jarriel
+      7          // Date: Sep 2014
+      8          // Compiler: Built with IAR Embedded Workbench (6.10.5)
+      9          // Globals: None
+     10          // Functions: None defined
+     11          //===========================================================================
+     12          
+     13          #include  "functions.h"
+     14          #include "macros.h"
+     15          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x202
+   \   union <unnamed> _A_PAOUT_L
+   \                     _A_PAOUT_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x23a
+   \   union <unnamed> _A_PBIE_L
+   \                     _A_PBIE_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x23c
+   \   union <unnamed> _A_PBIFG_L
+   \                     _A_PBIFG_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x322
+   \   union <unnamed> _A_PJOUT_L
+   \                     _A_PJOUT_L:
+   \   000000                DS8 2
+     16          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     17          volatile unsigned int isDebounce;
+   \                     isDebounce:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     18          volatile unsigned int bounceCount;
+   \                     bounceCount:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     19          volatile unsigned int switchPress;
+   \                     switchPress:
+   \   000000                DS8 2
+     20          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     21          volatile unsigned int drive = 0;
+   \                     drive:
+   \   000000                DS8 2
+     22          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     23          volatile unsigned int LED_White_LD;
+   \                     LED_White_LD:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     24          volatile unsigned int LED_Black_LD;
+   \                     LED_Black_LD:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     25          volatile unsigned int LED_White_RD;
+   \                     LED_White_RD:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     26          volatile unsigned int LED_Black_RD;
+   \                     LED_Black_RD:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     27          volatile unsigned int LED_Off_RD;
+   \                     LED_Off_RD:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     28          volatile unsigned int LED_Off_LD;
+   \                     LED_Off_LD:
+   \   000000                DS8 2
+     29          
+
+   \                                 In  segment DATA16_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+     30          volatile unsigned int butt1 = BEFORE_START;
+   \                     butt1:
+   \   000000                DS8 2
+   \   000002                REQUIRE `?<Initializer for butt1>`
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     31          volatile unsigned int butt2 = RESET;
+   \                     butt2:
+   \   000000                DS8 2
+     32          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     33          extern volatile unsigned int starting = RESET;
+   \                     starting:
+   \   000000                DS8 2
+     34          
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     35          char nib1;
+   \                     nib1:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     36          char nib2;
+   \                     nib2:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     37          char nib3;
+   \                     nib3:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     38          char nib4;
+   \                     nib4:
+   \   000000                DS8 1
+     39          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     40          char* outP;
+   \                     outP:
+   \   000000                DS8 2
+     41          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     42          char *display_One;
+   \                     display_One:
+   \   000000                DS8 2
+     43          
+     44          
+     45          #pragma vector=PORT4_VECTOR
+     46          
+
+   \                                 In  segment ISR_CODE, align 2
+     47          __interrupt void switch_interrupt(void) {
+   \                     switch_interrupt:
+   \   000000   3F15         PUSHM.W #0x4, R15
+     48          //===========================================================================
+     49          // ISR name: switch_interrupt
+     50          //
+     51          // Description: This ISR handles switch events
+     52          // 
+     53          // Passed : no variables passed
+     54          // Locals: no variables declared
+     55          // Returned: no values returned
+     56          // Globals: switchPress, isDebounce, bounceCount
+     57          // Calls: lcd_out, lcd_clear
+     58          //
+     59          // Author: Joseph Jarriel
+     60          // Date: Sep 2014
+     61          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+     62          // ==========================================================================
+     63          // Switch 1 
+     64           if (P4IFG & SW1) {
+   \   000002   D2B33D02     BIT.B   #0x1, &0x23d
+   \   000006   6428         JNC     ??switch_interrupt_0
+     65             //lcd_clear();
+     66             //lcd_out("    Switch 1", LCD_LINE_1);
+     67          // Set a variable to identify the switch has been pressed.
+     68             switchPress = START;
+   \   000008   9243....     MOV.W   #0x1, &switchPress
+     69          // Set a variable to identify the switch is being debounced.
+     70             isDebounce = START;
+   \   00000C   9243....     MOV.W   #0x1, &isDebounce
+     71          // Reset the count required of the debounce.
+     72             bounceCount = RESET;
+   \   000010   8243....     MOV.W   #0x0, &bounceCount
+     73          // Disable the Switch Interrupt.
+     74             P4IE &= ~SW1; // P4.0 SW1 interrupt Disabled
+   \   000014   D2C33B02     BIC.B   #0x1, &0x23b
+     75             P4IE &= ~SW2; // P4.0 SW2 interrupt Disabled
+   \   000018   E2C33B02     BIC.B   #0x2, &0x23b
+     76          // Clear any current timer interrupt.
+     77             P4IFG &= ~SW1; // P4 IFG SW1 cleared
+   \   00001C   D2C33D02     BIC.B   #0x1, &0x23d
+     78             P4IFG &= ~SW2; // P4 IFG SW2 cleared
+   \   000020   E2C33D02     BIC.B   #0x2, &0x23d
+     79             PJOUT |= LED1; // Toggle LED 1 on to indicate boot ISR working
+   \   000024   92D32203     BIS.W   #0x1, &0x322
+     80             
+     81             switch(butt1)
+   \   000028   1F42....     MOV.W   &butt1, R15
+   \   00002C   0F83         SUB.W   #0x0, R15
+   \   00002E   1324         JEQ     ??switch_interrupt_6
+   \   000030   1F83         SUB.W   #0x1, R15
+   \   000032   2224         JEQ     ??switch_interrupt_7
+   \   000034   1F83         SUB.W   #0x1, R15
+   \   000036   3124         JEQ     ??switch_interrupt_8
+   \   000038   1F83         SUB.W   #0x1, R15
+   \   00003A   4024         JEQ     ??switch_interrupt_9
+   \   00003C   3F80FCFF     SUB.W   #0xfffc, R15
+   \   000040   4720         JNE     ??switch_interrupt_0
+     82             {
+     83               
+     84              case BEFORE_START:
+     85                //lcd_clear();
+     86                //lcd_out("    Calibrate", LCD_LINE_1);
+     87                //lcd_out("LED Black",LCD_LINE_2);
+     88                //butt1++;
+     89                
+     90                lcd_clear();
+   \   000042   ........     CALLA   #lcd_clear
+     91                lcd_out("    Transmitting", LCD_LINE_1);
+   \   000046   7D408000     MOV.B   #0x80, R13
+   \   00004A   3C40....     MOV.W   #`?<Constant "    Transmitting">`, R12
+   \   00004E   ........     CALLA   #lcd_out
+     92                
+     93                writeNext = 1;
+   \   000052   9243....     MOV.W   #0x1, &writeNext
+     94                
+     95          
+     96                
+     97              case RESET:
+     98                lcd_clear();
+   \                     ??switch_interrupt_6:
+   \   000056   ........     CALLA   #lcd_clear
+     99                lcd_out("    Calibrate", LCD_LINE_1);
+   \   00005A   7D408000     MOV.B   #0x80, R13
+   \   00005E   3C40....     MOV.W   #`?<Constant "    Calibrate">`, R12
+   \   000062   ........     CALLA   #lcd_out
+    100                lcd_out("LED White",LCD_LINE_2);
+   \   000066   7D40C000     MOV.B   #0xc0, R13
+   \   00006A   3C40....     MOV.W   #`?<Constant "LED White">`, R12
+   \   00006E   ........     CALLA   #lcd_out
+    101                butt1++;
+   \   000072   9253....     ADD.W   #0x1, &butt1
+    102                //P1OUT |= IR_LED;
+    103                break;
+   \   000076   2C3C         JMP     ??switch_interrupt_0
+    104              case START:
+    105                lcd_clear();
+   \                     ??switch_interrupt_7:
+   \   000078   ........     CALLA   #lcd_clear
+    106                lcd_out("    Calibrate", LCD_LINE_1);
+   \   00007C   7D408000     MOV.B   #0x80, R13
+   \   000080   3C40....     MOV.W   #`?<Constant "    Calibrate">`, R12
+   \   000084   ........     CALLA   #lcd_out
+    107                lcd_out("LED Black",LCD_LINE_2);
+   \   000088   7D40C000     MOV.B   #0xc0, R13
+   \   00008C   3C40....     MOV.W   #`?<Constant "LED Black">`, R12
+   \   000090   ........     CALLA   #lcd_out
+    108                butt1++;
+   \   000094   9253....     ADD.W   #0x1, &butt1
+    109                //P1OUT &= ~IR_LED;
+    110                break;
+   \   000098   1B3C         JMP     ??switch_interrupt_0
+    111                
+    112              case SECOND:
+    113                //P1OUT &= ~IR_LED;
+    114                lcd_clear();
+   \                     ??switch_interrupt_8:
+   \   00009A   ........     CALLA   #lcd_clear
+    115                lcd_out("    Calibrate", LCD_LINE_1);
+   \   00009E   7D408000     MOV.B   #0x80, R13
+   \   0000A2   3C40....     MOV.W   #`?<Constant "    Calibrate">`, R12
+   \   0000A6   ........     CALLA   #lcd_out
+    116                lcd_out("LED Off",LCD_LINE_2);
+   \   0000AA   7D40C000     MOV.B   #0xc0, R13
+   \   0000AE   3C40....     MOV.W   #`?<Constant "LED Off">`, R12
+   \   0000B2   ........     CALLA   #lcd_out
+    117                butt1++;
+   \   0000B6   9253....     ADD.W   #0x1, &butt1
+    118                //P1OUT &= ~IR_LED;
+    119                break;
+   \   0000BA   0A3C         JMP     ??switch_interrupt_0
+    120              case THIRD:
+    121                lcd_clear();
+   \                     ??switch_interrupt_9:
+   \   0000BC   ........     CALLA   #lcd_clear
+    122                lcd_out("    Drive", LCD_LINE_1);
+   \   0000C0   7D408000     MOV.B   #0x80, R13
+   \   0000C4   3C40....     MOV.W   #`?<Constant "    Drive">`, R12
+   \   0000C8   ........     CALLA   #lcd_out
+    123                butt1 = RESET;
+   \   0000CC   8243....     MOV.W   #0x0, &butt1
+    124                break;
+    125                
+    126              default: break;
+    127             }
+    128           }
+    129          // Switch 2 
+    130           if (P4IFG & SW2) {
+   \                     ??switch_interrupt_0:
+   \   0000D0   E2B33D02     BIT.B   #0x2, &0x23d
+   \   0000D4   ....         JC      $+6
+   \   0000D6   ........     BRA     #??switch_interrupt_10
+    131             //lcd_clear();
+    132             //lcd_out("    Switch 2", LCD_LINE_1);
+    133          // Set a variable to identify the switch has been pressed.
+    134             switchPress = START;
+   \   0000DA   9243....     MOV.W   #0x1, &switchPress
+    135          // Set a variable to identify the switch is being debounced.
+    136             isDebounce = START;
+   \   0000DE   9243....     MOV.W   #0x1, &isDebounce
+    137          // Reset the count required of the debounce.
+    138             bounceCount = RESET;
+   \   0000E2   8243....     MOV.W   #0x0, &bounceCount
+    139          // Disable the Switch Interrupt.
+    140             P4IE &= ~SW2; // P4.0 SW2 interrupt Disabled
+   \   0000E6   E2C33B02     BIC.B   #0x2, &0x23b
+    141             P4IE &= ~SW1; // P4.0 SW1 interrupt Disabled
+   \   0000EA   D2C33B02     BIC.B   #0x1, &0x23b
+    142          // Clear any current timer interrupt.
+    143             P4IFG &= ~SW2; // P4 IFG SW2 cleared
+   \   0000EE   E2C33D02     BIC.B   #0x2, &0x23d
+    144             P4IFG &= ~SW1; // P4 IFG SW1 cleared
+   \   0000F2   D2C33D02     BIC.B   #0x1, &0x23d
+    145             PJOUT |= LED1; // Toggle LED 1 on to indicate boot ISR working
+   \   0000F6   92D32203     BIS.W   #0x1, &0x322
+    146             
+    147             switch(butt1)
+   \   0000FA   1F42....     MOV.W   &butt1, R15
+   \   0000FE   0F83         SUB.W   #0x0, R15
+   \   000100   ....         JNE     $+6
+   \   000102   ........     BRA     #??switch_interrupt_11
+   \   000106   1F83         SUB.W   #0x1, R15
+   \   000108   0624         JEQ     ??switch_interrupt_12
+   \   00010A   1F83         SUB.W   #0x1, R15
+   \   00010C   C324         JEQ     ??switch_interrupt_13
+   \   00010E   1F83         SUB.W   #0x1, R15
+   \   000110   8025         JEQ     ??switch_interrupt_14
+   \   000112   ........     BRA     #??switch_interrupt_4
+    148             {
+    149              case START:
+    150                
+    151                switch(butt2)
+   \                     ??switch_interrupt_12:
+   \   000116   1F42....     MOV.W   &butt2, R15
+   \   00011A   0F83         SUB.W   #0x0, R15
+   \   00011C   0324         JEQ     ??switch_interrupt_15
+   \   00011E   1F83         SUB.W   #0x1, R15
+   \   000120   5D24         JEQ     ??switch_interrupt_16
+   \   000122   B73C         JMP     ??switch_interrupt_1
+    152                {
+    153                  case RESET:
+    154                    
+    155                    LED_White_LD = ADC_LD;
+   \                     ??switch_interrupt_15:
+   \   000124   9242........ MOV.W   &ADC_LD, &LED_White_LD
+    156                
+    157                    nib1 = (nib1Mask&ADC_RD);
+   \   00012A   1E42....     MOV.W   &ADC_RD, R14
+   \   00012E   7EF00F00     AND.B   #0xf, R14
+   \   000132   C24E....     MOV.B   R14, &nib1
+    158                    if (nib1 < numRange) nib1 = nib1 + numOffset;
+   \   000136   F2900A00.... CMP.B   #0xa, &nib1
+   \   00013C   042C         JC      ??switch_interrupt_17
+   \   00013E   F2503000.... ADD.B   #0x30, &nib1
+   \   000144   033C         JMP     ??switch_interrupt_18
+    159                    else nib1 = nib1 + charOffset;
+   \                     ??switch_interrupt_17:
+   \   000146   F2503700.... ADD.B   #0x37, &nib1
+    160                
+    161                    nib2 = (nib2Mask&ADC_RD)>>shift4;
+   \                     ??switch_interrupt_18:
+   \   00014C   1E42....     MOV.W   &ADC_RD, R14
+   \   000150                RPT     #0x4
+   \   000150   43194E10     RRUX.B  R14
+   \   000154   C24E....     MOV.B   R14, &nib2
+    162                    if (nib2 < numRange) nib2 = nib2 + numOffset;
+   \   000158   F2900A00.... CMP.B   #0xa, &nib2
+   \   00015E   042C         JC      ??switch_interrupt_19
+   \   000160   F2503000.... ADD.B   #0x30, &nib2
+   \   000166   033C         JMP     ??switch_interrupt_20
+    163                    else nib2 = nib2 + charOffset;
+   \                     ??switch_interrupt_19:
+   \   000168   F2503700.... ADD.B   #0x37, &nib2
+    164                
+    165                    nib3 = (nib3Mask&ADC_RD)>>shift8;
+   \                     ??switch_interrupt_20:
+   \   00016E   1E42....     MOV.W   &ADC_RD, R14
+   \   000172   8E10         SWPB    R14
+   \   000174   3EF0FF00     AND.W   #0xff, R14
+   \   000178   7EF00F00     AND.B   #0xf, R14
+   \   00017C   C24E....     MOV.B   R14, &nib3
+    166                    nib3 = nib3 + numOffset;
+   \   000180   F2503000.... ADD.B   #0x30, &nib3
+    167                
+    168                    nib4 = RESET + numOffset;
+   \   000186   F2403000.... MOV.B   #0x30, &nib4
+    169                
+    170                    display_One="            ";
+   \   00018C   B240........ MOV.W   #`?<Constant "            ">`, &display_One
+    171                    display_One[char1]=nib4;
+   \   000192   1F42....     MOV.W   &display_One, R15
+   \   000196   DF42....0800 MOV.B   &nib4, 0x8(R15)
+    172                    display_One[char2]=nib3;
+   \   00019C   1F42....     MOV.W   &display_One, R15
+   \   0001A0   DF42....0900 MOV.B   &nib3, 0x9(R15)
+    173                    display_One[char3]=nib2;
+   \   0001A6   1F42....     MOV.W   &display_One, R15
+   \   0001AA   DF42....0A00 MOV.B   &nib2, 0xa(R15)
+    174                    display_One[char4]=nib1;
+   \   0001B0   1F42....     MOV.W   &display_One, R15
+   \   0001B4   DF42....0B00 MOV.B   &nib1, 0xb(R15)
+    175                
+    176                    lcd_clear();
+   \   0001BA   ........     CALLA   #lcd_clear
+    177                    lcd_out(display_One, LCD_LINE_1);
+   \   0001BE   7D408000     MOV.B   #0x80, R13
+   \   0001C2   1C42....     MOV.W   &display_One, R12
+   \   0001C6   ........     CALLA   #lcd_out
+    178                    lcd_out("Left Detector",LCD_LINE_2);
+   \   0001CA   7D40C000     MOV.B   #0xc0, R13
+   \   0001CE   3C40....     MOV.W   #`?<Constant "Left Detector">`, R12
+   \   0001D2   ........     CALLA   #lcd_out
+    179                    butt2++;
+   \   0001D6   9253....     ADD.W   #0x1, &butt2
+    180                    
+    181                    break;
+   \   0001DA   E03D         JMP     ??switch_interrupt_4
+    182                    
+    183                  case START:
+    184                    
+    185                    LED_White_RD = ADC_RD;
+   \                     ??switch_interrupt_16:
+   \   0001DC   9242........ MOV.W   &ADC_RD, &LED_White_RD
+    186                
+    187                    nib1 = (nib1Mask&ADC_RD);
+   \   0001E2   1E42....     MOV.W   &ADC_RD, R14
+   \   0001E6   7EF00F00     AND.B   #0xf, R14
+   \   0001EA   C24E....     MOV.B   R14, &nib1
+    188                    if (nib1 < numRange) nib1 = nib1 + numOffset;
+   \   0001EE   F2900A00.... CMP.B   #0xa, &nib1
+   \   0001F4   042C         JC      ??switch_interrupt_21
+   \   0001F6   F2503000.... ADD.B   #0x30, &nib1
+   \   0001FC   033C         JMP     ??switch_interrupt_22
+    189                    else nib1 = nib1 + charOffset;
+   \                     ??switch_interrupt_21:
+   \   0001FE   F2503700.... ADD.B   #0x37, &nib1
+    190                
+    191                    nib2 = (nib2Mask&ADC_RD)>>shift4;
+   \                     ??switch_interrupt_22:
+   \   000204   1E42....     MOV.W   &ADC_RD, R14
+   \   000208                RPT     #0x4
+   \   000208   43194E10     RRUX.B  R14
+   \   00020C   C24E....     MOV.B   R14, &nib2
+    192                    if (nib2 < numRange) nib2 = nib2 + numOffset;
+   \   000210   F2900A00.... CMP.B   #0xa, &nib2
+   \   000216   042C         JC      ??switch_interrupt_23
+   \   000218   F2503000.... ADD.B   #0x30, &nib2
+   \   00021E   033C         JMP     ??switch_interrupt_24
+    193                    else nib2 = nib2 + charOffset;
+   \                     ??switch_interrupt_23:
+   \   000220   F2503700.... ADD.B   #0x37, &nib2
+    194                
+    195                    nib3 = (nib3Mask&ADC_RD)>>shift8;
+   \                     ??switch_interrupt_24:
+   \   000226   1E42....     MOV.W   &ADC_RD, R14
+   \   00022A   8E10         SWPB    R14
+   \   00022C   3EF0FF00     AND.W   #0xff, R14
+   \   000230   7EF00F00     AND.B   #0xf, R14
+   \   000234   C24E....     MOV.B   R14, &nib3
+    196                    nib3 = nib3 + numOffset;
+   \   000238   F2503000.... ADD.B   #0x30, &nib3
+    197                
+    198                    nib4 = RESET + numOffset;
+   \   00023E   F2403000.... MOV.B   #0x30, &nib4
+    199                
+    200                    display_One="            ";
+   \   000244   B240........ MOV.W   #`?<Constant "            ">`, &display_One
+    201                    display_One[char1]=nib4;
+   \   00024A   1F42....     MOV.W   &display_One, R15
+   \   00024E   DF42....0800 MOV.B   &nib4, 0x8(R15)
+    202                    display_One[char2]=nib3;
+   \   000254   1F42....     MOV.W   &display_One, R15
+   \   000258   DF42....0900 MOV.B   &nib3, 0x9(R15)
+    203                    display_One[char3]=nib2;
+   \   00025E   1F42....     MOV.W   &display_One, R15
+   \   000262   DF42....0A00 MOV.B   &nib2, 0xa(R15)
+    204                    display_One[char4]=nib1;
+   \   000268   1F42....     MOV.W   &display_One, R15
+   \   00026C   DF42....0B00 MOV.B   &nib1, 0xb(R15)
+    205                
+    206                    lcd_clear();
+   \   000272   ........     CALLA   #lcd_clear
+    207                    lcd_out(display_One, LCD_LINE_1);
+   \   000276   7D408000     MOV.B   #0x80, R13
+   \   00027A   1C42....     MOV.W   &display_One, R12
+   \   00027E   ........     CALLA   #lcd_out
+    208                    lcd_out("Right Detector",LCD_LINE_2);
+   \   000282   7D40C000     MOV.B   #0xc0, R13
+   \   000286   3C40....     MOV.W   #`?<Constant "Right Detector">`, R12
+   \   00028A   ........     CALLA   #lcd_out
+    209                    butt2 = RESET;
+   \   00028E   8243....     MOV.W   #0x0, &butt2
+    210                    
+    211                    break;
+    212                    
+    213                  default: break;
+    214                }
+    215                
+    216                break;
+   \                     ??switch_interrupt_1:
+   \   000292   843D         JMP     ??switch_interrupt_4
+    217                
+    218             case SECOND:
+    219                  
+    220                //newFM(100);
+    221                
+    222                switch(butt2)
+   \                     ??switch_interrupt_13:
+   \   000294   1F42....     MOV.W   &butt2, R15
+   \   000298   0F83         SUB.W   #0x0, R15
+   \   00029A   0324         JEQ     ??switch_interrupt_25
+   \   00029C   1F83         SUB.W   #0x1, R15
+   \   00029E   5D24         JEQ     ??switch_interrupt_26
+   \   0002A0   7D3D         JMP     ??switch_interrupt_4
+    223                {
+    224                  case RESET:
+    225                    LED_Black_LD = ADC_LD;
+   \                     ??switch_interrupt_25:
+   \   0002A2   9242........ MOV.W   &ADC_LD, &LED_Black_LD
+    226                
+    227                    nib1 = (nib1Mask&ADC_RD);
+   \   0002A8   1E42....     MOV.W   &ADC_RD, R14
+   \   0002AC   7EF00F00     AND.B   #0xf, R14
+   \   0002B0   C24E....     MOV.B   R14, &nib1
+    228                    if (nib1 < numRange) nib1 = nib1 + numOffset;
+   \   0002B4   F2900A00.... CMP.B   #0xa, &nib1
+   \   0002BA   042C         JC      ??switch_interrupt_27
+   \   0002BC   F2503000.... ADD.B   #0x30, &nib1
+   \   0002C2   033C         JMP     ??switch_interrupt_28
+    229                    else nib1 = nib1 + charOffset;
+   \                     ??switch_interrupt_27:
+   \   0002C4   F2503700.... ADD.B   #0x37, &nib1
+    230                
+    231                    nib2 = (nib2Mask&ADC_RD)>>shift4;
+   \                     ??switch_interrupt_28:
+   \   0002CA   1E42....     MOV.W   &ADC_RD, R14
+   \   0002CE                RPT     #0x4
+   \   0002CE   43194E10     RRUX.B  R14
+   \   0002D2   C24E....     MOV.B   R14, &nib2
+    232                    if (nib2 < numRange) nib2 = nib2 + numOffset;
+   \   0002D6   F2900A00.... CMP.B   #0xa, &nib2
+   \   0002DC   042C         JC      ??switch_interrupt_29
+   \   0002DE   F2503000.... ADD.B   #0x30, &nib2
+   \   0002E4   033C         JMP     ??switch_interrupt_30
+    233                    else nib2 = nib2 + charOffset;
+   \                     ??switch_interrupt_29:
+   \   0002E6   F2503700.... ADD.B   #0x37, &nib2
+    234                
+    235                    nib3 = (nib3Mask&ADC_RD)>>shift8;
+   \                     ??switch_interrupt_30:
+   \   0002EC   1E42....     MOV.W   &ADC_RD, R14
+   \   0002F0   8E10         SWPB    R14
+   \   0002F2   3EF0FF00     AND.W   #0xff, R14
+   \   0002F6   7EF00F00     AND.B   #0xf, R14
+   \   0002FA   C24E....     MOV.B   R14, &nib3
+    236                    nib3 = nib3 + numOffset;
+   \   0002FE   F2503000.... ADD.B   #0x30, &nib3
+    237                
+    238                    nib4 = RESET + numOffset;
+   \   000304   F2403000.... MOV.B   #0x30, &nib4
+    239                
+    240                    display_One="            ";
+   \   00030A   B240........ MOV.W   #`?<Constant "            ">`, &display_One
+    241                    display_One[char1]=nib4;
+   \   000310   1F42....     MOV.W   &display_One, R15
+   \   000314   DF42....0800 MOV.B   &nib4, 0x8(R15)
+    242                    display_One[char2]=nib3;
+   \   00031A   1F42....     MOV.W   &display_One, R15
+   \   00031E   DF42....0900 MOV.B   &nib3, 0x9(R15)
+    243                    display_One[char3]=nib2;
+   \   000324   1F42....     MOV.W   &display_One, R15
+   \   000328   DF42....0A00 MOV.B   &nib2, 0xa(R15)
+    244                    display_One[char4]=nib1;
+   \   00032E   1F42....     MOV.W   &display_One, R15
+   \   000332   DF42....0B00 MOV.B   &nib1, 0xb(R15)
+    245                
+    246                    lcd_clear();
+   \   000338   ........     CALLA   #lcd_clear
+    247                    lcd_out(display_One, LCD_LINE_1);
+   \   00033C   7D408000     MOV.B   #0x80, R13
+   \   000340   1C42....     MOV.W   &display_One, R12
+   \   000344   ........     CALLA   #lcd_out
+    248                    lcd_out("Left Detector",LCD_LINE_2);
+   \   000348   7D40C000     MOV.B   #0xc0, R13
+   \   00034C   3C40....     MOV.W   #`?<Constant "Left Detector">`, R12
+   \   000350   ........     CALLA   #lcd_out
+    249                    butt2++;
+   \   000354   9253....     ADD.W   #0x1, &butt2
+    250                    break;
+   \   000358   213D         JMP     ??switch_interrupt_4
+    251                    
+    252                  case START:
+    253                    LED_Black_RD = ADC_RD;
+   \                     ??switch_interrupt_26:
+   \   00035A   9242........ MOV.W   &ADC_RD, &LED_Black_RD
+    254                
+    255                    nib1 = (nib1Mask&ADC_RD);
+   \   000360   1E42....     MOV.W   &ADC_RD, R14
+   \   000364   7EF00F00     AND.B   #0xf, R14
+   \   000368   C24E....     MOV.B   R14, &nib1
+    256                    if (nib1 < numRange) nib1 = nib1 + numOffset;
+   \   00036C   F2900A00.... CMP.B   #0xa, &nib1
+   \   000372   042C         JC      ??switch_interrupt_31
+   \   000374   F2503000.... ADD.B   #0x30, &nib1
+   \   00037A   033C         JMP     ??switch_interrupt_32
+    257                    else nib1 = nib1 + charOffset;
+   \                     ??switch_interrupt_31:
+   \   00037C   F2503700.... ADD.B   #0x37, &nib1
+    258                
+    259                    nib2 = (nib2Mask&ADC_RD)>>shift4;
+   \                     ??switch_interrupt_32:
+   \   000382   1E42....     MOV.W   &ADC_RD, R14
+   \   000386                RPT     #0x4
+   \   000386   43194E10     RRUX.B  R14
+   \   00038A   C24E....     MOV.B   R14, &nib2
+    260                    if (nib2 < numRange) nib2 = nib2 + numOffset;
+   \   00038E   F2900A00.... CMP.B   #0xa, &nib2
+   \   000394   042C         JC      ??switch_interrupt_33
+   \   000396   F2503000.... ADD.B   #0x30, &nib2
+   \   00039C   033C         JMP     ??switch_interrupt_34
+    261                    else nib2 = nib2 + charOffset;
+   \                     ??switch_interrupt_33:
+   \   00039E   F2503700.... ADD.B   #0x37, &nib2
+    262                
+    263                    nib3 = (nib3Mask&ADC_RD)>>shift8;
+   \                     ??switch_interrupt_34:
+   \   0003A4   1E42....     MOV.W   &ADC_RD, R14
+   \   0003A8   8E10         SWPB    R14
+   \   0003AA   3EF0FF00     AND.W   #0xff, R14
+   \   0003AE   7EF00F00     AND.B   #0xf, R14
+   \   0003B2   C24E....     MOV.B   R14, &nib3
+    264                    nib3 = nib3 + numOffset;
+   \   0003B6   F2503000.... ADD.B   #0x30, &nib3
+    265                
+    266                    nib4 = RESET + numOffset;
+   \   0003BC   F2403000.... MOV.B   #0x30, &nib4
+    267                
+    268                    display_One="            ";
+   \   0003C2   B240........ MOV.W   #`?<Constant "            ">`, &display_One
+    269                    display_One[char1]=nib4;
+   \   0003C8   1F42....     MOV.W   &display_One, R15
+   \   0003CC   DF42....0800 MOV.B   &nib4, 0x8(R15)
+    270                    display_One[char2]=nib3;
+   \   0003D2   1F42....     MOV.W   &display_One, R15
+   \   0003D6   DF42....0900 MOV.B   &nib3, 0x9(R15)
+    271                    display_One[char3]=nib2;
+   \   0003DC   1F42....     MOV.W   &display_One, R15
+   \   0003E0   DF42....0A00 MOV.B   &nib2, 0xa(R15)
+    272                    display_One[char4]=nib1;
+   \   0003E6   1F42....     MOV.W   &display_One, R15
+   \   0003EA   DF42....0B00 MOV.B   &nib1, 0xb(R15)
+    273                
+    274                    lcd_clear();
+   \   0003F0   ........     CALLA   #lcd_clear
+    275                    lcd_out(display_One, LCD_LINE_1);
+   \   0003F4   7D408000     MOV.B   #0x80, R13
+   \   0003F8   1C42....     MOV.W   &display_One, R12
+   \   0003FC   ........     CALLA   #lcd_out
+    276                    lcd_out("Right Detector",LCD_LINE_2);
+   \   000400   7D40C000     MOV.B   #0xc0, R13
+   \   000404   3C40....     MOV.W   #`?<Constant "Right Detector">`, R12
+   \   000408   ........     CALLA   #lcd_out
+    277                    butt2 = RESET;
+   \   00040C   8243....     MOV.W   #0x0, &butt2
+    278                    break;
+    279                    
+    280                  default: break;
+    281                }
+    282                
+    283                break;
+   \   000410   C53C         JMP     ??switch_interrupt_4
+    284                
+    285                
+    286             case THIRD:
+    287                
+    288                switch(butt2)
+   \                     ??switch_interrupt_14:
+   \   000412   1F42....     MOV.W   &butt2, R15
+   \   000416   0F83         SUB.W   #0x0, R15
+   \   000418   0324         JEQ     ??switch_interrupt_35
+   \   00041A   1F83         SUB.W   #0x1, R15
+   \   00041C   5D24         JEQ     ??switch_interrupt_36
+   \   00041E   B73C         JMP     ??switch_interrupt_3
+    289                {
+    290                    case RESET:
+    291                    LED_Off_LD = ADC_LD;
+   \                     ??switch_interrupt_35:
+   \   000420   9242........ MOV.W   &ADC_LD, &LED_Off_LD
+    292                
+    293                    nib1 = (nib1Mask&ADC_RD);
+   \   000426   1E42....     MOV.W   &ADC_RD, R14
+   \   00042A   7EF00F00     AND.B   #0xf, R14
+   \   00042E   C24E....     MOV.B   R14, &nib1
+    294                    if (nib1 < numRange) nib1 = nib1 + numOffset;
+   \   000432   F2900A00.... CMP.B   #0xa, &nib1
+   \   000438   042C         JC      ??switch_interrupt_37
+   \   00043A   F2503000.... ADD.B   #0x30, &nib1
+   \   000440   033C         JMP     ??switch_interrupt_38
+    295                    else nib1 = nib1 + charOffset;
+   \                     ??switch_interrupt_37:
+   \   000442   F2503700.... ADD.B   #0x37, &nib1
+    296                
+    297                    nib2 = (nib2Mask&ADC_RD)>>shift4;
+   \                     ??switch_interrupt_38:
+   \   000448   1E42....     MOV.W   &ADC_RD, R14
+   \   00044C                RPT     #0x4
+   \   00044C   43194E10     RRUX.B  R14
+   \   000450   C24E....     MOV.B   R14, &nib2
+    298                    if (nib2 < numRange) nib2 = nib2 + numOffset;
+   \   000454   F2900A00.... CMP.B   #0xa, &nib2
+   \   00045A   042C         JC      ??switch_interrupt_39
+   \   00045C   F2503000.... ADD.B   #0x30, &nib2
+   \   000462   033C         JMP     ??switch_interrupt_40
+    299                    else nib2 = nib2 + charOffset;
+   \                     ??switch_interrupt_39:
+   \   000464   F2503700.... ADD.B   #0x37, &nib2
+    300                
+    301                    nib3 = (nib3Mask&ADC_RD)>>shift8;
+   \                     ??switch_interrupt_40:
+   \   00046A   1E42....     MOV.W   &ADC_RD, R14
+   \   00046E   8E10         SWPB    R14
+   \   000470   3EF0FF00     AND.W   #0xff, R14
+   \   000474   7EF00F00     AND.B   #0xf, R14
+   \   000478   C24E....     MOV.B   R14, &nib3
+    302                    nib3 = nib3 + numOffset;
+   \   00047C   F2503000.... ADD.B   #0x30, &nib3
+    303                
+    304                    nib4 = RESET + numOffset;
+   \   000482   F2403000.... MOV.B   #0x30, &nib4
+    305                
+    306                    display_One="            ";
+   \   000488   B240........ MOV.W   #`?<Constant "            ">`, &display_One
+    307                    display_One[char1]=nib4;
+   \   00048E   1F42....     MOV.W   &display_One, R15
+   \   000492   DF42....0800 MOV.B   &nib4, 0x8(R15)
+    308                    display_One[char2]=nib3;
+   \   000498   1F42....     MOV.W   &display_One, R15
+   \   00049C   DF42....0900 MOV.B   &nib3, 0x9(R15)
+    309                    display_One[char3]=nib2;
+   \   0004A2   1F42....     MOV.W   &display_One, R15
+   \   0004A6   DF42....0A00 MOV.B   &nib2, 0xa(R15)
+    310                    display_One[char4]=nib1;
+   \   0004AC   1F42....     MOV.W   &display_One, R15
+   \   0004B0   DF42....0B00 MOV.B   &nib1, 0xb(R15)
+    311                
+    312                    lcd_clear();
+   \   0004B6   ........     CALLA   #lcd_clear
+    313                    lcd_out(display_One, LCD_LINE_1);
+   \   0004BA   7D408000     MOV.B   #0x80, R13
+   \   0004BE   1C42....     MOV.W   &display_One, R12
+   \   0004C2   ........     CALLA   #lcd_out
+    314                    lcd_out("Left Detector",LCD_LINE_2);
+   \   0004C6   7D40C000     MOV.B   #0xc0, R13
+   \   0004CA   3C40....     MOV.W   #`?<Constant "Left Detector">`, R12
+   \   0004CE   ........     CALLA   #lcd_out
+    315                    butt2++;
+   \   0004D2   9253....     ADD.W   #0x1, &butt2
+    316                    break;
+   \   0004D6   5B3C         JMP     ??switch_interrupt_3
+    317                    
+    318                  case START:
+    319                    LED_Off_RD = ADC_RD;
+   \                     ??switch_interrupt_36:
+   \   0004D8   9242........ MOV.W   &ADC_RD, &LED_Off_RD
+    320                
+    321                    nib1 = (nib1Mask&ADC_RD);
+   \   0004DE   1E42....     MOV.W   &ADC_RD, R14
+   \   0004E2   7EF00F00     AND.B   #0xf, R14
+   \   0004E6   C24E....     MOV.B   R14, &nib1
+    322                    if (nib1 < numRange) nib1 = nib1 + numOffset;
+   \   0004EA   F2900A00.... CMP.B   #0xa, &nib1
+   \   0004F0   042C         JC      ??switch_interrupt_41
+   \   0004F2   F2503000.... ADD.B   #0x30, &nib1
+   \   0004F8   033C         JMP     ??switch_interrupt_42
+    323                    else nib1 = nib1 + charOffset;
+   \                     ??switch_interrupt_41:
+   \   0004FA   F2503700.... ADD.B   #0x37, &nib1
+    324                
+    325                    nib2 = (nib2Mask&ADC_RD)>>shift4;
+   \                     ??switch_interrupt_42:
+   \   000500   1E42....     MOV.W   &ADC_RD, R14
+   \   000504                RPT     #0x4
+   \   000504   43194E10     RRUX.B  R14
+   \   000508   C24E....     MOV.B   R14, &nib2
+    326                    if (nib2 < numRange) nib2 = nib2 + numOffset;
+   \   00050C   F2900A00.... CMP.B   #0xa, &nib2
+   \   000512   042C         JC      ??switch_interrupt_43
+   \   000514   F2503000.... ADD.B   #0x30, &nib2
+   \   00051A   033C         JMP     ??switch_interrupt_44
+    327                    else nib2 = nib2 + charOffset;
+   \                     ??switch_interrupt_43:
+   \   00051C   F2503700.... ADD.B   #0x37, &nib2
+    328                
+    329                    nib3 = (nib3Mask&ADC_RD)>>shift8;
+   \                     ??switch_interrupt_44:
+   \   000522   1E42....     MOV.W   &ADC_RD, R14
+   \   000526   8E10         SWPB    R14
+   \   000528   3EF0FF00     AND.W   #0xff, R14
+   \   00052C   7EF00F00     AND.B   #0xf, R14
+   \   000530   C24E....     MOV.B   R14, &nib3
+    330                    nib3 = nib3 + numOffset;
+   \   000534   F2503000.... ADD.B   #0x30, &nib3
+    331                
+    332                    nib4 = RESET + numOffset;
+   \   00053A   F2403000.... MOV.B   #0x30, &nib4
+    333                
+    334                    display_One="            ";
+   \   000540   B240........ MOV.W   #`?<Constant "            ">`, &display_One
+    335                    display_One[char1]=nib4;
+   \   000546   1F42....     MOV.W   &display_One, R15
+   \   00054A   DF42....0800 MOV.B   &nib4, 0x8(R15)
+    336                    display_One[char2]=nib3;
+   \   000550   1F42....     MOV.W   &display_One, R15
+   \   000554   DF42....0900 MOV.B   &nib3, 0x9(R15)
+    337                    display_One[char3]=nib2;
+   \   00055A   1F42....     MOV.W   &display_One, R15
+   \   00055E   DF42....0A00 MOV.B   &nib2, 0xa(R15)
+    338                    display_One[char4]=nib1;
+   \   000564   1F42....     MOV.W   &display_One, R15
+   \   000568   DF42....0B00 MOV.B   &nib1, 0xb(R15)
+    339                
+    340                    lcd_clear();
+   \   00056E   ........     CALLA   #lcd_clear
+    341                    lcd_out(display_One, LCD_LINE_1);
+   \   000572   7D408000     MOV.B   #0x80, R13
+   \   000576   1C42....     MOV.W   &display_One, R12
+   \   00057A   ........     CALLA   #lcd_out
+    342                    lcd_out("Right Detector",LCD_LINE_2);
+   \   00057E   7D40C000     MOV.B   #0xc0, R13
+   \   000582   3C40....     MOV.W   #`?<Constant "Right Detector">`, R12
+   \   000586   ........     CALLA   #lcd_out
+    343                    butt2 = RESET;
+   \   00058A   8243....     MOV.W   #0x0, &butt2
+    344                    break;
+    345                    
+    346                  default: break;
+    347                }
+    348                P1OUT |= IR_LED;
+   \                     ??switch_interrupt_3:
+   \   00058E   E2D20202     BIS.B   #0x4, &0x202
+    349                break;
+   \   000592   043C         JMP     ??switch_interrupt_4
+    350                
+    351             case RESET:
+    352               
+    353               drive = START; 
+   \                     ??switch_interrupt_11:
+   \   000594   9243....     MOV.W   #0x1, &drive
+    354               starting = START;
+   \   000598   9243....     MOV.W   #0x1, &starting
+    355               
+    356               break;
+    357                
+    358              default: break;  
+    359             }
+    360             nib1 = nib1;
+   \                     ??switch_interrupt_4:
+   \   00059C   D242........ MOV.B   &nib1, &nib1
+    361           }
+    362          // Enable the Timer Interrupt for the debounce.
+    363          }
+   \                     ??switch_interrupt_10:
+   \   0005A2   3C17         POPM.W  #0x4, R15
+   \   0005A4   0013         RETI
+   \   0005A6                REQUIRE _A_PBIFG_L
+   \   0005A6                REQUIRE _A_PBIE_L
+   \   0005A6                REQUIRE _A_PJOUT_L
+   \   0005A6                REQUIRE _A_PAOUT_L
+
+   \                                 In  segment INTVEC, offset 0x40, root
+   \                     `??switch_interrupt??INTVEC 64`:
+   \   000040   ....         DC16    switch_interrupt
+
+   \                                 In  segment DATA16_ID, align 2, align-sorted
+   \                     `?<Initializer for butt1>`:
+   \   000000   FFFF         DC16 65535
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "    Transmitting">`:
+   \   000000   202020205472 DC8 "    Transmitting"
+   \            616E736D6974
+   \            74696E6700  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "    Calibrate">`:
+   \   000000   202020204361 DC8 "    Calibrate"
+   \            6C6962726174
+   \            6500        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "LED White">`:
+   \   000000   4C4544205768 DC8 "LED White"
+   \            69746500    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "LED Black">`:
+   \   000000   4C454420426C DC8 "LED Black"
+   \            61636B00    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "LED Off">`:
+   \   000000   4C4544204F66 DC8 "LED Off"
+   \            6600        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "    Drive">`:
+   \   000000   202020204472 DC8 "    Drive"
+   \            69766500    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "            ">`:
+   \   000000   202020202020 DC8 "            "
+   \            202020202020
+   \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Left Detector">`:
+   \   000000   4C6566742044 DC8 "Left Detector"
+   \            65746563746F
+   \            7200        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Right Detector">`:
+   \   000000   526967687420 DC8 "Right Detector"
+   \            446574656374
+   \            6F7200      
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+     12   switch_interrupt
+       12   -> lcd_clear
+       12   -> lcd_out
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      13  ?<Constant "            ">
+      14  ?<Constant "    Calibrate">
+      10  ?<Constant "    Drive">
+      17  ?<Constant "    Transmitting">
+      10  ?<Constant "LED Black">
+       8  ?<Constant "LED Off">
+      10  ?<Constant "LED White">
+      14  ?<Constant "Left Detector">
+      15  ?<Constant "Right Detector">
+       2  ?<Initializer for butt1>
+       2  ??switch_interrupt??INTVEC 64
+       2  LED_Black_LD
+       2  LED_Black_RD
+       2  LED_Off_LD
+       2  LED_Off_RD
+       2  LED_White_LD
+       2  LED_White_RD
+       2  _A_PAOUT_L
+       2  _A_PBIE_L
+       2  _A_PBIFG_L
+       2  _A_PJOUT_L
+       2  bounceCount
+       2  butt1
+       2  butt2
+       2  display_One
+       2  drive
+       2  isDebounce
+       1  nib1
+       1  nib2
+       1  nib3
+       1  nib4
+       2  outP
+       2  starting
+       2  switchPress
+    1446  switch_interrupt
+
+ 
+     8 bytes in segment DATA16_AN
+   111 bytes in segment DATA16_C
+     2 bytes in segment DATA16_I
+     2 bytes in segment DATA16_ID
+    32 bytes in segment DATA16_Z
+     2 bytes in segment INTVEC
+ 1 446 bytes in segment ISR_CODE
+ 
+ 1 446 bytes of CODE  memory
+   113 bytes of CONST memory (+ 2 bytes shared)
+    34 bytes of DATA  memory (+ 8 bytes shared)
+
+Errors: none
+Warnings: none
