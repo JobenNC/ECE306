@@ -36,8 +36,6 @@ int test2=0;
 
 extern volatile int writeNext = 0;
 
-char test;
-
 void main(void){
 //===========================================================================
 // Function name: main
@@ -86,36 +84,35 @@ void main(void){
  while(ALWAYS) {    
    
    // Can the Operating system run
-   //newFM(20);
+   newFM(20);
    
-   //UCA1TXBUF = 'U';
+   UCA1TXBUF = 'U';
    
-   if (writeNext)
-   {
+   //if (writeNext)
+   //{
       //UCA1TXBUF = 'u';
-      writeNext = 0;
+      //writeNext = 0;
       
-      while (!UCTXIFG)
-      {
-      }
-      UCA1TXBUF = 'u';
+      //while (!UCTXIFG)
+      //{
+      //}
+      //UCA1TXBUF = 'u';
       
-      while (1)
-      {
-        test1 = usb_rx_ring_wr;
-        test2 = usb_rx_ring_rd;
-        if (test1 != test2) break;
-      }
+      //while (1)
+      //{
+      //  test1 = usb_rx_ring_wr;
+      //  test2 = usb_rx_ring_rd;
+      //  if (test1 != test2) break;
+      //}
       
       /////while (!UCTXIFG)
       ////{
       ////}
       ////UCA1TXBUF = 'u';
       
-      usb_rx_ring_rd++;
-      test = USB_Char_Rx[usb_rx_ring_wr];
-      int stop = 0;
-   }
+      //usb_rx_ring_rd++;
+      //char test = USB_Char_Rx[usb_rx_ring_wr];
+   //}
     //Code for tx rx
 
     //

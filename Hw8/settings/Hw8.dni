@@ -22,22 +22,16 @@ State Storage=0
 [NumberOfSequencerBp]
 Number=4
 [DebugChecksum]
-Checksum=-1145748042
+Checksum=-1951554621
 [CallStack]
 ShowArgs=0
 [Disassembly]
 MixedMode=1
 [EEM Sequencer]
 Buffer=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-[Log file]
-LoggingEnabled=_ 0
-LogFile=_ ""
-Category=_ 0
-[TermIOLog]
-LoggingEnabled=_ 0
-LogFile=_ ""
 [Breakpoints]
-Count=0
+Bp0=_ "STD_CODE" "{$PROJ_DIR$\main.c}.117.11" 1 0 0 0 "" 0 ""
+Count=1
 [FET]
 Clock mode=46
 Extended Clock mode=1
@@ -58,6 +52,13 @@ SP=0
 SR=0
 all registers=0
 File name=
+[Log file]
+LoggingEnabled=_ 0
+LogFile=_ ""
+Category=_ 0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
 [Aliases]
 A0=_ "D:\NCSU\Current\Software Tools\Code Master\Homework_01\timersB2.c" ""
 A1=_ "D:\NCSU\Current\Software Tools\Code Master\Homework_03\LCD.c" ""
