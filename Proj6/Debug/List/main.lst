@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         05/Nov/2014  00:52:59
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         05/Nov/2014  17:50:12
 # Copyright 1996-2014 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
 #
@@ -121,317 +121,447 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\main.c
    \                     R_Dir:
    \   000000                DS8 2
 
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     30          unsigned int test;
+   \                     test:
+   \   000000                DS8 2
+     31          
+
    \                                 In  segment DATA16_Z, align 1, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     30          char test;
-   \                     test:
+     32          char bit1;
+   \                     bit1:
    \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     33          char bit2;
+   \                     bit2:
+   \   000000                DS8 1
+     34          
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     35          char testChar;
+   \                     testChar:
+   \   000000                DS8 1
+     36          
+
+   \                                 In  segment DATA16_I, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+     37          volatile char readyToReceive = 1;
+   \                     readyToReceive:
+   \   000000                DS8 1
+   \   000001                REQUIRE `?<Initializer for readyToReceive>`
+     38          
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     39          char whichChar = 0;
+   \                     whichChar:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     40          char writeOut = 0;
+   \                     writeOut:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     41          char wroteFirst = 0;
+   \                     wroteFirst:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     42          char gotBoth = 0;
+   \                     gotBoth:
+   \   000000                DS8 1
+     43          
 
    \                                 In  segment DATA16_Z, align 2, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     31          char *serial;
+     44          char *serial;
    \                     serial:
    \   000000                DS8 2
 
    \                                 In  segment DATA16_Z, align 2, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     32          int counter = 0;
+     45          int counter = 0;
    \                     counter:
    \   000000                DS8 2
-     33          
+     46          
 
    \                                 In  segment DATA16_Z, align 2, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     34          char *display_NCSU;
+     47          char *display_NCSU;
    \                     display_NCSU:
    \   000000                DS8 2
 
    \                                 In  segment DATA16_Z, align 2, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     35          char *display_HW3;
+     48          char *display_HW3;
    \                     display_HW3:
    \   000000                DS8 2
-     36          
+     49          
 
    \                                 In  segment DATA16_Z, align 1, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     37          char toWrite;
+     50          char toWrite;
    \                     toWrite:
    \   000000                DS8 1
-     38          
+     51          
 
    \                                 In  segment DATA16_Z, align 2, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     39          int test1=RESET;
+     52          int test1=RESET;
    \                     test1:
    \   000000                DS8 2
 
    \                                 In  segment DATA16_Z, align 2, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     40          int test2=RESET;
+     53          int test2=RESET;
    \                     test2:
    \   000000                DS8 2
-     41          
+     54          
 
    \                                 In  segment DATA16_Z, align 2, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     42          int timeOut = RESET;
+     55          int timeOut = RESET;
    \                     timeOut:
    \   000000                DS8 2
 
    \                                 In  segment DATA16_Z, align 2, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     43          int dontWrite = RESET;
+     56          int dontWrite = RESET;
    \                     dontWrite:
    \   000000                DS8 2
-     44          
-     45          
+     57          
+     58          
 
    \                                 In  segment DATA16_Z, align 2, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     46          extern volatile int writeNext = RESET;
+     59          extern volatile int writeNext = RESET;
    \                     writeNext:
    \   000000                DS8 2
-     47          
+     60          
 
    \                                 In  segment CODE, align 2
-     48          void main(void){
+     61          void main(void){
    \                     main:
-     49          //===========================================================================
-     50          // Function name: main
-     51          //
-     52          // Description: The main function.  Our 'while' OS
-     53          // 
-     54          // Passed : no variables passed
-     55          // Locals: no variables declared
-     56          // Returned: no values returned
-     57          // Globals: Time_Sequence, one_time, five_msec_count
-     58          // Calls: Init_Ports, Init_Clocks, Init_Conditions, Init_Timers, Init_LEDs,
-     59          //      Init_LCD, five_msec_sleep, Switch_Process
-     60          //
-     61          // Author: Joseph Jarriel
-     62          // Date: Sep 2014
-     63          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
-     64          //===========================================================================
-     65            Init_Ports();                             // Initialize Ports
+     62          //===========================================================================
+     63          // Function name: main
+     64          //
+     65          // Description: The main function.  Our 'while' OS
+     66          // 
+     67          // Passed : no variables passed
+     68          // Locals: no variables declared
+     69          // Returned: no values returned
+     70          // Globals: Time_Sequence, one_time, five_msec_count
+     71          // Calls: Init_Ports, Init_Clocks, Init_Conditions, Init_Timers, Init_LEDs,
+     72          //      Init_LCD, five_msec_sleep, Switch_Process
+     73          //
+     74          // Author: Joseph Jarriel
+     75          // Date: Sep 2014
+     76          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+     77          //===========================================================================
+     78            Init_Ports();                             // Initialize Ports
    \   000000   ........     CALLA   #Init_Ports
-     66            Init_Clocks();                            // Initialize Clock System 
+     79            Init_Clocks();                            // Initialize Clock System 
    \   000004   ........     CALLA   #Init_Clocks
-     67            init_adc();
+     80            init_adc();
    \   000008   ........     CALLA   #init_adc
-     68            Init_Serial_UCA1();                        // Initialize Serial Comms
+     81            Init_Serial_UCA1();                        // Initialize Serial Comms
    \   00000C   ........     CALLA   #Init_Serial_UCA1
-     69            Init_Conditions();
+     82            Init_Conditions();
    \   000010   ........     CALLA   #Init_Conditions
-     70            PJOUT |= LED1;                            // Turn LED 1 on to indicate boot
+     83            PJOUT |= LED1;                            // Turn LED 1 on to indicate boot
    \   000014   92D32203     BIS.W   #0x1, &0x322
-     71            Time_Sequence = RESET;                        // 
+     84            Time_Sequence = RESET;                        // 
    \   000018   8243....     MOV.W   #0x0, &Time_Sequence
-     72            Init_Timers();                            // Initialize Timers
+     85            Init_Timers();                            // Initialize Timers
    \   00001C   ........     CALLA   #Init_Timers
-     73            five_msec_sleep(SLEEP_50);                      // 250 msec delay for the clock to settle
+     86            five_msec_sleep(SLEEP_50);                      // 250 msec delay for the clock to settle
    \   000020   3C403200     MOV.W   #0x32, R12
    \   000024   ........     CALLA   #five_msec_sleep
-     74            Init_LCD();                               // Initialize LCD
+     87            Init_LCD();                               // Initialize LCD
    \   000028   ........     CALLA   #Init_LCD
-     75            five_msec_sleep(SLEEP_75);                      // 375 msec delay for the clock to settle
+     88            five_msec_sleep(SLEEP_75);                      // 375 msec delay for the clock to settle
    \   00002C   3C404B00     MOV.W   #0x4b, R12
    \   000030   ........     CALLA   #five_msec_sleep
-     76            Init_LEDs();                              // Initialize LEDs
+     89            Init_LEDs();                              // Initialize LEDs
    \   000034   ........     CALLA   #Init_LEDs
-     77            display_NCSU = "   Callibrate   ";
+     90            display_NCSU = "   Callibrate   ";
    \   000038   B240........ MOV.W   #`?<Constant "   Callibrate   ">`, &display_NCSU
-     78            display_HW3 =  "  IR Em Off  ";
+     91            display_HW3 =  "  IR Em Off  ";
    \   00003E   B240........ MOV.W   #`?<Constant "  IR Em Off  ">`, &display_HW3
-     79            
-     80          //  lcd_command(CLEAR_DISPLAY);
-     81            five_msec_sleep(SLEEP_10); 
+     92            
+     93          //  lcd_command(CLEAR_DISPLAY);
+     94            five_msec_sleep(SLEEP_10); 
    \   000044   3C400A00     MOV.W   #0xa, R12
    \   000048   ........     CALLA   #five_msec_sleep
-     82            lcd_out("1-Display 2-Clr",LCD_LINE_1);       // 16 characters max between quotes - line 1
+     95            lcd_out("1-Display 2-Clr",LCD_LINE_1);       // 16 characters max between quotes - line 1
    \   00004C   7D408000     MOV.B   #0x80, R13
    \   000050   3C40....     MOV.W   #`?<Constant "1-Display 2-Clr">`, R12
    \   000054   ........     CALLA   #lcd_out
-     83            //lcd_out("LED On       ",LCD_LINE_2);
-     84              //lcd_out(display_NCSU,LCD_LINE_1);       // 16 characters max between quotes - line 1
-     85              //lcd_out(display_HW3,LCD_LINE_2);        // 16 characters max between quotes - line 2
-     86              
-     87          //------------------------------------------------------------------------------
-     88          // Begining of the "While" Operating System
-     89          //------------------------------------------------------------------------------
-     90           ADC_Process();
+     96            //lcd_out("LED On       ",LCD_LINE_2);
+     97              //lcd_out(display_NCSU,LCD_LINE_1);       // 16 characters max between quotes - line 1
+     98              //lcd_out(display_HW3,LCD_LINE_2);        // 16 characters max between quotes - line 2
+     99              
+    100          //------------------------------------------------------------------------------
+    101          // Begining of the "While" Operating System
+    102          //------------------------------------------------------------------------------
+    103           ADC_Process();
    \   000058   ........     CALLA   #ADC_Process
-     91           L_Dir = L_FORWARD;
+    104           L_Dir = L_FORWARD;
    \   00005C   B2404000.... MOV.W   #0x40, &L_Dir
-     92           R_Dir = R_FORWARD;
+    105           R_Dir = R_FORWARD;
    \   000062   B2401000.... MOV.W   #0x10, &R_Dir
-     93           serial="               ";
+    106           serial="               ";
    \   000068   B240........ MOV.W   #`?<Constant "               ">`, &serial
-   \   00006E   3A3C         JMP     ??main_0
-     94           while(ALWAYS) {    
-     95             
-     96             //UCA1TXBUF = 'U';
-     97             //if (nib2 < numRange) nib2 = nib2 + numOffset;
-     98             //       else nib2 = nib2 + charOffset;
-     99             test1 = usb_rx_ring_wr;
-    100             test2 = usb_rx_ring_rd;
-    101             if (test1 != test2)
-    102                {
-    103                  if ((UCTXIFG))
-    104                  {
-    105                    if (usb_rx_ring_rd > 6)
-    106                    {
-    107                      usb_rx_ring_rd =0;
-    108                      test = USB_Char_Rx[7];
-    109                      test++;
-    110                    }
-    111                    else
-    112                    {
-    113                      usb_rx_ring_rd++;
-   \                     ??main_1:
-   \   000070   9253....     ADD.W   #0x1, &usb_rx_ring_rd
-    114                      test = USB_Char_Rx[usb_rx_ring_wr];
-   \   000074   1F42....     MOV.W   &usb_rx_ring_wr, R15
-   \   000078   D24F........ MOV.B   USB_Char_Rx(R15), &test
-    115                    }
-    116                    
-    117                    //test = test + numOffset;
-    118                    
-    119                    lcd_clear();
+   \   00006E   AA3C         JMP     ??main_0
+    107           while(ALWAYS) {    
+    108             
+    109             test1 = usb_rx_ring_wr;
+    110             test2 = usb_rx_ring_rd;
+    111             
+    112             test = 0;
+    113             if ((test1 != test2) & (readyToReceive))
+    114                {
+    115                  if ((UCTXIFG))
+    116                  {
+    117                    if (usb_rx_ring_rd > 6)
+    118                    {
+    119                      usb_rx_ring_rd =0;
+    120                      
+    121                      if (!whichChar)
+    122                      {
+    123                        bit1 = USB_Char_Rx[6];
+    124                        //char1++;
+    125                      }
+    126                      else
+    127                      {
+    128                        bit2 = USB_Char_Rx[7];
+    129                        //char2++;
+    130                        gotBoth = 1;
+    131                      }
+    132                      whichChar = !whichChar;
+    133                    }
+    134                    else
+    135                    {
+    136                      if (!whichChar)
+    137                      {
+    138                        test1 = usb_rx_ring_wr;
+    139                        bit1 = USB_Char_Rx[test1-1];
+    140                      }
+    141                      else
+    142                      {
+    143                        test2 = usb_rx_ring_wr;
+    144                        bit2 = USB_Char_Rx[test2];
+    145                        gotBoth = 1;
+    146                      }
+    147                      whichChar = !whichChar;
    \                     ??main_2:
-   \   00007E   ........     CALLA   #lcd_clear
-    120                    
-    121                    //test = test + 48;
-    122                    toWrite = test/10;
-   \   000082   5C42....     MOV.B   &test, R12
-   \   000086   7E400A00     MOV.B   #0xa, R14
-   \   00008A   ........     CALLA   #?DivMod8u
-   \   00008E   C24C....     MOV.B   R12, &toWrite
-    123                    serial[char1]=toWrite + 48;
-   \   000092   5E42....     MOV.B   &toWrite, R14
-   \   000096   7E503000     ADD.B   #0x30, R14
-   \   00009A   1F42....     MOV.W   &serial, R15
-   \   00009E   CF4E0800     MOV.B   R14, 0x8(R15)
-    124                    
-    125                    toWrite = test % 10;
-   \   0000A2   5C42....     MOV.B   &test, R12
-   \   0000A6   7E400A00     MOV.B   #0xa, R14
-   \   0000AA   ........     CALLA   #?DivMod8u
-   \   0000AE   C24E....     MOV.B   R14, &toWrite
-    126                    
-    127                    serial[char2] = toWrite + 48;
-   \   0000B2   5E42....     MOV.B   &toWrite, R14
-   \   0000B6   7E503000     ADD.B   #0x30, R14
-   \   0000BA   1F42....     MOV.W   &serial, R15
-   \   0000BE   CF4E0900     MOV.B   R14, 0x9(R15)
-    128                    //if ((int) test < 10)
-    129                    //{
-    130                    //    toWrite = test + 48;
-    131                    //}     
-    132                    //serial[char1]=toWrite;
-    133                    
-    134                    lcd_out(serial, LCD_LINE_1);
-   \   0000C2   7D408000     MOV.B   #0x80, R13
-   \   0000C6   1C42....     MOV.W   &serial, R12
-   \   0000CA   ........     CALLA   #lcd_out
-    135                    
-    136                    test++;
-   \   0000CE   D253....     ADD.B   #0x1, &test
-    137                    //test = test - 48;
-    138                    
-    139                    newFM(200);
-   \   0000D2   3C40C800     MOV.W   #0xc8, R12
-   \   0000D6   ........     CALLA   #newFM
-    140                    UCA1TXBUF = test;
-   \   0000DA   5F42....     MOV.B   &test, R15
-   \   0000DE   4F4F         MOV.B   R15, R15
-   \   0000E0   824FEE05     MOV.W   R15, &0x5ee
+   \   000070   4E43         MOV.B   #0x0, R14
+   \                     ??main_3:
+   \   000072   C24E....     MOV.B   R14, &whichChar
+    148                      usb_rx_ring_rd++;
+   \   000076   9253....     ADD.W   #0x1, &usb_rx_ring_rd
+    149                    }
+    150                    
+    151                    //---------------Write to LCD
+    152                    if (gotBoth)
+   \                     ??main_1:
+   \   00007A   C293....     CMP.B   #0x0, &gotBoth
+   \   00007E   A224         JEQ     ??main_0
+    153                    {
+    154                      lcd_clear();
+   \   000080   ........     CALLA   #lcd_clear
+    155                      test = (int) bit2<<8;
+   \   000084   5F42....     MOV.B   &bit2, R15
+   \   000088   4F4F         MOV.B   R15, R15
+   \   00008A   3FF0FF00     AND.W   #0xff, R15
+   \   00008E   8F10         SWPB    R15
+   \   000090   824F....     MOV.W   R15, &test
+    156                      test = test | (int) bit1;
+   \   000094   5F42....     MOV.B   &bit1, R15
+   \   000098   4F4F         MOV.B   R15, R15
+   \   00009A   82DF....     BIS.W   R15, &test
+    157                      
+    158                      if (test==255)
+   \   00009E   B290FF00.... CMP.W   #0xff, &test
+   \   0000A4   0220         JNE     ??main_4
+    159                      {
+    160                        driving = 1;
+   \   0000A6   9243....     MOV.W   #0x1, &driving
+    161                      }
+    162                      
+    163                      testChar = (test/10000)%10+48;
+   \                     ??main_4:
+   \   0000AA   1C42....     MOV.W   &test, R12
+   \   0000AE   3E401027     MOV.W   #0x2710, R14
+   \   0000B2   ........     CALLA   #?DivMod16u
+   \   0000B6   3E400A00     MOV.W   #0xa, R14
+   \   0000BA   ........     CALLA   #?DivMod16u
+   \   0000BE   7E503000     ADD.B   #0x30, R14
+   \   0000C2   C24E....     MOV.B   R14, &testChar
+    164                      serial[7] = (char) testChar;
+   \   0000C6   1F42....     MOV.W   &serial, R15
+   \   0000CA   DF42....0700 MOV.B   &testChar, 0x7(R15)
+    165                      testChar = (test/1000)%10 + 48;
+   \   0000D0   1C42....     MOV.W   &test, R12
+   \   0000D4   3E40E803     MOV.W   #0x3e8, R14
+   \   0000D8   ........     CALLA   #?DivMod16u
+   \   0000DC   3E400A00     MOV.W   #0xa, R14
+   \   0000E0   ........     CALLA   #?DivMod16u
+   \   0000E4   7E503000     ADD.B   #0x30, R14
+   \   0000E8   C24E....     MOV.B   R14, &testChar
+    166                      serial[8] = testChar;
+   \   0000EC   1F42....     MOV.W   &serial, R15
+   \   0000F0   DF42....0800 MOV.B   &testChar, 0x8(R15)
+    167                      testChar = (test/100)%10 + 48;
+   \   0000F6   1C42....     MOV.W   &test, R12
+   \   0000FA   3E406400     MOV.W   #0x64, R14
+   \   0000FE   ........     CALLA   #?DivMod16u
+   \   000102   3E400A00     MOV.W   #0xa, R14
+   \   000106   ........     CALLA   #?DivMod16u
+   \   00010A   7E503000     ADD.B   #0x30, R14
+   \   00010E   C24E....     MOV.B   R14, &testChar
+    168                      serial[9] = testChar;
+   \   000112   1F42....     MOV.W   &serial, R15
+   \   000116   DF42....0900 MOV.B   &testChar, 0x9(R15)
+    169                      testChar = (test/10)%10 + 48;
+   \   00011C   1C42....     MOV.W   &test, R12
+   \   000120   3E400A00     MOV.W   #0xa, R14
+   \   000124   ........     CALLA   #?DivMod16u
+   \   000128   3E400A00     MOV.W   #0xa, R14
+   \   00012C   ........     CALLA   #?DivMod16u
+   \   000130   7E503000     ADD.B   #0x30, R14
+   \   000134   C24E....     MOV.B   R14, &testChar
+    170                      serial[10] = testChar;
+   \   000138   1F42....     MOV.W   &serial, R15
+   \   00013C   DF42....0A00 MOV.B   &testChar, 0xa(R15)
+    171                      testChar = (test/1)%10 + 48;
+   \   000142   1C42....     MOV.W   &test, R12
+   \   000146   1E43         MOV.W   #0x1, R14
+   \   000148   ........     CALLA   #?DivMod16u
+   \   00014C   3E400A00     MOV.W   #0xa, R14
+   \   000150   ........     CALLA   #?DivMod16u
+   \   000154   7E503000     ADD.B   #0x30, R14
+   \   000158   C24E....     MOV.B   R14, &testChar
+    172                      serial[11] = testChar;
+   \   00015C   1F42....     MOV.W   &serial, R15
+   \   000160   DF42....0B00 MOV.B   &testChar, 0xb(R15)
+    173                      lcd_out(serial, LCD_LINE_1);
+   \   000166   7D408000     MOV.B   #0x80, R13
+   \   00016A   1C42....     MOV.W   &serial, R12
+   \   00016E   ........     CALLA   #lcd_out
+    174                      
+    175                      testChar = (test/1)%10 + 48;
+   \   000172   1C42....     MOV.W   &test, R12
+   \   000176   1E43         MOV.W   #0x1, R14
+   \   000178   ........     CALLA   #?DivMod16u
+   \   00017C   3E400A00     MOV.W   #0xa, R14
+   \   000180   ........     CALLA   #?DivMod16u
+   \   000184   7E503000     ADD.B   #0x30, R14
+   \   000188   C24E....     MOV.B   R14, &testChar
+    176                      test++;
+   \   00018C   9253....     ADD.W   #0x1, &test
+    177                      
+    178                      bit1 = (char) (test & 0xFF);
+   \   000190   D242........ MOV.B   &test, &bit1
+    179                      bit2 = (char) (test>>8);
+   \   000196   D242........ MOV.B   &test + 1, &bit2
+    180                      
+    181                      writeOut = 1;
+   \   00019C   D243....     MOV.B   #0x1, &writeOut
+    182                    
+    183                      newFM(60);
+   \   0001A0   3C403C00     MOV.W   #0x3c, R12
+   \   0001A4   ........     CALLA   #newFM
+    184                    
+    185                      //wroteFirst = 1;
+    186                      UCA1TXBUF = bit1;
+   \   0001A8   5F42....     MOV.B   &bit1, R15
+   \   0001AC   4F4F         MOV.B   R15, R15
+   \   0001AE   824FEE05     MOV.W   R15, &0x5ee
+    187                      while (!UCTXIFG) {}
+    188                      UCA1TXBUF = bit2;
+   \   0001B2   5F42....     MOV.B   &bit2, R15
+   \   0001B6   4F4F         MOV.B   R15, R15
+   \   0001B8   824FEE05     MOV.W   R15, &0x5ee
+    189                      while (!UCTXIFG) {}
+    190                      writeOut = 0;
+   \   0001BC   C243....     MOV.B   #0x0, &writeOut
+    191                      gotBoth = 0;
+   \   0001C0   C243....     MOV.B   #0x0, &gotBoth
+    192                      //wroteFirst = 0;
+    193                  }
    \                     ??main_0:
-   \   0000E4   9242........ MOV.W   &usb_rx_ring_wr, &test1
-   \   0000EA   9242........ MOV.W   &usb_rx_ring_rd, &test2
-   \   0000F0   9292........ CMP.W   &test2, &test1
-   \   0000F6   F627         JEQ     ??main_0
-   \   0000F8   B2900700.... CMP.W   #0x7, &usb_rx_ring_rd
-   \   0000FE   B83B         JL      ??main_1
-   \   000100   8243....     MOV.W   #0x0, &usb_rx_ring_rd
-   \   000104   D242........ MOV.B   &USB_Char_Rx + 7, &test
-   \   00010A   D253....     ADD.B   #0x1, &test
-   \   00010E   B73F         JMP     ??main_2
-   \   000110   0343         NOP
-   \   000112                REQUIRE _A_PJOUT_L
-   \   000112                REQUIRE _A_UCA1TXBUF_L
-    141                  }
-    142             //     nib1 = (nib1Mask&ADC_RD);
-    143             //       nib1 = (nib1Mask&ADC_RD);
-    144             //       if (nib1 < numRange) nib1 = nib1 + numOffset;
-    145             //       else nib1 = nib1 + charOffset;
-    146             //   
-    147             //       nib2 = (nib2Mask&ADC_RD)>>shift4;
-    148             //       if (nib2 < numRange) nib2 = nib2 + numOffset;
-    149             //       else nib2 = nib2 + charOffset;
-    150             //   
-    151             //       nib3 = (nib3Mask&ADC_RD)>>shift8;
-    152             //       nib3 = nib3 + numOffset;
-    153             //   
-    154             //       nib4 = RESET + numOffset;
-    155             //   
-    156             //       display_One="            ";
-    157             //       display_One[char1]=nib4;
-    158             //       display_One[char2]=nib3;
-    159             //       display_One[char3]=nib2;
-    160             //       display_One[char4]=nib1;
-    161                }
-    162             
-    163             
-    164             
-    165             //-------------------------------------------------------
-    166             //if (writeNext)
-    167             //{
-    168            
-    169             //   if ((UCTXIFG))
-    170             //   {
-    171             //     timeOut = RESET;
-    172             //     
-    173             //     //
-    174             //     //
-    175             //     UCA1TXBUF = toWrite;
-    176             //   
-    177             //     newFM(HUNDRED_MIL);
-    178             //     if (usb_rx_ring_wr == RESET)
-    179             //     {
-    180             //       dontWrite = START;
-    181             //       break;
-    182             //     }
-    183             //
-    184             //   
-    185             //     while (START)
-    186             //     {
-    187             //       newFM(START);
-    188             //       test1 = usb_rx_ring_wr;
-    189             //       test2 = usb_rx_ring_rd;
-    190             //       if (test1 != test2) break;
-    191             //     }
-    192             //   
-    193             //     usb_rx_ring_rd++;
-    194             //     test = USB_Char_Rx[usb_rx_ring_wr];
-    195             //   
-    196             //     serial[char1-1+j]=test;
-    197             //     }
-    198             //
-    199             // lcd_clear();
-    200             // if (!dontWrite) lcd_out(serial, LCD_LINE_1);
-    201             // else dontWrite = RESET;
-    202             // //else dontWrite = 0;
-    203             // usb_rx_ring_wr = RESET;
-    204             // usb_rx_ring_rd = RESET;
-    205             // usb_tx_ring_wr = RESET;
-    206             // usb_tx_ring_rd = RESET;
-    207             // 
-    208             // if (i >= 100) writeNext = 0;
-    209             //}
-    210             //}
-    211           }
-    212          }
+   \   0001C4   9242........ MOV.W   &usb_rx_ring_wr, &test1
+   \   0001CA   9242........ MOV.W   &usb_rx_ring_rd, &test2
+   \   0001D0   8243....     MOV.W   #0x0, &test
+   \   0001D4   9292........ CMP.W   &test2, &test1
+   \   0001DA   0224         JEQ     ??main_5
+   \   0001DC   5E43         MOV.B   #0x1, R14
+   \   0001DE   013C         JMP     ??main_6
+   \                     ??main_5:
+   \   0001E0   4E43         MOV.B   #0x0, R14
+   \                     ??main_6:
+   \   0001E2   5F42....     MOV.B   &readyToReceive, R15
+   \   0001E6   5FF3         AND.B   #0x1, R15
+   \   0001E8   4EBF         BIT.B   R15, R14
+   \   0001EA   EC27         JEQ     ??main_0
+   \   0001EC   B2900700.... CMP.W   #0x7, &usb_rx_ring_rd
+   \   0001F2   1738         JL      ??main_7
+   \   0001F4   8243....     MOV.W   #0x0, &usb_rx_ring_rd
+   \   0001F8   C293....     CMP.B   #0x0, &whichChar
+   \   0001FC   0420         JNE     ??main_8
+   \   0001FE   D242........ MOV.B   &USB_Char_Rx + 6, &bit1
+   \   000204   053C         JMP     ??main_9
+   \                     ??main_8:
+   \   000206   D242........ MOV.B   &USB_Char_Rx + 7, &bit2
+   \   00020C   D243....     MOV.B   #0x1, &gotBoth
+   \                     ??main_9:
+   \   000210   C293....     CMP.B   #0x0, &whichChar
+   \   000214   0220         JNE     ??main_10
+   \   000216   5E43         MOV.B   #0x1, R14
+   \   000218   013C         JMP     ??main_11
+   \                     ??main_10:
+   \   00021A   4E43         MOV.B   #0x0, R14
+   \                     ??main_11:
+   \   00021C   C24E....     MOV.B   R14, &whichChar
+   \   000220   2C3F         JMP     ??main_1
+   \                     ??main_7:
+   \   000222   C293....     CMP.B   #0x0, &whichChar
+   \   000226   0920         JNE     ??main_12
+   \   000228   9242........ MOV.W   &usb_rx_ring_wr, &test1
+   \   00022E   1F42....     MOV.W   &test1, R15
+   \   000232   D24F........ MOV.B   LWRD(USB_Char_Rx - 1)(R15), &bit1
+   \   000238   0A3C         JMP     ??main_13
+   \                     ??main_12:
+   \   00023A   9242........ MOV.W   &usb_rx_ring_wr, &test2
+   \   000240   1F42....     MOV.W   &test2, R15
+   \   000244   D24F........ MOV.B   USB_Char_Rx(R15), &bit2
+   \   00024A   D243....     MOV.B   #0x1, &gotBoth
+   \                     ??main_13:
+   \   00024E   C293....     CMP.B   #0x0, &whichChar
+   \   000252   0E23         JNE     ??main_2
+   \   000254   5E43         MOV.B   #0x1, R14
+   \   000256   0D3F         JMP     ??main_3
+   \   000258   0343         NOP
+   \   00025A                REQUIRE _A_PJOUT_L
+   \   00025A                REQUIRE _A_UCA1TXBUF_L
+    194                }
+    195          }
+    196          }
+    197          }
+
+   \                                 In  segment DATA16_ID, align 1, align-sorted
+   \                     `?<Initializer for readyToReceive>`:
+   \   000000   01           DC8 1
 
    \                                 In  segment DATA16_C, align 1, align-sorted
    \                     `?<Constant "   Callibrate   ">`:
@@ -485,40 +615,51 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\main.c
       17  ?<Constant "   Callibrate   ">
       14  ?<Constant "  IR Em Off  ">
       16  ?<Constant "1-Display 2-Clr">
+       1  ?<Initializer for readyToReceive>
        2  L_Dir
        2  R_Dir
        2  Time_Sequence
        2  _A_PJOUT_L
        2  _A_UCA1TXBUF_L
+       1  bit1
+       1  bit2
        2  counter
        2  display_HW3
        2  display_NCSU
        2  dontWrite
        2  driving
        2  five_msec_count
+       1  gotBoth
        2  halfTimer
-     274  main
+     602  main
        1  one_time
+       1  readyToReceive
        2  reverse
        2  serial
        2  startHalf
        2  startTimer
-       1  test
+       2  test
        2  test1
        2  test2
+       1  testChar
        2  timeOut
        1  toWrite
+       1  whichChar
        2  writeNext
+       1  writeOut
+       1  wroteFirst
 
  
- 274 bytes in segment CODE
+ 602 bytes in segment CODE
    4 bytes in segment DATA16_AN
   63 bytes in segment DATA16_C
-  39 bytes in segment DATA16_Z
+   1 byte  in segment DATA16_I
+   1 byte  in segment DATA16_ID
+  47 bytes in segment DATA16_Z
  
- 274 bytes of CODE  memory
-  63 bytes of CONST memory
-  39 bytes of DATA  memory (+ 4 bytes shared)
+ 602 bytes of CODE  memory
+  64 bytes of CONST memory
+  48 bytes of DATA  memory (+ 4 bytes shared)
 
 Errors: none
 Warnings: none

@@ -187,3 +187,5 @@ extern volatile int usb_rx_ring_wr;
 extern volatile int usb_rx_ring_rd;
 
 extern volatile int writeNext;
+
+extern volatile char readyToReceive;

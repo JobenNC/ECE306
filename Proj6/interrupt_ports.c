@@ -82,7 +82,9 @@ __interrupt void switch_interrupt(void) {
    
    //-----Setup up first fake receive
    ++usb_rx_ring_wr;
-   USB_Char_Rx[0] = (char) 0;
+   ++usb_rx_ring_wr;
+   USB_Char_Rx[0] = (char) 0xDC;
+   USB_Char_Rx[1] = (char) 0xFF;
  }
 // Switch 2 
  if (P4IFG & SW2) {

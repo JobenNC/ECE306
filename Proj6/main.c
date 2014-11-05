@@ -27,7 +27,20 @@ unsigned int halfTimer = RESET;
 
 unsigned int L_Dir;
 unsigned int R_Dir;
-char test;
+unsigned int test;
+
+char bit1;
+char bit2;
+
+char testChar;
+
+volatile char readyToReceive = 1;
+
+char whichChar = 0;
+char writeOut = 0;
+char wroteFirst = 0;
+char gotBoth = 0;
+
 char *serial;
 int counter = 0;
 
@@ -93,120 +106,92 @@ void main(void){
  serial="               ";
  while(ALWAYS) {    
    
-   //UCA1TXBUF = 'U';
-   //if (nib2 < numRange) nib2 = nib2 + numOffset;
-   //       else nib2 = nib2 + charOffset;
    test1 = usb_rx_ring_wr;
    test2 = usb_rx_ring_rd;
-   if (test1 != test2)
+   
+   test = 0;
+   if ((test1 != test2) & (readyToReceive))
       {
         if ((UCTXIFG))
         {
           if (usb_rx_ring_rd > 6)
           {
             usb_rx_ring_rd =0;
-            test = USB_Char_Rx[7];
-            test++;
+            
+            if (!whichChar)
+            {
+              bit1 = USB_Char_Rx[6];
+              //char1++;
+            }
+            else
+            {
+              bit2 = USB_Char_Rx[7];
+              //char2++;
+              gotBoth = 1;
+            }
+            whichChar = !whichChar;
           }
           else
           {
+            if (!whichChar)
+            {
+              test1 = usb_rx_ring_wr;
+              bit1 = USB_Char_Rx[test1-1];
+            }
+            else
+            {
+              test2 = usb_rx_ring_wr;
+              bit2 = USB_Char_Rx[test2];
+              gotBoth = 1;
+            }
+            whichChar = !whichChar;
             usb_rx_ring_rd++;
-            test = USB_Char_Rx[usb_rx_ring_wr];
           }
           
-          //test = test + numOffset;
+          //---------------Write to LCD
+          if (gotBoth)
+          {
+            lcd_clear();
+            test = (int) bit2<<8;
+            test = test | (int) bit1;
+            
+            if (test==255)
+            {
+              driving = 1;
+            }
+            
+            testChar = (test/10000)%10+48;
+            serial[7] = (char) testChar;
+            testChar = (test/1000)%10 + 48;
+            serial[8] = testChar;
+            testChar = (test/100)%10 + 48;
+            serial[9] = testChar;
+            testChar = (test/10)%10 + 48;
+            serial[10] = testChar;
+            testChar = (test/1)%10 + 48;
+            serial[11] = testChar;
+            lcd_out(serial, LCD_LINE_1);
+            
+            testChar = (test/1)%10 + 48;
+            test++;
+            
+            bit1 = (char) (test & 0xFF);
+            bit2 = (char) (test>>8);
+            
+            writeOut = 1;
           
-          lcd_clear();
+            newFM(60);
           
-          //test = test + 48;
-          toWrite = test/10;
-          serial[char1]=toWrite + 48;
-          
-          toWrite = test % 10;
-          
-          serial[char2] = toWrite + 48;
-          //if ((int) test < 10)
-          //{
-          //    toWrite = test + 48;
-          //}     
-          //serial[char1]=toWrite;
-          
-          lcd_out(serial, LCD_LINE_1);
-          
-          test++;
-          //test = test - 48;
-          
-          newFM(200);
-          UCA1TXBUF = test;
+            //wroteFirst = 1;
+            UCA1TXBUF = bit1;
+            while (!UCTXIFG) {}
+            UCA1TXBUF = bit2;
+            while (!UCTXIFG) {}
+            writeOut = 0;
+            gotBoth = 0;
+            //wroteFirst = 0;
         }
-   //     nib1 = (nib1Mask&ADC_RD);
-   //       nib1 = (nib1Mask&ADC_RD);
-   //       if (nib1 < numRange) nib1 = nib1 + numOffset;
-   //       else nib1 = nib1 + charOffset;
-   //   
-   //       nib2 = (nib2Mask&ADC_RD)>>shift4;
-   //       if (nib2 < numRange) nib2 = nib2 + numOffset;
-   //       else nib2 = nib2 + charOffset;
-   //   
-   //       nib3 = (nib3Mask&ADC_RD)>>shift8;
-   //       nib3 = nib3 + numOffset;
-   //   
-   //       nib4 = RESET + numOffset;
-   //   
-   //       display_One="            ";
-   //       display_One[char1]=nib4;
-   //       display_One[char2]=nib3;
-   //       display_One[char3]=nib2;
-   //       display_One[char4]=nib1;
       }
-   
-   
-   
-   //-------------------------------------------------------
-   //if (writeNext)
-   //{
-  
-   //   if ((UCTXIFG))
-   //   {
-   //     timeOut = RESET;
-   //     
-   //     //
-   //     //
-   //     UCA1TXBUF = toWrite;
-   //   
-   //     newFM(HUNDRED_MIL);
-   //     if (usb_rx_ring_wr == RESET)
-   //     {
-   //       dontWrite = START;
-   //       break;
-   //     }
-   //
-   //   
-   //     while (START)
-   //     {
-   //       newFM(START);
-   //       test1 = usb_rx_ring_wr;
-   //       test2 = usb_rx_ring_rd;
-   //       if (test1 != test2) break;
-   //     }
-   //   
-   //     usb_rx_ring_rd++;
-   //     test = USB_Char_Rx[usb_rx_ring_wr];
-   //   
-   //     serial[char1-1+j]=test;
-   //     }
-   //
-   // lcd_clear();
-   // if (!dontWrite) lcd_out(serial, LCD_LINE_1);
-   // else dontWrite = RESET;
-   // //else dontWrite = 0;
-   // usb_rx_ring_wr = RESET;
-   // usb_rx_ring_rd = RESET;
-   // usb_tx_ring_wr = RESET;
-   // usb_tx_ring_rd = RESET;
-   // 
-   // if (i >= 100) writeNext = 0;
-   //}
-   //}
- }
+}
+}
 }

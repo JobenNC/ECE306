@@ -85,6 +85,10 @@ __interrupt void USCI_A1_ISR(void){
  break;
  case SECOND: // Vector 2 - RXIFG
  temp = ++usb_rx_ring_wr;
+ 
+ if (temp % 2) readyToReceive = 1;
+ else readyToReceive = 0;
+ 
  USB_Char_Rx[temp] = UCA1RXBUF; // RX -> USB_Char_Rx character
  if (usb_rx_ring_wr > (7)){
     usb_rx_ring_wr = 0; // Circular buffer back to beginning

@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         05/Nov/2014  00:33:31
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         05/Nov/2014  16:54:02
 # Copyright 1996-2014 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
 #
@@ -233,42 +233,53 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Serial.c
    \   000002   1F42FE05     MOV.W   &0x5fe, R15
    \   000006   E00F         ADDA    R15, PC
    \                     `?<Jumptable for USCI_A1_ISR>_0`:
-   \   000008   123C         JMP     ??USCI_A1_ISR_2
-   \   00000A   033C         JMP     ??USCI_A1_ISR_3
-   \   00000C   103C         JMP     ??USCI_A1_ISR_2
-   \   00000E   0F3C         JMP     ??USCI_A1_ISR_2
-   \   000010   0E3C         JMP     ??USCI_A1_ISR_2
+   \   000008   193C         JMP     ??USCI_A1_ISR_2
+   \   00000A   033C         JMP     ??USCI_A1_ISR_5
+   \   00000C   173C         JMP     ??USCI_A1_ISR_2
+   \   00000E   163C         JMP     ??USCI_A1_ISR_2
+   \   000010   153C         JMP     ??USCI_A1_ISR_2
      84           case RESET: // Vector 0 - no interrupt
      85           break;
      86           case SECOND: // Vector 2 - RXIFG
      87           temp = ++usb_rx_ring_wr;
-   \                     ??USCI_A1_ISR_3:
+   \                     ??USCI_A1_ISR_5:
    \   000012   1F42....     MOV.W   &usb_rx_ring_wr, R15
    \   000016   1F53         ADD.W   #0x1, R15
    \   000018   824F....     MOV.W   R15, &usb_rx_ring_wr
-     88           USB_Char_Rx[temp] = UCA1RXBUF; // RX -> USB_Char_Rx character
-   \   00001C   1E42EC05     MOV.W   &0x5ec, R14
-   \   000020   CF4E....     MOV.B   R14, USB_Char_Rx(R15)
-     89           if (usb_rx_ring_wr > (7)){
-   \   000024   B292....     CMP.W   #0x8, &usb_rx_ring_wr
-   \   000028   0238         JL      ??USCI_A1_ISR_2
-     90              usb_rx_ring_wr = 0; // Circular buffer back to beginning
-   \   00002A   8243....     MOV.W   #0x0, &usb_rx_ring_wr
-     91           }
-     92          
-     93           break;
-     94           case FOURTH: // Vector 4 – TXIFG
-     95             //write to UCAxTXBUF x=0
-     96             
+     88           
+     89           if (temp % 2) readyToReceive = 1;
+   \   00001C   1FB3         BIT.W   #0x1, R15
+   \   00001E   0328         JNC     ??USCI_A1_ISR_3
+   \   000020   D243....     MOV.B   #0x1, &readyToReceive
+   \   000024   023C         JMP     ??USCI_A1_ISR_4
+     90           else readyToReceive = 0;
+   \                     ??USCI_A1_ISR_3:
+   \   000026   C243....     MOV.B   #0x0, &readyToReceive
+     91           
+     92           USB_Char_Rx[temp] = UCA1RXBUF; // RX -> USB_Char_Rx character
+   \                     ??USCI_A1_ISR_4:
+   \   00002A   1E42EC05     MOV.W   &0x5ec, R14
+   \   00002E   CF4E....     MOV.B   R14, USB_Char_Rx(R15)
+     93           if (usb_rx_ring_wr > (7)){
+   \   000032   B292....     CMP.W   #0x8, &usb_rx_ring_wr
+   \   000036   0238         JL      ??USCI_A1_ISR_2
+     94              usb_rx_ring_wr = 0; // Circular buffer back to beginning
+   \   000038   8243....     MOV.W   #0x0, &usb_rx_ring_wr
+     95           }
+     96          
      97           break;
-     98           default: break; 
-     99           }
-    100          }
+     98           case FOURTH: // Vector 4 – TXIFG
+     99             //write to UCAxTXBUF x=0
+    100             
+    101           break;
+    102           default: break; 
+    103           }
+    104          }
    \                     ??USCI_A1_ISR_2:
-   \   00002E   1E17         POPM.W  #0x2, R15
-   \   000030   0013         RETI
-   \   000032                REQUIRE _A_UCA1RXBUF_L
-   \   000032                REQUIRE UCA1IV
+   \   00003C   1E17         POPM.W  #0x2, R15
+   \   00003E   0013         RETI
+   \   000040                REQUIRE _A_UCA1RXBUF_L
+   \   000040                REQUIRE UCA1IV
 
    \                                 In  segment INTVEC, offset 0x56, root
    \                     `??USCI_A1_ISR??INTVEC 86`:
@@ -281,7 +292,7 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Serial.c
    \                                 In  segment DATA16_ID, align 2, align-sorted
    \                     `?<Initializer for LARGE_RING_SIZE>`:
    \   000000   1000         DC16 16
-    101          //------------------------------------------------------------------------------
+    105          //------------------------------------------------------------------------------
 
    Maximum stack usage in bytes:
 
@@ -305,7 +316,7 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Serial.c
        2  UCA1IV
        8  USB_Char_Rx
        8  USB_Char_Tx
-      50  USCI_A1_ISR
+      64  USCI_A1_ISR
        2  _A_UCA1BRW_L
        2  _A_UCA1CTLW0_L
        2  _A_UCA1IE_L
@@ -323,9 +334,9 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Serial.c
   4 bytes in segment DATA16_ID
  26 bytes in segment DATA16_Z
   2 bytes in segment INTVEC
- 50 bytes in segment ISR_CODE
+ 64 bytes in segment ISR_CODE
  
- 134 bytes of CODE  memory
+ 148 bytes of CODE  memory
    4 bytes of CONST memory (+  2 bytes shared)
   30 bytes of DATA  memory (+ 12 bytes shared)
 

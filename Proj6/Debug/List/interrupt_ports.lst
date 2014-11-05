@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         05/Nov/2014  00:46:25
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         05/Nov/2014  17:47:55
 # Copyright 1996-2014 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
 #
@@ -212,7 +212,7 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\interrupt_ports.c
      63          // Switch 1 
      64           if (P4IFG & SW1) {
    \   000002   D2B33D02     BIT.B   #0x1, &0x23d
-   \   000006   1828         JNC     ??switch_interrupt_0
+   \   000006   1D28         JNC     ??switch_interrupt_0
      65              Init_Serial_UCA1();
    \   000008   ........     CALLA   #Init_Serial_UCA1
      66              writeNext = START;
@@ -244,47 +244,51 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\interrupt_ports.c
      83             //-----Setup up first fake receive
      84             ++usb_rx_ring_wr;
    \   000030   9253....     ADD.W   #0x1, &usb_rx_ring_wr
-     85             USB_Char_Rx[0] = (char) 0;
-   \   000034   C243....     MOV.B   #0x0, &USB_Char_Rx
-     86           }
-     87          // Switch 2 
-     88           if (P4IFG & SW2) {
+     85             ++usb_rx_ring_wr;
+   \   000034   9253....     ADD.W   #0x1, &usb_rx_ring_wr
+     86             USB_Char_Rx[0] = (char) 0xDC;
+   \   000038   F240DC00.... MOV.B   #0xdc, &USB_Char_Rx
+     87             USB_Char_Rx[1] = (char) 0xFF;
+   \   00003E   F243....     MOV.B   #0xff, &USB_Char_Rx + 1
+     88           }
+     89          // Switch 2 
+     90           if (P4IFG & SW2) {
    \                     ??switch_interrupt_0:
-   \   000038   E2B33D02     BIT.B   #0x2, &0x23d
-   \   00003C   1228         JNC     ??switch_interrupt_1
-     89          
-     90             lcd_clear();
-   \   00003E   ........     CALLA   #lcd_clear
-     91          // t a variable to identify the switch has been pressed.
-     92             switchPress = START;
-   \   000042   9243....     MOV.W   #0x1, &switchPress
-     93          // Set a variable to identify the switch is being debounced.
-     94             isDebounce = START;
-   \   000046   9243....     MOV.W   #0x1, &isDebounce
-     95          // Reset the count required of the debounce.
-     96             bounceCount = RESET;
-   \   00004A   8243....     MOV.W   #0x0, &bounceCount
-     97          // Disable the Switch Interrupt.
-     98             P4IE &= ~SW2; // P4.0 SW2 interrupt Disabled
-   \   00004E   E2C33B02     BIC.B   #0x2, &0x23b
-     99             P4IE &= ~SW1; // P4.0 SW1 interrupt Disabled
-   \   000052   D2C33B02     BIC.B   #0x1, &0x23b
-    100          // Clear any current timer interrupt.
-    101             P4IFG &= ~SW2; // P4 IFG SW2 cleared
-   \   000056   E2C33D02     BIC.B   #0x2, &0x23d
-    102             P4IFG &= ~SW1; // P4 IFG SW1 cleared
-   \   00005A   D2C33D02     BIC.B   #0x1, &0x23d
-    103             PJOUT |= LED1; // Toggle LED 1 on to indicate boot ISR working
-   \   00005E   92D32203     BIS.W   #0x1, &0x322
-    104           }
-    105          // Enable the Timer Interrupt for the debounce.
-    106          }
+   \   000042   E2B33D02     BIT.B   #0x2, &0x23d
+   \   000046   1228         JNC     ??switch_interrupt_1
+     91          
+     92             lcd_clear();
+   \   000048   ........     CALLA   #lcd_clear
+     93          // t a variable to identify the switch has been pressed.
+     94             switchPress = START;
+   \   00004C   9243....     MOV.W   #0x1, &switchPress
+     95          // Set a variable to identify the switch is being debounced.
+     96             isDebounce = START;
+   \   000050   9243....     MOV.W   #0x1, &isDebounce
+     97          // Reset the count required of the debounce.
+     98             bounceCount = RESET;
+   \   000054   8243....     MOV.W   #0x0, &bounceCount
+     99          // Disable the Switch Interrupt.
+    100             P4IE &= ~SW2; // P4.0 SW2 interrupt Disabled
+   \   000058   E2C33B02     BIC.B   #0x2, &0x23b
+    101             P4IE &= ~SW1; // P4.0 SW1 interrupt Disabled
+   \   00005C   D2C33B02     BIC.B   #0x1, &0x23b
+    102          // Clear any current timer interrupt.
+    103             P4IFG &= ~SW2; // P4 IFG SW2 cleared
+   \   000060   E2C33D02     BIC.B   #0x2, &0x23d
+    104             P4IFG &= ~SW1; // P4 IFG SW1 cleared
+   \   000064   D2C33D02     BIC.B   #0x1, &0x23d
+    105             PJOUT |= LED1; // Toggle LED 1 on to indicate boot ISR working
+   \   000068   92D32203     BIS.W   #0x1, &0x322
+    106           }
+    107          // Enable the Timer Interrupt for the debounce.
+    108          }
    \                     ??switch_interrupt_1:
-   \   000062   3C17         POPM.W  #0x4, R15
-   \   000064   0013         RETI
-   \   000066                REQUIRE _A_PBIFG_L
-   \   000066                REQUIRE _A_PBIE_L
-   \   000066                REQUIRE _A_PJOUT_L
+   \   00006C   3C17         POPM.W  #0x4, R15
+   \   00006E   0013         RETI
+   \   000070                REQUIRE _A_PBIFG_L
+   \   000070                REQUIRE _A_PBIE_L
+   \   000070                REQUIRE _A_PJOUT_L
 
    \                                 In  segment INTVEC, offset 0x40, root
    \                     `??switch_interrupt??INTVEC 64`:
@@ -331,7 +335,7 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\interrupt_ports.c
        2  outP
        2  starting
        2  switchPress
-     102  switch_interrupt
+     112  switch_interrupt
 
  
    6 bytes in segment DATA16_AN
@@ -339,9 +343,9 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\interrupt_ports.c
    2 bytes in segment DATA16_ID
   32 bytes in segment DATA16_Z
    2 bytes in segment INTVEC
- 102 bytes in segment ISR_CODE
+ 112 bytes in segment ISR_CODE
  
- 102 bytes of CODE  memory
+ 112 bytes of CODE  memory
    2 bytes of CONST memory (+ 2 bytes shared)
   34 bytes of DATA  memory (+ 6 bytes shared)
 
