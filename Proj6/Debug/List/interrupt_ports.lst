@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         03/Nov/2014  11:17:23
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         05/Nov/2014  00:46:25
 # Copyright 1996-2014 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
 #
@@ -13,11 +13,11 @@
 #    __data_model  =  small
 #    __code_model  =  large
 #    Source file   =  
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\interrupt_ports.c
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\interrupt_ports.c
 #    Command line  =  
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\interrupt_ports.c -lC
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\List\ -o
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\ --no_cse
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\interrupt_ports.c -lC
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\List\ -o
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\Obj\ --no_cse
 #        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
 #        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
 #        (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.h"
@@ -25,13 +25,13 @@
 #        --multiplier_location=4C0 --hw_workaround=CPU40 --hw_workaround=CPU39
 #        --code_model=large
 #    List file     =  
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\List\interrupt_ports.lst
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\List\interrupt_ports.lst
 #    Object file   =  
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\interrupt_ports.r43
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\Obj\interrupt_ports.r43
 #
 ###############################################################################
 
-C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\interrupt_ports.c
+C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\interrupt_ports.c
       1          //===========================================================================
       2          // File Name : functions.h
       3          //
@@ -212,7 +212,7 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\interrupt_ports.c
      63          // Switch 1 
      64           if (P4IFG & SW1) {
    \   000002   D2B33D02     BIT.B   #0x1, &0x23d
-   \   000006   1428         JNC     ??switch_interrupt_0
+   \   000006   1828         JNC     ??switch_interrupt_0
      65              Init_Serial_UCA1();
    \   000008   ........     CALLA   #Init_Serial_UCA1
      66              writeNext = START;
@@ -241,307 +241,50 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\interrupt_ports.c
      81             PJOUT |= LED1; // Toggle LED 1 on to indicate boot ISR working
    \   00002C   92D32203     BIS.W   #0x1, &0x322
      82             
-     83             //switch(butt1)
-     84             //{
-     85             // writeNext = 1;
-     86              //case BEFORE_START:
-     87              //  //lcd_clear();
-     88              //  //lcd_out("    Calibrate", LCD_LINE_1);
-     89              //  //lcd_out("LED Black",LCD_LINE_2);
-     90              //  //butt1++;
-     91              //  
-     92              //  lcd_clear();
-     93              //  lcd_out("    Transmitting", LCD_LINE_1);
-     94              //  
-     95              //  writeNext = 1;
-     96              //  
-     97          
-     98              //  
-     99              //case RESET:
-    100              //  lcd_clear();
-    101              //  lcd_out("    Calibrate", LCD_LINE_1);
-    102              //  lcd_out("LED White",LCD_LINE_2);
-    103              //  butt1++;
-    104              //  //P1OUT |= IR_LED;
-    105              //  break;
-    106              //case START:
-    107              //  lcd_clear();
-    108              //  lcd_out("    Calibrate", LCD_LINE_1);
-    109              //  lcd_out("LED Black",LCD_LINE_2);
-    110              //  butt1++;
-    111              //  //P1OUT &= ~IR_LED;
-    112              //  break;
-    113              //  
-    114              //case SECOND:
-    115              //  //P1OUT &= ~IR_LED;
-    116              //  lcd_clear();
-    117              //  lcd_out("    Calibrate", LCD_LINE_1);
-    118              //  lcd_out("LED Off",LCD_LINE_2);
-    119              //  butt1++;
-    120              //  //P1OUT &= ~IR_LED;
-    121              //  break;
-    122              //case THIRD:
-    123              //  lcd_clear();
-    124              //  lcd_out("    Drive", LCD_LINE_1);
-    125              //  butt1 = RESET;
-    126              //  break;
-    127              //  
-    128              //default: break;
-    129             //}
-    130           }
-    131          // Switch 2 
-    132           if (P4IFG & SW2) {
+     83             //-----Setup up first fake receive
+     84             ++usb_rx_ring_wr;
+   \   000030   9253....     ADD.W   #0x1, &usb_rx_ring_wr
+     85             USB_Char_Rx[0] = (char) 0;
+   \   000034   C243....     MOV.B   #0x0, &USB_Char_Rx
+     86           }
+     87          // Switch 2 
+     88           if (P4IFG & SW2) {
    \                     ??switch_interrupt_0:
-   \   000030   E2B33D02     BIT.B   #0x2, &0x23d
-   \   000034   1228         JNC     ??switch_interrupt_1
-    133          
-    134             lcd_clear();
-   \   000036   ........     CALLA   #lcd_clear
-    135          // t a variable to identify the switch has been pressed.
-    136             switchPress = START;
-   \   00003A   9243....     MOV.W   #0x1, &switchPress
-    137          // Set a variable to identify the switch is being debounced.
-    138             isDebounce = START;
-   \   00003E   9243....     MOV.W   #0x1, &isDebounce
-    139          // Reset the count required of the debounce.
-    140             bounceCount = RESET;
-   \   000042   8243....     MOV.W   #0x0, &bounceCount
-    141          // Disable the Switch Interrupt.
-    142             P4IE &= ~SW2; // P4.0 SW2 interrupt Disabled
-   \   000046   E2C33B02     BIC.B   #0x2, &0x23b
-    143             P4IE &= ~SW1; // P4.0 SW1 interrupt Disabled
-   \   00004A   D2C33B02     BIC.B   #0x1, &0x23b
-    144          // Clear any current timer interrupt.
-    145             P4IFG &= ~SW2; // P4 IFG SW2 cleared
-   \   00004E   E2C33D02     BIC.B   #0x2, &0x23d
-    146             P4IFG &= ~SW1; // P4 IFG SW1 cleared
-   \   000052   D2C33D02     BIC.B   #0x1, &0x23d
-    147             PJOUT |= LED1; // Toggle LED 1 on to indicate boot ISR working
-   \   000056   92D32203     BIS.W   #0x1, &0x322
-    148             //
-    149             //switch(butt1)
-    150             //{
-    151             // case START:
-    152             //   
-    153             //   switch(butt2)
-    154             //   {
-    155             //     case RESET:
-    156             //       
-    157             //       LED_White_LD = ADC_LD;
-    158             //   
-    159             //       nib1 = (nib1Mask&ADC_RD);
-    160             //       if (nib1 < numRange) nib1 = nib1 + numOffset;
-    161             //       else nib1 = nib1 + charOffset;
-    162             //   
-    163             //       nib2 = (nib2Mask&ADC_RD)>>shift4;
-    164             //       if (nib2 < numRange) nib2 = nib2 + numOffset;
-    165             //       else nib2 = nib2 + charOffset;
-    166             //   
-    167             //       nib3 = (nib3Mask&ADC_RD)>>shift8;
-    168             //       nib3 = nib3 + numOffset;
-    169             //   
-    170             //       nib4 = RESET + numOffset;
-    171             //   
-    172             //       display_One="            ";
-    173             //       display_One[char1]=nib4;
-    174             //       display_One[char2]=nib3;
-    175             //       display_One[char3]=nib2;
-    176             //       display_One[char4]=nib1;
-    177             //   
-    178             //       lcd_clear();
-    179             //       lcd_out(display_One, LCD_LINE_1);
-    180             //       lcd_out("Left Detector",LCD_LINE_2);
-    181             //       butt2++;
-    182             //       
-    183             //       break;
-    184             //       
-    185             //     case START:
-    186             //       
-    187             //       LED_White_RD = ADC_RD;
-    188             //   
-    189             //       nib1 = (nib1Mask&ADC_RD);
-    190             //       if (nib1 < numRange) nib1 = nib1 + numOffset;
-    191             //       else nib1 = nib1 + charOffset;
-    192             //   
-    193             //       nib2 = (nib2Mask&ADC_RD)>>shift4;
-    194             //       if (nib2 < numRange) nib2 = nib2 + numOffset;
-    195             //       else nib2 = nib2 + charOffset;
-    196             //   
-    197             //       nib3 = (nib3Mask&ADC_RD)>>shift8;
-    198             //       nib3 = nib3 + numOffset;
-    199             //   
-    200             //       nib4 = RESET + numOffset;
-    201             //   
-    202             //       display_One="            ";
-    203             //       display_One[char1]=nib4;
-    204             //       display_One[char2]=nib3;
-    205             //       display_One[char3]=nib2;
-    206             //       display_One[char4]=nib1;
-    207             //   
-    208             //       lcd_clear();
-    209             //       lcd_out(display_One, LCD_LINE_1);
-    210             //       lcd_out("Right Detector",LCD_LINE_2);
-    211             //       butt2 = RESET;
-    212             //       
-    213             //       break;
-    214             //       
-    215             //     default: break;
-    216             //   }
-    217             //   
-    218             //   break;
-    219             //   
-    220             //case SECOND:
-    221             //     
-    222             //   //newFM(100);
-    223             //   
-    224             //   switch(butt2)
-    225             //   {
-    226             //     case RESET:
-    227             //       LED_Black_LD = ADC_LD;
-    228             //   
-    229             //       nib1 = (nib1Mask&ADC_RD);
-    230             //       if (nib1 < numRange) nib1 = nib1 + numOffset;
-    231             //       else nib1 = nib1 + charOffset;
-    232             //   
-    233             //       nib2 = (nib2Mask&ADC_RD)>>shift4;
-    234             //       if (nib2 < numRange) nib2 = nib2 + numOffset;
-    235             //       else nib2 = nib2 + charOffset;
-    236             //   
-    237             //       nib3 = (nib3Mask&ADC_RD)>>shift8;
-    238             //       nib3 = nib3 + numOffset;
-    239             //   
-    240             //       nib4 = RESET + numOffset;
-    241             //   
-    242             //       display_One="            ";
-    243             //       display_One[char1]=nib4;
-    244             //       display_One[char2]=nib3;
-    245             //       display_One[char3]=nib2;
-    246             //       display_One[char4]=nib1;
-    247             //   
-    248             //       lcd_clear();
-    249             //       lcd_out(display_One, LCD_LINE_1);
-    250             //       lcd_out("Left Detector",LCD_LINE_2);
-    251             //       butt2++;
-    252             //       break;
-    253             //       
-    254             //     case START:
-    255             //       LED_Black_RD = ADC_RD;
-    256             //   
-    257             //       nib1 = (nib1Mask&ADC_RD);
-    258             //       if (nib1 < numRange) nib1 = nib1 + numOffset;
-    259             //       else nib1 = nib1 + charOffset;
-    260             //   
-    261             //       nib2 = (nib2Mask&ADC_RD)>>shift4;
-    262             //       if (nib2 < numRange) nib2 = nib2 + numOffset;
-    263             //       else nib2 = nib2 + charOffset;
-    264             //   
-    265             //       nib3 = (nib3Mask&ADC_RD)>>shift8;
-    266             //       nib3 = nib3 + numOffset;
-    267             //   
-    268             //       nib4 = RESET + numOffset;
-    269             //   
-    270             //       display_One="            ";
-    271             //       display_One[char1]=nib4;
-    272             //       display_One[char2]=nib3;
-    273             //       display_One[char3]=nib2;
-    274             //       display_One[char4]=nib1;
-    275             //   
-    276             //       lcd_clear();
-    277             //       lcd_out(display_One, LCD_LINE_1);
-    278             //       lcd_out("Right Detector",LCD_LINE_2);
-    279             //       butt2 = RESET;
-    280             //       break;
-    281             //       
-    282             //     default: break;
-    283             //   }
-    284             //   
-    285             //   break;
-    286             //   
-    287             //   
-    288             //case THIRD:
-    289             //   
-    290             //   switch(butt2)
-    291             //   {
-    292             //       case RESET:
-    293             //       LED_Off_LD = ADC_LD;
-    294             //   
-    295             //       nib1 = (nib1Mask&ADC_RD);
-    296             //       if (nib1 < numRange) nib1 = nib1 + numOffset;
-    297             //       else nib1 = nib1 + charOffset;
-    298             //   
-    299             //       nib2 = (nib2Mask&ADC_RD)>>shift4;
-    300             //       if (nib2 < numRange) nib2 = nib2 + numOffset;
-    301             //       else nib2 = nib2 + charOffset;
-    302             //   
-    303             //       nib3 = (nib3Mask&ADC_RD)>>shift8;
-    304             //       nib3 = nib3 + numOffset;
-    305             //   
-    306             //       nib4 = RESET + numOffset;
-    307             //   
-    308             //       display_One="            ";
-    309             //       display_One[char1]=nib4;
-    310             //       display_One[char2]=nib3;
-    311             //       display_One[char3]=nib2;
-    312             //       display_One[char4]=nib1;
-    313             //   
-    314             //       lcd_clear();
-    315             //       lcd_out(display_One, LCD_LINE_1);
-    316             //       lcd_out("Left Detector",LCD_LINE_2);
-    317             //       butt2++;
-    318             //       break;
-    319             //       
-    320             //     case START:
-    321             //       LED_Off_RD = ADC_RD;
-    322             //   
-    323             //       nib1 = (nib1Mask&ADC_RD);
-    324             //       if (nib1 < numRange) nib1 = nib1 + numOffset;
-    325             //       else nib1 = nib1 + charOffset;
-    326             //   
-    327             //       nib2 = (nib2Mask&ADC_RD)>>shift4;
-    328             //       if (nib2 < numRange) nib2 = nib2 + numOffset;
-    329             //       else nib2 = nib2 + charOffset;
-    330             //   
-    331             //       nib3 = (nib3Mask&ADC_RD)>>shift8;
-    332             //       nib3 = nib3 + numOffset;
-    333             //   
-    334             //       nib4 = RESET + numOffset;
-    335             //   
-    336             //       display_One="            ";
-    337             //       display_One[char1]=nib4;
-    338             //       display_One[char2]=nib3;
-    339             //       display_One[char3]=nib2;
-    340             //       display_One[char4]=nib1;
-    341             //   
-    342             //       lcd_clear();
-    343             //       lcd_out(display_One, LCD_LINE_1);
-    344             //       lcd_out("Right Detector",LCD_LINE_2);
-    345             //       butt2 = RESET;
-    346             //       break;
-    347             //       
-    348             //     default: break;
-    349             //   }
-    350             //   P1OUT |= IR_LED;
-    351             //   break;
-    352             //   
-    353             //case RESET:
-    354             //  
-    355             //  drive = START; 
-    356             //  starting = START;
-    357             //  
-    358             //  break;
-    359             //   
-    360             // default: break;  
-    361             //}
-    362             //nib1 = nib1;
-    363           }
-    364          // Enable the Timer Interrupt for the debounce.
-    365          }
+   \   000038   E2B33D02     BIT.B   #0x2, &0x23d
+   \   00003C   1228         JNC     ??switch_interrupt_1
+     89          
+     90             lcd_clear();
+   \   00003E   ........     CALLA   #lcd_clear
+     91          // t a variable to identify the switch has been pressed.
+     92             switchPress = START;
+   \   000042   9243....     MOV.W   #0x1, &switchPress
+     93          // Set a variable to identify the switch is being debounced.
+     94             isDebounce = START;
+   \   000046   9243....     MOV.W   #0x1, &isDebounce
+     95          // Reset the count required of the debounce.
+     96             bounceCount = RESET;
+   \   00004A   8243....     MOV.W   #0x0, &bounceCount
+     97          // Disable the Switch Interrupt.
+     98             P4IE &= ~SW2; // P4.0 SW2 interrupt Disabled
+   \   00004E   E2C33B02     BIC.B   #0x2, &0x23b
+     99             P4IE &= ~SW1; // P4.0 SW1 interrupt Disabled
+   \   000052   D2C33B02     BIC.B   #0x1, &0x23b
+    100          // Clear any current timer interrupt.
+    101             P4IFG &= ~SW2; // P4 IFG SW2 cleared
+   \   000056   E2C33D02     BIC.B   #0x2, &0x23d
+    102             P4IFG &= ~SW1; // P4 IFG SW1 cleared
+   \   00005A   D2C33D02     BIC.B   #0x1, &0x23d
+    103             PJOUT |= LED1; // Toggle LED 1 on to indicate boot ISR working
+   \   00005E   92D32203     BIS.W   #0x1, &0x322
+    104           }
+    105          // Enable the Timer Interrupt for the debounce.
+    106          }
    \                     ??switch_interrupt_1:
-   \   00005A   3C17         POPM.W  #0x4, R15
-   \   00005C   0013         RETI
-   \   00005E                REQUIRE _A_PBIFG_L
-   \   00005E                REQUIRE _A_PBIE_L
-   \   00005E                REQUIRE _A_PJOUT_L
+   \   000062   3C17         POPM.W  #0x4, R15
+   \   000064   0013         RETI
+   \   000066                REQUIRE _A_PBIFG_L
+   \   000066                REQUIRE _A_PBIE_L
+   \   000066                REQUIRE _A_PJOUT_L
 
    \                                 In  segment INTVEC, offset 0x40, root
    \                     `??switch_interrupt??INTVEC 64`:
@@ -588,19 +331,19 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\interrupt_ports.c
        2  outP
        2  starting
        2  switchPress
-      94  switch_interrupt
+     102  switch_interrupt
 
  
-  6 bytes in segment DATA16_AN
-  2 bytes in segment DATA16_I
-  2 bytes in segment DATA16_ID
- 32 bytes in segment DATA16_Z
-  2 bytes in segment INTVEC
- 94 bytes in segment ISR_CODE
+   6 bytes in segment DATA16_AN
+   2 bytes in segment DATA16_I
+   2 bytes in segment DATA16_ID
+  32 bytes in segment DATA16_Z
+   2 bytes in segment INTVEC
+ 102 bytes in segment ISR_CODE
  
- 94 bytes of CODE  memory
-  2 bytes of CONST memory (+ 2 bytes shared)
- 34 bytes of DATA  memory (+ 6 bytes shared)
+ 102 bytes of CODE  memory
+   2 bytes of CONST memory (+ 2 bytes shared)
+  34 bytes of DATA  memory (+ 6 bytes shared)
 
 Errors: none
 Warnings: none

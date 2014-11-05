@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         03/Nov/2014  11:17:25
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         05/Nov/2014  00:33:31
 # Copyright 1996-2014 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
 #
@@ -12,11 +12,11 @@
 #    __core        =  430X
 #    __data_model  =  small
 #    __code_model  =  large
-#    Source file   =  C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Serial.c
+#    Source file   =  C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Serial.c
 #    Command line  =  
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Serial.c -lC
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\List\ -o
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\ --no_cse
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Serial.c -lC
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\List\ -o
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\Obj\ --no_cse
 #        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
 #        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
 #        (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.h"
@@ -24,13 +24,13 @@
 #        --multiplier_location=4C0 --hw_workaround=CPU40 --hw_workaround=CPU39
 #        --code_model=large
 #    List file     =  
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\List\Serial.lst
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\List\Serial.lst
 #    Object file   =  
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Debug\Obj\Serial.r43
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\Obj\Serial.r43
 #
 ###############################################################################
 
-C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Serial.c
+C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Serial.c
       1          //===========================================================================
       2          // File Name : Serial.c
       3          //
@@ -110,9 +110,9 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Serial.c
 
    \                                 In  segment DATA16_Z, align 1, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     25          extern volatile char USB_Char_Rx[LARGE_RING] = {RESET};
+     25          extern volatile char USB_Char_Rx[SMALL_RING] = {RESET};
    \                     USB_Char_Rx:
-   \   000000                DS8 16
+   \   000000                DS8 8
      26          
 
    \                                 In  segment DATA16_Z, align 2, align-sorted
@@ -157,10 +157,10 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Serial.c
    \                     ??Init_Serial_UCA1_2:
    \   00000A   1F92....     CMP.W   &SMALL_RING_SIZE, R15
    \   00000E   FA3B         JL      ??Init_Serial_UCA1_0
-     39           usb_rx_ring_wr = RESET;
-   \   000010   8243....     MOV.W   #0x0, &usb_rx_ring_wr
-     40           usb_rx_ring_rd = RESET;
-   \   000014   8243....     MOV.W   #0x0, &usb_rx_ring_rd
+     39           usb_rx_ring_wr = -1;
+   \   000010   B243....     MOV.W   #0xffff, &usb_rx_ring_wr
+     40           usb_rx_ring_rd = -1;
+   \   000014   B243....     MOV.W   #0xffff, &usb_rx_ring_rd
      41           
      42           for(i=RESET; i<LARGE_RING_SIZE; i++){
    \   000018   0F43         MOV.W   #0x0, R15
@@ -233,11 +233,11 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Serial.c
    \   000002   1F42FE05     MOV.W   &0x5fe, R15
    \   000006   E00F         ADDA    R15, PC
    \                     `?<Jumptable for USCI_A1_ISR>_0`:
-   \   000008   143C         JMP     ??USCI_A1_ISR_2
+   \   000008   123C         JMP     ??USCI_A1_ISR_2
    \   00000A   033C         JMP     ??USCI_A1_ISR_3
-   \   00000C   123C         JMP     ??USCI_A1_ISR_2
-   \   00000E   113C         JMP     ??USCI_A1_ISR_2
-   \   000010   103C         JMP     ??USCI_A1_ISR_2
+   \   00000C   103C         JMP     ??USCI_A1_ISR_2
+   \   00000E   0F3C         JMP     ??USCI_A1_ISR_2
+   \   000010   0E3C         JMP     ??USCI_A1_ISR_2
      84           case RESET: // Vector 0 - no interrupt
      85           break;
      86           case SECOND: // Vector 2 - RXIFG
@@ -249,11 +249,11 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Serial.c
      88           USB_Char_Rx[temp] = UCA1RXBUF; // RX -> USB_Char_Rx character
    \   00001C   1E42EC05     MOV.W   &0x5ec, R14
    \   000020   CF4E....     MOV.B   R14, USB_Char_Rx(R15)
-     89           if (usb_rx_ring_wr >= (SMALL_RING_SIZE)){
-   \   000024   9292........ CMP.W   &SMALL_RING_SIZE, &usb_rx_ring_wr
-   \   00002A   0338         JL      ??USCI_A1_ISR_2
-     90              usb_rx_ring_wr = BEGINNING; // Circular buffer back to beginning
-   \   00002C   9242........ MOV.W   &BEGINNING, &usb_rx_ring_wr
+     89           if (usb_rx_ring_wr > (7)){
+   \   000024   B292....     CMP.W   #0x8, &usb_rx_ring_wr
+   \   000028   0238         JL      ??USCI_A1_ISR_2
+     90              usb_rx_ring_wr = 0; // Circular buffer back to beginning
+   \   00002A   8243....     MOV.W   #0x0, &usb_rx_ring_wr
      91           }
      92          
      93           break;
@@ -265,10 +265,10 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Serial.c
      99           }
     100          }
    \                     ??USCI_A1_ISR_2:
-   \   000032   1E17         POPM.W  #0x2, R15
-   \   000034   0013         RETI
-   \   000036                REQUIRE _A_UCA1RXBUF_L
-   \   000036                REQUIRE UCA1IV
+   \   00002E   1E17         POPM.W  #0x2, R15
+   \   000030   0013         RETI
+   \   000032                REQUIRE _A_UCA1RXBUF_L
+   \   000032                REQUIRE UCA1IV
 
    \                                 In  segment INTVEC, offset 0x56, root
    \                     `??USCI_A1_ISR??INTVEC 86`:
@@ -303,9 +303,9 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Serial.c
        2  LARGE_RING_SIZE
        2  SMALL_RING_SIZE
        2  UCA1IV
-      16  USB_Char_Rx
+       8  USB_Char_Rx
        8  USB_Char_Tx
-      54  USCI_A1_ISR
+      50  USCI_A1_ISR
        2  _A_UCA1BRW_L
        2  _A_UCA1CTLW0_L
        2  _A_UCA1IE_L
@@ -321,13 +321,13 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Hw8\Serial.c
  12 bytes in segment DATA16_AN
   4 bytes in segment DATA16_I
   4 bytes in segment DATA16_ID
- 34 bytes in segment DATA16_Z
+ 26 bytes in segment DATA16_Z
   2 bytes in segment INTVEC
- 54 bytes in segment ISR_CODE
+ 50 bytes in segment ISR_CODE
  
- 138 bytes of CODE  memory
+ 134 bytes of CODE  memory
    4 bytes of CONST memory (+  2 bytes shared)
-  38 bytes of DATA  memory (+ 12 bytes shared)
+  30 bytes of DATA  memory (+ 12 bytes shared)
 
 Errors: none
 Warnings: none

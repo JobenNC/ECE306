@@ -178,7 +178,7 @@ extern volatile unsigned int startTimer;
 extern volatile unsigned int timerCount;
 
 extern volatile char USB_Char_Tx[8];
-extern volatile char USB_Char_Rx[16];
+extern volatile char USB_Char_Rx[8];
 
 extern volatile int usb_tx_ring_wr;
 extern volatile int usb_tx_ring_rd;

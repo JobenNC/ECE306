@@ -22,7 +22,7 @@ int BEGINNING = RESET;
 //extern volatile char USB_Char_Rx[16] = {RESET};
 
 extern volatile char USB_Char_Tx[SMALL_RING] = {RESET};
-extern volatile char USB_Char_Rx[LARGE_RING] = {RESET};
+extern volatile char USB_Char_Rx[SMALL_RING] = {RESET};
 
 extern volatile int usb_tx_ring_wr = RESET;
 extern volatile int usb_tx_ring_rd = RESET;
@@ -36,8 +36,8 @@ void Init_Serial_UCA1(void){
  for(i=RESET; i<SMALL_RING_SIZE; i++){
  USB_Char_Rx[i] = CLEAR_REG;// USB Character
  }
- usb_rx_ring_wr = RESET;
- usb_rx_ring_rd = RESET;
+ usb_rx_ring_wr = -1;
+ usb_rx_ring_rd = -1;
  
  for(i=RESET; i<LARGE_RING_SIZE; i++){
  USB_Char_Tx[i] = CLEAR_REG;// USB Character
@@ -86,8 +86,8 @@ __interrupt void USCI_A1_ISR(void){
  case SECOND: // Vector 2 - RXIFG
  temp = ++usb_rx_ring_wr;
  USB_Char_Rx[temp] = UCA1RXBUF; // RX -> USB_Char_Rx character
- if (usb_rx_ring_wr >= (SMALL_RING_SIZE)){
-    usb_rx_ring_wr = BEGINNING; // Circular buffer back to beginning
+ if (usb_rx_ring_wr > (7)){
+    usb_rx_ring_wr = 0; // Circular buffer back to beginning
  }
 
  break;

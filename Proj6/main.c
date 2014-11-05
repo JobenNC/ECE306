@@ -27,10 +27,14 @@ unsigned int halfTimer = RESET;
 
 unsigned int L_Dir;
 unsigned int R_Dir;
+char test;
 char *serial;
+int counter = 0;
 
 char *display_NCSU;
 char *display_HW3;
+
+char toWrite;
 
 int test1=RESET;
 int test2=RESET;
@@ -40,8 +44,6 @@ int dontWrite = RESET;
 
 
 extern volatile int writeNext = RESET;
-
-char test;
 
 void main(void){
 //===========================================================================
@@ -91,246 +93,120 @@ void main(void){
  serial="               ";
  while(ALWAYS) {    
    
-   // Can the Operating system run
-   //newFM(20);
-   
    //UCA1TXBUF = 'U';
-   serial="               ";
-   if (writeNext)
-   {
-      //UCA1TXBUF = 'u';
-   writeNext = RESET;
-   //while ((!UCTXIFG) || (timeOut < 100))
+   //if (nib2 < numRange) nib2 = nib2 + numOffset;
+   //       else nib2 = nib2 + charOffset;
+   test1 = usb_rx_ring_wr;
+   test2 = usb_rx_ring_rd;
+   if (test1 != test2)
+      {
+        if ((UCTXIFG))
+        {
+          if (usb_rx_ring_rd > 6)
+          {
+            usb_rx_ring_rd =0;
+            test = USB_Char_Rx[7];
+            test++;
+          }
+          else
+          {
+            usb_rx_ring_rd++;
+            test = USB_Char_Rx[usb_rx_ring_wr];
+          }
+          
+          //test = test + numOffset;
+          
+          lcd_clear();
+          
+          //test = test + 48;
+          toWrite = test/10;
+          serial[char1]=toWrite + 48;
+          
+          toWrite = test % 10;
+          
+          serial[char2] = toWrite + 48;
+          //if ((int) test < 10)
+          //{
+          //    toWrite = test + 48;
+          //}     
+          //serial[char1]=toWrite;
+          
+          lcd_out(serial, LCD_LINE_1);
+          
+          test++;
+          //test = test - 48;
+          
+          newFM(200);
+          UCA1TXBUF = test;
+        }
+   //     nib1 = (nib1Mask&ADC_RD);
+   //       nib1 = (nib1Mask&ADC_RD);
+   //       if (nib1 < numRange) nib1 = nib1 + numOffset;
+   //       else nib1 = nib1 + charOffset;
+   //   
+   //       nib2 = (nib2Mask&ADC_RD)>>shift4;
+   //       if (nib2 < numRange) nib2 = nib2 + numOffset;
+   //       else nib2 = nib2 + charOffset;
+   //   
+   //       nib3 = (nib3Mask&ADC_RD)>>shift8;
+   //       nib3 = nib3 + numOffset;
+   //   
+   //       nib4 = RESET + numOffset;
+   //   
+   //       display_One="            ";
+   //       display_One[char1]=nib4;
+   //       display_One[char2]=nib3;
+   //       display_One[char3]=nib2;
+   //       display_One[char4]=nib1;
+      }
+   
+   
+   
+   //-------------------------------------------------------
+   //if (writeNext)
    //{
-   //     newFM(1);
-   //     timeOut++;
+  
+   //   if ((UCTXIFG))
+   //   {
+   //     timeOut = RESET;
+   //     
+   //     //
+   //     //
+   //     UCA1TXBUF = toWrite;
+   //   
+   //     newFM(HUNDRED_MIL);
+   //     if (usb_rx_ring_wr == RESET)
+   //     {
+   //       dontWrite = START;
+   //       break;
+   //     }
+   //
+   //   
+   //     while (START)
+   //     {
+   //       newFM(START);
+   //       test1 = usb_rx_ring_wr;
+   //       test2 = usb_rx_ring_rd;
+   //       if (test1 != test2) break;
+   //     }
+   //   
+   //     usb_rx_ring_rd++;
+   //     test = USB_Char_Rx[usb_rx_ring_wr];
+   //   
+   //     serial[char1-1+j]=test;
+   //     }
+   //
+   // lcd_clear();
+   // if (!dontWrite) lcd_out(serial, LCD_LINE_1);
+   // else dontWrite = RESET;
+   // //else dontWrite = 0;
+   // usb_rx_ring_wr = RESET;
+   // usb_rx_ring_rd = RESET;
+   // usb_tx_ring_wr = RESET;
+   // usb_tx_ring_rd = RESET;
+   // 
+   // if (i >= 100) writeNext = 0;
    //}
-   if ((UCTXIFG))
-   {
-   timeOut = RESET;
-   for (int j = RESET; j < SIXTH; j++)
-   {
-      switch (j)
-      {
-      case RESET:
-        UCA1TXBUF = 'N';
-        break;
-      case START:
-        UCA1TXBUF = 'C';
-        break;
-      case SECOND:
-        UCA1TXBUF = 'S';
-        break;
-      case THIRD:
-        UCA1TXBUF = 'U';
-        break;
-      case FOURTH:
-        UCA1TXBUF = '#';
-        break;
-      case FIFTH:
-        UCA1TXBUF = '1';
-        break;
-      default:
-        break;
-      }
-      
-      newFM(HUNDRED_MIL);
-      if (usb_rx_ring_wr == RESET)
-      {
-        dontWrite = START;
-        break;
-      }
-   
-      
-      while (START)
-      {
-        newFM(START);
-        test1 = usb_rx_ring_wr;
-        test2 = usb_rx_ring_rd;
-        if (test1 != test2) break;
-      }
-      
-      /////while (!UCTXIFG)
-      ////{
-      ////}
-      ////UCA1TXBUF = 'u';
-      
-
-      usb_rx_ring_rd++;
-      test = USB_Char_Rx[usb_rx_ring_wr];
-      //int stop = 0;
-      
-      //if (test < numRange) test = test + numOffset;
-      //else test = test + charOffset;
-      //display_One="            ";
-      serial[char1-1+j]=test;
-      }
-   
-   lcd_clear();
-   if (!dontWrite) lcd_out(serial, LCD_LINE_1);
-   else dontWrite = RESET;
-   //else dontWrite = 0;
-   usb_rx_ring_wr = RESET;
-   usb_rx_ring_rd = RESET;
-   usb_tx_ring_wr = RESET;
-   usb_tx_ring_rd = RESET;
-   }
-   }
-    //Code for tx rx
-
-    //
-
- // //switch(Time_Sequence){
- // //  case TSEQ_250:                               // 1000 msec  
- // //    if(one_time){
- // //      //Init_LEDs();                      // Initialize LEDs
- // //      one_time = RESET;
- // //    }
- // //    Time_Sequence = RESET;                    // 
- // //  case TSEQ_200:                               // 1000 msec  
- // //    if(one_time){
- // //      //PJOUT |= LED4;                      // Change State of LED 4
- // //      //P3OUT |= LED5;                      // Change State of LED 5
- // //      one_time = RESET;
- // //    }
- // //  case TSEQ_150:                               // 750 msec  
- // //    if(one_time){
- // //      //PJOUT |= LED3;                      // Change State of LED 3
- // //      //P3OUT |= LED6;                      // Change State of LED 6
- // //      one_time = RESET;
- // //    }
- // //  case TSEQ_100:                               // 500 msec  
- // //    if(one_time){
- // //      //PJOUT |= LED2;                      // Change State of LED 2
- // //      //P3OUT |= LED7;                      // Change State of LED 7
- // //      one_time = RESET;
- // //    }
- // //  case  TSEQ_50:                               // 250 msec  
- // //    if(one_time){
- //  //     //PJOUT |= LED1;                      // Change State of LED 1
- //  //     //P3OUT |= LED8;                      // Change State of LED 8
- // //      one_time = RESET;
- // //    }
- // //    break;                                // 
- // //  default: break; 
- // //}
- // //Switches_Process();                       // Check for switch state change
- // 
- // if (starting)
- // {
- //   newFM(HALF_SEC);
- //   starting = RESET;
- // }
- // 
- // if ((drive) && ~(driving))
- // {
- //     //newFM(200);
- //     driving = START;
- // }
- // if (driving)
- // {
- //   
- //   //if ((ADC_LD > (LED_Black_LD-350)) && (ADC_RD < (LED_Black_RD-350)))
- //   //{
- //   //  P3OUT &= ~L_FORWARD;
- //   //  P3OUT |= R_FORWARD;
- //   //  newFM(20);
- //   //  P3OUT &= ~L_FORWARD;
- //   //  P3OUT &= ~R_FORWARD;
- //   //}
- //   
- //   //else if ((ADC_LD < (LED_Black_LD-350)) && (ADC_RD > (LED_Black_RD-350)))
- //   //{
- //   //  P3OUT |= L_FORWARD;
- //   //  P3OUT &= ~R_FORWARD;
- //   //  newFM(20);
- //   //  P3OUT &= ~L_FORWARD;
- //   //  P3OUT &= ~R_FORWARD;
- //   //}
- //   
- //   if ((ADC_LD < (LED_Black_LD - offLine)) && (ADC_RD < (LED_Black_RD - offLine)))
- //   {
- //     P3OUT |= L_Dir;
- //     P3OUT |= R_Dir;
- //     newFM(SEVENTH);
- //     P3OUT &= ~L_Dir;
- //     P3OUT &= ~R_Dir;
- //   }
- //   
- //   else
- //   {
- //     P3OUT &= ~L_Dir;
- //     P3OUT &= ~R_Dir;
- //     if (reverse == RESET)
- //     {
- //       newFM(HALF_SEC);
- //       L_Dir = L_REVERSE;
- //       R_Dir = R_REVERSE;
- //       
- //       startTimer = START;
- //       P3OUT |= L_Dir;
- //       P3OUT |= R_Dir;
- //       newFM(seventy);
- //       P3OUT &= ~L_Dir;
- //       P3OUT &= ~R_Dir;
- //       
- //       reverse++;
- //     }
- //     else if (reverse == START)
- //     {
- //       
- //       startTimer = RESET;
- //       P3OUT &= ~L_Dir;
- //       P3OUT &= ~R_Dir;
- //       
- //       L_Dir = L_FORWARD;
- //       R_Dir = R_FORWARD;
- //       
- //       newFM(HALF_SEC);
- //       
- //       P3OUT |= L_Dir;
- //       P3OUT |= R_Dir;
- //       newFM(timerCount/HALF);
- //       P3OUT &= ~L_Dir;
- //       P3OUT &= ~R_Dir;
- //       
- //       newFM(ONE_SEC);
- //       
- //       L_Dir = R_FORWARD;
- //       R_Dir = L_REVERSE;
- //       P3OUT |= L_Dir;
- //       P3OUT |= R_Dir;
- //       newFM(twoLoop);
- //       P3OUT &= ~L_Dir;
- //       P3OUT &= ~R_Dir;
- //       
- //       newFM(ONE_SEC);
- //       
- //       L_Dir = R_REVERSE;
- //       R_Dir = L_FORWARD;
- //       P3OUT |= L_Dir;
- //       P3OUT |= R_Dir;
- //       newFM(twoLoop);
- //       P3OUT &= ~L_Dir;
- //       P3OUT &= ~R_Dir;
- //       
- //       
- //       reverse++;
- //       driving = RESET;
- //       drive = RESET;
- //     }
- //     
- //     else
- //     {
- //       P3OUT &= ~L_Dir;
- //       P3OUT &= ~R_Dir;
- //     }
- //   }
- // }
- // //ADC_Process();
- // //if(Time_Sequence > TSEQ_250){
- // //  Time_Sequence = RESET;
- // //}
+   //}
  }
-//------------------------------------------------------------------------------
 }
