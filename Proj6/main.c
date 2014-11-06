@@ -35,8 +35,9 @@ char bit2;
 char testChar;
 
 volatile char readyToReceive = 1;
+volatile char whichChar = 0;
+volatile char resetCount = 0;
 
-char whichChar = 0;
 char writeOut = 0;
 char wroteFirst = 0;
 char gotBoth = 0;
@@ -106,6 +107,18 @@ void main(void){
  serial="               ";
  while(ALWAYS) {    
    
+   if (resetCount)
+   {
+     UCA1CTL1 &= ~UCSWRST; // Release from reset
+     UCA1IE |= UCRXIE; // Enable RX interrup
+     Init_Serial_UCA1();
+     resetCount = 0;
+     ++usb_rx_ring_wr;
+     ++usb_rx_ring_wr;
+     USB_Char_Rx[0] = (char) 0x00;
+     USB_Char_Rx[1] = (char) 0x00;
+   }
+   
    test1 = usb_rx_ring_wr;
    test2 = usb_rx_ring_rd;
    
@@ -120,12 +133,12 @@ void main(void){
             
             if (!whichChar)
             {
-              bit1 = USB_Char_Rx[6];
+              bit1 = USB_Char_Rx[8]; //6
               //char1++;
             }
             else
             {
-              bit2 = USB_Char_Rx[7];
+              bit2 = USB_Char_Rx[9]; //7
               //char2++;
               gotBoth = 1;
             }
@@ -152,6 +165,7 @@ void main(void){
           if (gotBoth)
           {
             lcd_clear();
+            newFM(100);
             test = (int) bit2<<8;
             test = test | (int) bit1;
             
@@ -180,7 +194,7 @@ void main(void){
             
             writeOut = 1;
           
-            newFM(60);
+            newFM(200);
           
             //wroteFirst = 1;
             UCA1TXBUF = bit1;

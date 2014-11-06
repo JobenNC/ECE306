@@ -33,6 +33,7 @@ extern volatile int usb_rx_ring_rd = RESET;
 //----------------------------------------------------------------------------
 void Init_Serial_UCA1(void){
  int i;
+ 
  for(i=RESET; i<SMALL_RING_SIZE; i++){
  USB_Char_Rx[i] = CLEAR_REG;// USB Character
  }

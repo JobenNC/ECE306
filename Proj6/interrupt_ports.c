@@ -62,7 +62,7 @@ __interrupt void switch_interrupt(void) {
 // ==========================================================================
 // Switch 1 
  if (P4IFG & SW1) {
-    Init_Serial_UCA1();
+    //Init_Serial_UCA1();
     writeNext = START;
    //lcd_clear();
    //lcd_out("    Switch 1", LCD_LINE_1);
@@ -81,10 +81,16 @@ __interrupt void switch_interrupt(void) {
    PJOUT |= LED1; // Toggle LED 1 on to indicate boot ISR working
    
    //-----Setup up first fake receive
-   ++usb_rx_ring_wr;
-   ++usb_rx_ring_wr;
-   USB_Char_Rx[0] = (char) 0xDC;
-   USB_Char_Rx[1] = (char) 0xFF;
+   //++usb_rx_ring_wr;
+   //++usb_rx_ring_wr;
+   //USB_Char_Rx[0] = (char) 0x00;
+   //USB_Char_Rx[1] = (char) 0x00;
+   whichChar = 0;
+   readyToReceive = 1;
+   
+   //Init_Serial_UCA1();
+   resetCount = 1;
+   UCA1CTLW0 |= UCSWRST; // Set Software reset enable
  }
 // Switch 2 
  if (P4IFG & SW2) {

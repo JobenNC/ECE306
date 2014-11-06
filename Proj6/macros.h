@@ -142,7 +142,7 @@
 
 #define seventy (70)
 
-#define SMALL_RING (8)
+#define SMALL_RING (10) //8
 #define LARGE_RING (16)
 
 #define BRW (104)
@@ -176,15 +176,17 @@ extern volatile unsigned int LED_Black_RD;
 
 extern volatile unsigned int startTimer;
 extern volatile unsigned int timerCount;
+extern volatile char resetCount;
 
-extern volatile char USB_Char_Tx[8];
-extern volatile char USB_Char_Rx[8];
+extern volatile char USB_Char_Tx[10]; //8
+extern volatile char USB_Char_Rx[10]; //8
 
 extern volatile int usb_tx_ring_wr;
 extern volatile int usb_tx_ring_rd;
 
 extern volatile int usb_rx_ring_wr;
 extern volatile int usb_rx_ring_rd;
+extern volatile char whichChar;
 
 extern volatile int writeNext;
 
