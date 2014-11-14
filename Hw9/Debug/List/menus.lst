@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         13/Nov/2014  21:27:39
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         13/Nov/2014  21:43:20
 # Copyright 1996-2014 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
 #
@@ -204,7 +204,7 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\menus.c
    \   000006   1F42....     MOV.W   &lastItem, R15
    \   00000A   3F500A00     ADD.W   #0xa, R15
    \   00000E   0F9A         CMP.W   R10, R15
-   \   000010   8234         JGE     ??displaySong_0
+   \   000010   8434         JGE     ??displaySong_0
      61            {
      62              if (index > 233) index = 0;
    \   000012   B290EA00.... CMP.W   #0xea, &index
@@ -282,19 +282,22 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\menus.c
    \   0000FC   7D40C000     MOV.B   #0xc0, R13
    \   000100   1C42....     MOV.W   &red, R12
    \   000104   ........     CALLA   #lcd_out
-   \   000108   063C         JMP     ??displaySong_0
+   \   000108   063C         JMP     ??displaySong_3
      80              else lcd_out(white, LCD_LINE_2);
    \                     ??displaySong_2:
    \   00010A   7D40C000     MOV.B   #0xc0, R13
    \   00010E   1C42....     MOV.W   &white, R12
    \   000112   ........     CALLA   #lcd_out
-     81            }
-     82            lastItem = item;
+     81              rw = ~rw;
+   \                     ??displaySong_3:
+   \   000116   B2E3....     XOR.W   #0xffff, &rw
+     82            }
+     83            lastItem = item;
    \                     ??displaySong_0:
-   \   000116   824A....     MOV.W   R10, &lastItem
-     83          }
-   \   00011A   3A41         POP.W   R10
-   \   00011C   1001         RETA
+   \   00011A   824A....     MOV.W   R10, &lastItem
+     84          }
+   \   00011E   3A41         POP.W   R10
+   \   000120   1001         RETA
 
    \                                 In  segment DATA16_ID, align 2, align-sorted
    \                     `?<Initializer for song>`:
@@ -578,7 +581,7 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\menus.c
        2  ?<Initializer for white>
       64  displayRes
       70  displayShape
-     286  displaySong
+     290  displaySong
        2  i
        2  index
        2  msg
@@ -592,13 +595,13 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\menus.c
        2  white
 
  
- 420 bytes in segment CODE
+ 424 bytes in segment CODE
  452 bytes in segment DATA16_C
   70 bytes in segment DATA16_I
   70 bytes in segment DATA16_ID
    6 bytes in segment DATA16_Z
  
- 420 bytes of CODE  memory
+ 424 bytes of CODE  memory
  522 bytes of CONST memory
   76 bytes of DATA  memory
 

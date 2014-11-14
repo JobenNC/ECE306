@@ -78,6 +78,7 @@ void displaySong()
     
     if (!rw) lcd_out(red, LCD_LINE_2);
     else lcd_out(white, LCD_LINE_2);
+    rw = ~rw;
   }
   lastItem = item;
 }
