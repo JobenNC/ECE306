@@ -1,0 +1,660 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         13/Nov/2014  20:46:27
+# Copyright 1996-2014 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\main.c
+#    Command line  =  
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\main.c -lC
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\Debug\List\ -o
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\Debug\Obj\ --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -Ol --multiplier=32
+#        --multiplier_location=4C0 --hw_workaround=CPU40 --hw_workaround=CPU39
+#        --code_model=large
+#    List file     =  
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\Debug\List\main.lst
+#    Object file   =  
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\Debug\Obj\main.r43
+#
+###############################################################################
+
+C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\main.c
+      1          //===========================================================================
+      2          // File Name : main.c
+      3          //
+      4          // Description: The main, 'while' operating system
+      5          //
+      6          // Author: Joseph Jarriel
+      7          // Date: Sep 2014
+      8          // Compiler: Built with IAR Embedded Workbench (6.10.5)
+      9          // Globals: volatile unsigned int Time_Sequence, volatile char one_time,
+     10          // volatile unsigned int five_msec_count, char *display_NCSU, char *display_HW3
+     11          // Functions: main
+     12          //===========================================================================
+     13          
+     14          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x322
+   \   union <unnamed> _A_PJOUT_L
+   \                     _A_PJOUT_L:
+   \   000000                DS8 2
+     15          #include  "functions.h"
+     16          #include "macros.h"
+     17          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     18          volatile unsigned int Time_Sequence;
+   \                     Time_Sequence:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     19          volatile char one_time;
+   \                     one_time:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     20          volatile unsigned int five_msec_count;
+   \                     five_msec_count:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     21          volatile unsigned int startTimer = RESET;
+   \                     startTimer:
+   \   000000                DS8 2
+     22          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     23          unsigned int driving = RESET;
+   \                     driving:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     24          unsigned int reverse = RESET;
+   \                     reverse:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     25          unsigned int startHalf = RESET;
+   \                     startHalf:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     26          unsigned int halfTimer = RESET;
+   \                     halfTimer:
+   \   000000                DS8 2
+     27          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     28          unsigned int L_Dir;
+   \                     L_Dir:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     29          unsigned int R_Dir;
+   \                     R_Dir:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     30          unsigned int test;
+   \                     test:
+   \   000000                DS8 2
+     31          
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     32          char bit1;
+   \                     bit1:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     33          char bit2;
+   \                     bit2:
+   \   000000                DS8 1
+     34          
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     35          char testChar;
+   \                     testChar:
+   \   000000                DS8 1
+     36          
+
+   \                                 In  segment DATA16_I, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+     37          volatile char readyToReceive = START;
+   \                     readyToReceive:
+   \   000000                DS8 1
+   \   000001                REQUIRE `?<Initializer for readyToReceive>`
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     38          volatile char whichChar = RESET;
+   \                     whichChar:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     39          volatile char resetCount = RESET;
+   \                     resetCount:
+   \   000000                DS8 1
+     40          
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     41          char writeOut = RESET;
+   \                     writeOut:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     42          char wroteFirst = RESET;
+   \                     wroteFirst:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     43          char gotBoth = RESET;
+   \                     gotBoth:
+   \   000000                DS8 1
+     44          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     45          char *serial;
+   \                     serial:
+   \   000000                DS8 2
+     46          //char *song;
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     47          int counter = RESET;
+   \                     counter:
+   \   000000                DS8 2
+     48          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     49          char *display_NCSU;
+   \                     display_NCSU:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     50          char *display_HW3;
+   \                     display_HW3:
+   \   000000                DS8 2
+     51          
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     52          char toWrite;
+   \                     toWrite:
+   \   000000                DS8 1
+     53          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     54          int test1=RESET;
+   \                     test1:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     55          int test2=RESET;
+   \                     test2:
+   \   000000                DS8 2
+     56          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     57          int timeOut = RESET;
+   \                     timeOut:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     58          int dontWrite = RESET;
+   \                     dontWrite:
+   \   000000                DS8 2
+     59          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     60          volatile int selectedMenu = 0;
+   \                     selectedMenu:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     61          volatile int menuLevel = 0;
+   \                     menuLevel:
+   \   000000                DS8 2
+     62          
+     63          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     64          extern volatile int writeNext = RESET;
+   \                     writeNext:
+   \   000000                DS8 2
+     65          
+
+   \                                 In  segment CODE, align 2
+     66          void main(void){
+   \                     main:
+     67          //===========================================================================
+     68          // Function name: main
+     69          //
+     70          // Description: The main function.  Our 'while' OS
+     71          // 
+     72          // Passed : no variables passed
+     73          // Locals: no variables declared
+     74          // Returned: no values returned
+     75          // Globals: Time_Sequence, one_time, five_msec_count
+     76          // Calls: Init_Ports, Init_Clocks, Init_Conditions, Init_Timers, Init_LEDs,
+     77          //      Init_LCD, five_msec_sleep, Switch_Process
+     78          //
+     79          // Author: Joseph Jarriel
+     80          // Date: Sep 2014
+     81          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+     82          //===========================================================================
+     83            Init_Ports();                             // Initialize Ports
+   \   000000   ........     CALLA   #Init_Ports
+     84            Init_Clocks();                            // Initialize Clock System 
+   \   000004   ........     CALLA   #Init_Clocks
+     85            init_adc();
+   \   000008   ........     CALLA   #init_adc
+     86            Init_Serial_UCA1();                        // Initialize Serial Comms
+   \   00000C   ........     CALLA   #Init_Serial_UCA1
+     87            Init_Conditions();
+   \   000010   ........     CALLA   #Init_Conditions
+     88            PJOUT |= LED1;                            // Turn LED 1 on to indicate boot
+   \   000014   92D32203     BIS.W   #0x1, &0x322
+     89            Time_Sequence = RESET;                        // 
+   \   000018   8243....     MOV.W   #0x0, &Time_Sequence
+     90            Init_Timers();                            // Initialize Timers
+   \   00001C   ........     CALLA   #Init_Timers
+     91            five_msec_sleep(SLEEP_50);                      // 250 msec delay for the clock to settle
+   \   000020   3C403200     MOV.W   #0x32, R12
+   \   000024   ........     CALLA   #five_msec_sleep
+     92            Init_LCD();                               // Initialize LCD
+   \   000028   ........     CALLA   #Init_LCD
+     93            five_msec_sleep(SLEEP_75);                      // 375 msec delay for the clock to settle
+   \   00002C   3C404B00     MOV.W   #0x4b, R12
+   \   000030   ........     CALLA   #five_msec_sleep
+     94            Init_LEDs();                              // Initialize LEDs
+   \   000034   ........     CALLA   #Init_LEDs
+     95            display_NCSU = "   Callibrate   ";
+   \   000038   B240........ MOV.W   #`?<Constant "   Callibrate   ">`, &display_NCSU
+     96            display_HW3 =  "  IR Em Off  ";
+   \   00003E   B240........ MOV.W   #`?<Constant "  IR Em Off  ">`, &display_HW3
+     97            
+     98          //  lcd_command(CLEAR_DISPLAY);
+     99            five_msec_sleep(SLEEP_10); 
+   \   000044   3C400A00     MOV.W   #0xa, R12
+   \   000048   ........     CALLA   #five_msec_sleep
+    100            lcd_out("1-Display 2-Clr",LCD_LINE_1);       // 16 characters max between quotes - line 1
+   \   00004C   7D408000     MOV.B   #0x80, R13
+   \   000050   3C40....     MOV.W   #`?<Constant "1-Display 2-Clr">`, R12
+   \   000054   ........     CALLA   #lcd_out
+    101            //lcd_out("LED On       ",LCD_LINE_2);
+    102              //lcd_out(display_NCSU,LCD_LINE_1);       // 16 characters max between quotes - line 1
+    103              //lcd_out(display_HW3,LCD_LINE_2);        // 16 characters max between quotes - line 2
+    104              
+    105          //------------------------------------------------------------------------------
+    106          // Begining of the "While" Operating System
+    107          //------------------------------------------------------------------------------
+    108           ADC_Process();
+   \   000058   ........     CALLA   #ADC_Process
+    109           L_Dir = L_FORWARD;
+   \   00005C   B2404000.... MOV.W   #0x40, &L_Dir
+    110           R_Dir = R_FORWARD;
+   \   000062   B2401000.... MOV.W   #0x10, &R_Dir
+    111           serial="               ";
+   \   000068   B240........ MOV.W   #`?<Constant "               ">`, &serial
+   \   00006E   0A3C         JMP     ??main_1
+    112           //song = "We're the Red and White from State And we know we are the best. A hand behind our back, We can take on all the rest. Come over the hill, Carolina. Devils and Deacs stand in line. The Red and White from N.C. State. Go State!";
+    113           while(ALWAYS) {    
+    114             newFM(20);
+    115             //0 to 1023
+    116             test1 = ADC_Thumb;
+    117             
+    118             if (menuLevel == 0)
+    119              {
+    120              if (test1 < 341)
+    121              {
+    122                selectedMenu = 0;
+   \                     ??main_0:
+   \   000070   8243....     MOV.W   #0x0, &selectedMenu
+    123                lcd_clear();
+   \   000074   ........     CALLA   #lcd_clear
+    124                lcd_out("Resistors", LCD_LINE_1);
+   \   000078   7D408000     MOV.B   #0x80, R13
+   \   00007C   3C40....     MOV.W   #`?<Constant "Resistors">`, R12
+   \   000080   ........     CALLA   #lcd_out
+    125              }
+   \                     ??main_1:
+   \   000084   3C401400     MOV.W   #0x14, R12
+   \   000088   ........     CALLA   #newFM
+   \   00008C   9242........ MOV.W   &ADC_Thumb, &test1
+   \   000092   8293....     CMP.W   #0x0, &menuLevel
+   \   000096   1E20         JNE     ??main_3
+   \   000098   B2905501.... CMP.W   #0x155, &test1
+   \   00009E   E83B         JL      ??main_0
+    126             
+    127              else if (test1 < 682)
+   \   0000A0   B290AA02.... CMP.W   #0x2aa, &test1
+   \   0000A6   0B34         JGE     ??main_4
+    128              {
+    129                selectedMenu = 1;
+   \   0000A8   9243....     MOV.W   #0x1, &selectedMenu
+    130                lcd_clear();
+   \   0000AC   ........     CALLA   #lcd_clear
+    131                lcd_out("Shapes", LCD_LINE_1);
+   \   0000B0   7D408000     MOV.B   #0x80, R13
+   \   0000B4   3C40....     MOV.W   #`?<Constant "Shapes">`, R12
+   \   0000B8   ........     CALLA   #lcd_out
+   \   0000BC   E33F         JMP     ??main_1
+    132              }
+    133             
+    134              else
+    135              {
+    136                selectedMenu = 2;
+   \                     ??main_4:
+   \   0000BE   A243....     MOV.W   #0x2, &selectedMenu
+    137                lcd_clear();
+   \   0000C2   ........     CALLA   #lcd_clear
+    138                lcd_out("Song", LCD_LINE_1);
+   \   0000C6   7D408000     MOV.B   #0x80, R13
+   \   0000CA   3C40....     MOV.W   #`?<Constant "Song">`, R12
+   \   0000CE   ........     CALLA   #lcd_out
+   \   0000D2   D83F         JMP     ??main_1
+    139              }
+    140             }
+    141             else if (menuLevel == 1)
+   \                     ??main_3:
+   \   0000D4   9293....     CMP.W   #0x1, &menuLevel
+   \   0000D8   D523         JNE     ??main_1
+    142             {
+    143               switch (selectedMenu)
+   \   0000DA   1F42....     MOV.W   &selectedMenu, R15
+   \   0000DE   0F83         SUB.W   #0x0, R15
+   \   0000E0   0524         JEQ     ??main_5
+   \   0000E2   1F83         SUB.W   #0x1, R15
+   \   0000E4   0624         JEQ     ??main_6
+   \   0000E6   1F83         SUB.W   #0x1, R15
+   \   0000E8   0724         JEQ     ??main_7
+   \   0000EA   CC3F         JMP     ??main_1
+    144               {
+    145               case 0:
+    146                 displayRes();
+   \                     ??main_5:
+   \   0000EC   ........     CALLA   #displayRes
+    147                 break;
+   \   0000F0   C93F         JMP     ??main_1
+    148               case 1:
+    149                 displayShape();
+   \                     ??main_6:
+   \   0000F2   ........     CALLA   #displayShape
+    150                 break;
+   \   0000F6   C63F         JMP     ??main_1
+    151               case 2:
+    152                 displaySong();
+   \                     ??main_7:
+   \   0000F8   ........     CALLA   #displaySong
+    153                 break;
+   \   0000FC   C33F         JMP     ??main_1
+   \   0000FE   0343         NOP
+   \   000100                REQUIRE _A_PJOUT_L
+    154               default:
+    155                 break;
+    156               }
+    157             }
+    158          //   if (resetCount)
+    159          //   {
+    160          //     UCA1CTL1 &= ~UCSWRST; // Release from reset
+    161          //     UCA1IE |= UCRXIE; // Enable RX interrup
+    162          //     Init_Serial_UCA1();
+    163          //     resetCount = RESET;
+    164          //     ++usb_rx_ring_wr;
+    165          //     ++usb_rx_ring_wr;
+    166          //     USB_Char_Rx[RESET] = (char) CLEAR_REG;
+    167          //     USB_Char_Rx[START] = (char) CLEAR_REG;
+    168          //   }
+    169          //   
+    170          //   test1 = usb_rx_ring_wr;
+    171          //   test2 = usb_rx_ring_rd;
+    172          //   
+    173          //   test = RESET;
+    174          //   if ((test1 != test2) & (readyToReceive))
+    175          //      {
+    176          //        if ((UCTXIFG))
+    177          //        {
+    178          //          if (usb_rx_ring_rd > SIXTH)
+    179          //          {
+    180          //            usb_rx_ring_rd =RESET;
+    181          //            
+    182          //            if (!whichChar)
+    183          //            {
+    184          //              bit1 = USB_Char_Rx[EIGHTH]; //6
+    185          //              //char1++;
+    186          //            }
+    187          //            else
+    188          //            {
+    189          //              bit2 = USB_Char_Rx[NINTH]; //7
+    190          //              //char2++;
+    191          //              gotBoth = START;
+    192          //            }
+    193          //            whichChar = !whichChar;
+    194          //          }
+    195          //          else
+    196          //          {
+    197          //            if (!whichChar)
+    198          //            {
+    199          //              test1 = usb_rx_ring_wr;
+    200          //              bit1 = USB_Char_Rx[test1-START];
+    201          //            }
+    202          //            else
+    203          //            {
+    204          //              test2 = usb_rx_ring_wr;
+    205          //              bit2 = USB_Char_Rx[test2];
+    206          //              gotBoth = START;
+    207          //            }
+    208          //            whichChar = !whichChar;
+    209          //            usb_rx_ring_rd++;
+    210          //          }
+    211          //          
+    212          //          //---------------Write to LCD
+    213          //          if (gotBoth)
+    214          //          {
+    215          //            lcd_clear();
+    216          //            //newFM(HALF_SEC);
+    217          //            test = (int) bit2<<EIGHTH;
+    218          //            test = test | (int) bit1;
+    219          //            
+    220          //            testChar = (test/(numRange*numRange*numRange*numRange))%numRange+numOffset;
+    221          //            serial[SEVENTH] = (char) testChar;
+    222          //            testChar = (test/(numRange*numRange*numRange))%numRange + numOffset;
+    223          //            serial[EIGHTH] = testChar;
+    224          //            testChar = (test/(numRange*numRange))%numRange + numOffset;
+    225          //            serial[NINTH] = testChar;
+    226          //            testChar = (test/numRange)%numRange + numOffset;
+    227          //            serial[numRange] = testChar;
+    228          //            testChar = (test/START)%numRange + numOffset;
+    229          //            serial[ELEVENTH] = testChar;
+    230          //            lcd_out(serial, LCD_LINE_1);
+    231          //            
+    232          //            testChar = (test/START)%numRange + numOffset;
+    233          //            test++;
+    234          //            
+    235          //            bit1 = (char) (test & full);
+    236          //            bit2 = (char) (test>>EIGHTH);
+    237          //            
+    238          //            writeOut = START;
+    239          //          
+    240          //            newFM(ONE_SEC);
+    241          //          
+    242          //            //wroteFirst = 1;
+    243          //            UCA1TXBUF = bit1;
+    244          //            while (!UCTXIFG) {}
+    245          //            UCA1TXBUF = bit2;
+    246          //            while (!UCTXIFG) {}
+    247          //            writeOut = RESET;
+    248          //            gotBoth = RESET;
+    249          //            //wroteFirst = 0;
+    250          //        }
+    251          //      }
+    252          //}
+    253            }
+    254          }
+
+   \                                 In  segment DATA16_ID, align 1, align-sorted
+   \                     `?<Initializer for readyToReceive>`:
+   \   000000   01           DC8 1
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "   Callibrate   ">`:
+   \   000000   20202043616C DC8 "   Callibrate   "
+   \            6C6962726174
+   \            6520202000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "  IR Em Off  ">`:
+   \   000000   202049522045 DC8 "  IR Em Off  "
+   \            6D204F666620
+   \            2000        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "1-Display 2-Clr">`:
+   \   000000   312D44697370 DC8 "1-Display 2-Clr"
+   \            6C617920322D
+   \            436C7200    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "               ">`:
+   \   000000   202020202020 DC8 "               "
+   \            202020202020
+   \            20202000    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Resistors">`:
+   \   000000   526573697374 DC8 "Resistors"
+   \            6F727300    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Shapes">`:
+   \   000000   536861706573 DC8 "Shapes"
+   \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Song">`:
+   \   000000   536F6E6700   DC8 "Song"
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   main
+        4   -> ADC_Process
+        4   -> Init_Clocks
+        4   -> Init_Conditions
+        4   -> Init_LCD
+        4   -> Init_LEDs
+        4   -> Init_Ports
+        4   -> Init_Serial_UCA1
+        4   -> Init_Timers
+        4   -> displayRes
+        4   -> displayShape
+        4   -> displaySong
+        4   -> five_msec_sleep
+        4   -> init_adc
+        4   -> lcd_clear
+        4   -> lcd_out
+        4   -> newFM
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      16  ?<Constant "               ">
+      17  ?<Constant "   Callibrate   ">
+      14  ?<Constant "  IR Em Off  ">
+      16  ?<Constant "1-Display 2-Clr">
+      10  ?<Constant "Resistors">
+       7  ?<Constant "Shapes">
+       5  ?<Constant "Song">
+       1  ?<Initializer for readyToReceive>
+       2  L_Dir
+       2  R_Dir
+       2  Time_Sequence
+       2  _A_PJOUT_L
+       1  bit1
+       1  bit2
+       2  counter
+       2  display_HW3
+       2  display_NCSU
+       2  dontWrite
+       2  driving
+       2  five_msec_count
+       1  gotBoth
+       2  halfTimer
+     256  main
+       2  menuLevel
+       1  one_time
+       1  readyToReceive
+       1  resetCount
+       2  reverse
+       2  selectedMenu
+       2  serial
+       2  startHalf
+       2  startTimer
+       2  test
+       2  test1
+       2  test2
+       1  testChar
+       2  timeOut
+       1  toWrite
+       1  whichChar
+       2  writeNext
+       1  writeOut
+       1  wroteFirst
+
+ 
+ 256 bytes in segment CODE
+   2 bytes in segment DATA16_AN
+  85 bytes in segment DATA16_C
+   1 byte  in segment DATA16_I
+   1 byte  in segment DATA16_ID
+  52 bytes in segment DATA16_Z
+ 
+ 256 bytes of CODE  memory
+  86 bytes of CONST memory
+  53 bytes of DATA  memory (+ 2 bytes shared)
+
+Errors: none
+Warnings: none

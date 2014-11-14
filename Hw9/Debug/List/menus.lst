@@ -1,0 +1,606 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         13/Nov/2014  21:27:39
+# Copyright 1996-2014 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\menus.c
+#    Command line  =  
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\menus.c -lC
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\Debug\List\ -o
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\Debug\Obj\ --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -Ol --multiplier=32
+#        --multiplier_location=4C0 --hw_workaround=CPU40 --hw_workaround=CPU39
+#        --code_model=large
+#    List file     =  
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\Debug\List\menus.lst
+#    Object file   =  
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\Debug\Obj\menus.r43
+#
+###############################################################################
+
+C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\menus.c
+      1          //===========================================================================
+      2          // File Name : menus.c
+      3          //
+      4          // Description: Menu Functions
+      5          //
+      6          // Author: Joseph Jarriel
+      7          // Date: Sep 2014
+      8          // Compiler: Built with IAR Embedded Workbench (6.10.5)
+      9          // Globals: volatile unsigned int Time_Sequence, volatile char one_time,
+     10          // volatile unsigned int five_msec_count, char *display_NCSU, char *display_HW3
+     11          // Functions: main
+     12          //===========================================================================
+     13          
+     14          #include  "msp430.h"
+     15          #include  "functions.h"
+     16          #include "macros.h"
+     17          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     18          int i;
+   \                     i:
+   \   000000                DS8 2
+     19          
+
+   \                                 In  segment DATA16_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+     20          char* song = "           We're the Red and White from State And we know we are the best. A hand behind our back, We can take on all the rest. Come over the hill, Carolina. Devils and Deacs stand in line. The Red and White from N.C. State. Go State!";
+   \                     song:
+   \   000000                DS8 2
+   \   000002                REQUIRE `?<Initializer for song>`
+     21          //char* song = "abcdefghijklmnopqrstuvwxyz";
+
+   \                                 In  segment DATA16_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+     22          char* red = "red";
+   \                     red:
+   \   000000                DS8 2
+   \   000002                REQUIRE `?<Initializer for red>`
+
+   \                                 In  segment DATA16_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+     23          char* white = "white";
+   \                     white:
+   \   000000                DS8 2
+   \   000002                REQUIRE `?<Initializer for white>`
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     24          int rw = 0;
+   \                     rw:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+     25          char* msg ="               ";
+   \                     msg:
+   \   000000                DS8 2
+   \   000002                REQUIRE `?<Initializer for msg>`
+     26          //char *res1[3] = {"0", "middle", "end"};
+
+   \                                 In  segment DATA16_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+     27          char *res1 = "Color Value";
+   \                     res1:
+   \   000000                DS8 2
+   \   000002                REQUIRE `?<Initializer for res1>`
+
+   \                                 In  segment DATA16_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+     28          char *res2[10] = {"Black  0", "Brown   1", "Red   2", "Orange   3", "Yellow   4", "Green   5", "Blue   6", "Violet   7", "Gray    8", "White     9"};
+   \                     res2:
+   \   000000                DS8 20
+   \   000014                REQUIRE `?<Initializer for res2>`
+     29          
+
+   \                                 In  segment DATA16_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+     30          char *shape1[10] = {"Circle", "Square", "Triangle", "Octagon", "Pentagon", "Hexagon", "Cube", "Oval", "Sphere", "Cylinder"};
+   \                     shape1:
+   \   000000                DS8 20
+   \   000014                REQUIRE `?<Initializer for shape1>`
+
+   \                                 In  segment DATA16_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+     31          char *shape2[10] = {"Square", "Triangle", "Octagon", "Pentagon", "Hexagon", "Cube", "Oval", "Sphere", "Cylinder", "End"};
+   \                     shape2:
+   \   000000                DS8 20
+   \   000014                REQUIRE `?<Initializer for shape2>`
+     32          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     33          int index = 0;
+   \                     index:
+   \   000000                DS8 2
+     34          
+
+   \                                 In  segment CODE, align 2
+     35          void displayRes()
+   \                     displayRes:
+     36          {
+     37            int item = ADC_Thumb;
+   \   000000   1C42....     MOV.W   &ADC_Thumb, R12
+     38            i = item/100;
+   \   000004   3E406400     MOV.W   #0x64, R14
+   \   000008   ........     CALLA   #?DivMod16s
+   \   00000C   824C....     MOV.W   R12, &i
+     39            if (i==10) i = 9;
+   \   000010   B2900A00.... CMP.W   #0xa, &i
+   \   000016   0320         JNE     ??displayRes_0
+   \   000018   B2400900.... MOV.W   #0x9, &i
+     40            lcd_clear();
+   \                     ??displayRes_0:
+   \   00001E   ........     CALLA   #lcd_clear
+     41            lcd_out(res1, LCD_LINE_1);
+   \   000022   7D408000     MOV.B   #0x80, R13
+   \   000026   1C42....     MOV.W   &res1, R12
+   \   00002A   ........     CALLA   #lcd_out
+     42            lcd_out(res2[i], LCD_LINE_2);
+   \   00002E   7D40C000     MOV.B   #0xc0, R13
+   \   000032   1F42....     MOV.W   &i, R15
+   \   000036   0F5F         RLA.W   R15
+   \   000038   1C4F....     MOV.W   res2(R15), R12
+   \   00003C   ........     BRA     #lcd_out
+     43          }
+     44          
+
+   \                                 In  segment CODE, align 2
+     45          void displayShape()
+   \                     displayShape:
+     46          {
+     47            int item = ADC_Thumb;
+   \   000000   1C42....     MOV.W   &ADC_Thumb, R12
+     48            i = item/100;
+   \   000004   3E406400     MOV.W   #0x64, R14
+   \   000008   ........     CALLA   #?DivMod16s
+   \   00000C   824C....     MOV.W   R12, &i
+     49            if (i==10) i = 9;
+   \   000010   B2900A00.... CMP.W   #0xa, &i
+   \   000016   0320         JNE     ??displayShape_0
+   \   000018   B2400900.... MOV.W   #0x9, &i
+     50            lcd_clear();
+   \                     ??displayShape_0:
+   \   00001E   ........     CALLA   #lcd_clear
+     51            lcd_out(shape1[i], LCD_LINE_1);
+   \   000022   7D408000     MOV.B   #0x80, R13
+   \   000026   1F42....     MOV.W   &i, R15
+   \   00002A   0F5F         RLA.W   R15
+   \   00002C   1C4F....     MOV.W   shape1(R15), R12
+   \   000030   ........     CALLA   #lcd_out
+     52            lcd_out(shape2[i], LCD_LINE_2);
+   \   000034   7D40C000     MOV.B   #0xc0, R13
+   \   000038   1F42....     MOV.W   &i, R15
+   \   00003C   0F5F         RLA.W   R15
+   \   00003E   1C4F....     MOV.W   shape2(R15), R12
+   \   000042   ........     BRA     #lcd_out
+     53          }  
+     54           
+
+   \                                 In  segment CODE, align 2
+     55          void displaySong()
+   \                     displaySong:
+     56          {
+   \   000000   0A12         PUSH.W  R10
+     57            int item = ADC_Thumb;
+   \   000002   1A42....     MOV.W   &ADC_Thumb, R10
+     58            
+     59            
+     60            if ((item)>(lastItem+10))
+   \   000006   1F42....     MOV.W   &lastItem, R15
+   \   00000A   3F500A00     ADD.W   #0xa, R15
+   \   00000E   0F9A         CMP.W   R10, R15
+   \   000010   8234         JGE     ??displaySong_0
+     61            {
+     62              if (index > 233) index = 0;
+   \   000012   B290EA00.... CMP.W   #0xea, &index
+   \   000018   0238         JL      ??displaySong_1
+   \   00001A   8243....     MOV.W   #0x0, &index
+     63              //else index++;
+     64              msg[2] = song[index];
+   \                     ??displaySong_1:
+   \   00001E   1F42....     MOV.W   &song, R15
+   \   000022   1F52....     ADD.W   &index, R15
+   \   000026   1E42....     MOV.W   &msg, R14
+   \   00002A   EE4F0200     MOV.B   @R15, 0x2(R14)
+     65              msg[3] = song[index+1];
+   \   00002E   1F42....     MOV.W   &song, R15
+   \   000032   1F52....     ADD.W   &index, R15
+   \   000036   1E42....     MOV.W   &msg, R14
+   \   00003A   DE4F01000300 MOV.B   0x1(R15), 0x3(R14)
+     66              msg[4] = song[index+2];
+   \   000040   1F42....     MOV.W   &song, R15
+   \   000044   1F52....     ADD.W   &index, R15
+   \   000048   1E42....     MOV.W   &msg, R14
+   \   00004C   DE4F02000400 MOV.B   0x2(R15), 0x4(R14)
+     67              msg[5] = song[index+3];
+   \   000052   1F42....     MOV.W   &song, R15
+   \   000056   1F52....     ADD.W   &index, R15
+   \   00005A   1E42....     MOV.W   &msg, R14
+   \   00005E   DE4F03000500 MOV.B   0x3(R15), 0x5(R14)
+     68              msg[6] = song[index+4];
+   \   000064   1F42....     MOV.W   &song, R15
+   \   000068   1F52....     ADD.W   &index, R15
+   \   00006C   1E42....     MOV.W   &msg, R14
+   \   000070   DE4F04000600 MOV.B   0x4(R15), 0x6(R14)
+     69              msg[7] = song[index+5];
+   \   000076   1F42....     MOV.W   &song, R15
+   \   00007A   1F52....     ADD.W   &index, R15
+   \   00007E   1E42....     MOV.W   &msg, R14
+   \   000082   DE4F05000700 MOV.B   0x5(R15), 0x7(R14)
+     70              msg[8] = song[index+6];
+   \   000088   1F42....     MOV.W   &song, R15
+   \   00008C   1F52....     ADD.W   &index, R15
+   \   000090   1E42....     MOV.W   &msg, R14
+   \   000094   DE4F06000800 MOV.B   0x6(R15), 0x8(R14)
+     71              msg[9] = song[index+7];
+   \   00009A   1F42....     MOV.W   &song, R15
+   \   00009E   1F52....     ADD.W   &index, R15
+   \   0000A2   1E42....     MOV.W   &msg, R14
+   \   0000A6   DE4F07000900 MOV.B   0x7(R15), 0x9(R14)
+     72              msg[10] = song[index+8];
+   \   0000AC   1F42....     MOV.W   &song, R15
+   \   0000B0   1F52....     ADD.W   &index, R15
+   \   0000B4   1E42....     MOV.W   &msg, R14
+   \   0000B8   DE4F08000A00 MOV.B   0x8(R15), 0xa(R14)
+     73              msg[11] = song[index+9];
+   \   0000BE   1F42....     MOV.W   &song, R15
+   \   0000C2   1F52....     ADD.W   &index, R15
+   \   0000C6   1E42....     MOV.W   &msg, R14
+   \   0000CA   DE4F09000B00 MOV.B   0x9(R15), 0xb(R14)
+     74              msg[12] = song[index+10];
+   \   0000D0   1F42....     MOV.W   &song, R15
+   \   0000D4   1F52....     ADD.W   &index, R15
+   \   0000D8   1E42....     MOV.W   &msg, R14
+   \   0000DC   DE4F0A000C00 MOV.B   0xa(R15), 0xc(R14)
+     75              index++;
+   \   0000E2   9253....     ADD.W   #0x1, &index
+     76              lcd_clear();
+   \   0000E6   ........     CALLA   #lcd_clear
+     77              lcd_out(msg, LCD_LINE_1);
+   \   0000EA   7D408000     MOV.B   #0x80, R13
+   \   0000EE   1C42....     MOV.W   &msg, R12
+   \   0000F2   ........     CALLA   #lcd_out
+     78              
+     79              if (!rw) lcd_out(red, LCD_LINE_2);
+   \   0000F6   8293....     CMP.W   #0x0, &rw
+   \   0000FA   0720         JNE     ??displaySong_2
+   \   0000FC   7D40C000     MOV.B   #0xc0, R13
+   \   000100   1C42....     MOV.W   &red, R12
+   \   000104   ........     CALLA   #lcd_out
+   \   000108   063C         JMP     ??displaySong_0
+     80              else lcd_out(white, LCD_LINE_2);
+   \                     ??displaySong_2:
+   \   00010A   7D40C000     MOV.B   #0xc0, R13
+   \   00010E   1C42....     MOV.W   &white, R12
+   \   000112   ........     CALLA   #lcd_out
+     81            }
+     82            lastItem = item;
+   \                     ??displaySong_0:
+   \   000116   824A....     MOV.W   R10, &lastItem
+     83          }
+   \   00011A   3A41         POP.W   R10
+   \   00011C   1001         RETA
+
+   \                                 In  segment DATA16_ID, align 2, align-sorted
+   \                     `?<Initializer for song>`:
+   \   000000   ....         DC16 `?<Constant "           We\\'re the ...">`
+
+   \                                 In  segment DATA16_ID, align 2, align-sorted
+   \                     `?<Initializer for red>`:
+   \   000000   ....         DC16 `?<Constant "red">`
+
+   \                                 In  segment DATA16_ID, align 2, align-sorted
+   \                     `?<Initializer for white>`:
+   \   000000   ....         DC16 `?<Constant "white">`
+
+   \                                 In  segment DATA16_ID, align 2, align-sorted
+   \                     `?<Initializer for msg>`:
+   \   000000   ....         DC16 `?<Constant "               ">`
+
+   \                                 In  segment DATA16_ID, align 2, align-sorted
+   \                     `?<Initializer for res1>`:
+   \   000000   ....         DC16 `?<Constant "Color Value">`
+
+   \                                 In  segment DATA16_ID, align 2, align-sorted
+   \                     `?<Initializer for res2>`:
+   \   000000   ........     DC16 `?<Constant "Black  0">`, `?<Constant "Brown   1">`
+   \   000004   ........     DC16 `?<Constant "Red   2">`, `?<Constant "Orange   3">`
+   \   000008   ........     DC16 `?<Constant "Yellow   4">`, `?<Constant "Green   5">`
+   \   00000C   ........     DC16 `?<Constant "Blue   6">`, `?<Constant "Violet   7">`
+   \   000010   ........     DC16 `?<Constant "Gray    8">`, `?<Constant "White     9">`
+
+   \                                 In  segment DATA16_ID, align 2, align-sorted
+   \                     `?<Initializer for shape1>`:
+   \   000000   ........     DC16 `?<Constant "Circle">`, `?<Constant "Square">`
+   \   000004   ........     DC16 `?<Constant "Triangle">`, `?<Constant "Octagon">`
+   \   000008   ........     DC16 `?<Constant "Pentagon">`, `?<Constant "Hexagon">`
+   \   00000C   ............ DC16 `?<Constant "Cube">`, `?<Constant "Oval">`, `?<Constant "Sphere">`
+   \   000012   ....         DC16 `?<Constant "Cylinder">`
+
+   \                                 In  segment DATA16_ID, align 2, align-sorted
+   \                     `?<Initializer for shape2>`:
+   \   000000   ........     DC16 `?<Constant "Square">`, `?<Constant "Triangle">`
+   \   000004   ........     DC16 `?<Constant "Octagon">`, `?<Constant "Pentagon">`
+   \   000008   ........     DC16 `?<Constant "Hexagon">`, `?<Constant "Cube">`
+   \   00000C   ........     DC16 `?<Constant "Oval">`, `?<Constant "Sphere">`
+   \   000010   ........     DC16 `?<Constant "Cylinder">`, `?<Constant "End">`
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "           We\\'re the ...">`:
+   \   000000   202020202020 DC8 20H, 20H, 20H, 20H, 20H, 20H, 20H, 20H
+   \            2020        
+   \   000008   202020576527 DC8 20H, 20H, 20H, 57H, 65H, 27H, 72H, 65H
+   \            7265        
+   \   000010   207468652052 DC8 20H, 74H, 68H, 65H, 20H, 52H, 65H, 64H
+   \            6564        
+   \   000018   20616E642057 DC8 20H, 61H, 6EH, 64H, 20H, 57H, 68H, 69H
+   \            6869        
+   \   000020   74652066726F DC8 74H, 65H, 20H, 66H, 72H, 6FH, 6DH, 20H
+   \            6D20        
+   \   000028   537461746520 DC8 53H, 74H, 61H, 74H, 65H, 20H, 41H, 6EH
+   \            416E        
+   \   000030   64207765206B DC8 64H, 20H, 77H, 65H, 20H, 6BH, 6EH, 6FH
+   \            6E6F        
+   \   000038   772077652061 DC8 77H, 20H, 77H, 65H, 20H, 61H, 72H, 65H
+   \            7265        
+   \   000040   207468652062 DC8 20H, 74H, 68H, 65H, 20H, 62H, 65H, 73H
+   \            6573        
+   \   000048   742E20412068 DC8 74H, 2EH, 20H, 41H, 20H, 68H, 61H, 6EH
+   \            616E        
+   \   000050   642062656869 DC8 64H, 20H, 62H, 65H, 68H, 69H, 6EH, 64H
+   \            6E64        
+   \   000058   206F75722062 DC8 20H, 6FH, 75H, 72H, 20H, 62H, 61H, 63H
+   \            6163        
+   \   000060   6B2C20576520 DC8 6BH, 2CH, 20H, 57H, 65H, 20H, 63H, 61H
+   \            6361        
+   \   000068   6E2074616B65 DC8 6EH, 20H, 74H, 61H, 6BH, 65H, 20H, 6FH
+   \            206F        
+   \   000070   6E20616C6C20 DC8 6EH, 20H, 61H, 6CH, 6CH, 20H, 74H, 68H
+   \            7468        
+   \   000078   652072657374 DC8 65H, 20H, 72H, 65H, 73H, 74H, 2EH, 20H
+   \            2E20        
+   \   000080   436F6D65206F DC8 43H, 6FH, 6DH, 65H, 20H, 6FH, 76H, 65H
+   \            7665        
+   \   000088   722074686520 DC8 72H, 20H, 74H, 68H, 65H, 20H, 68H, 69H
+   \            6869        
+   \   000090   6C6C2C204361 DC8 6CH, 6CH, 2CH, 20H, 43H, 61H, 72H, 6FH
+   \            726F        
+   \   000098   6C696E612E20 DC8 6CH, 69H, 6EH, 61H, 2EH, 20H, 44H, 65H
+   \            4465        
+   \   0000A0   76696C732061 DC8 76H, 69H, 6CH, 73H, 20H, 61H, 6EH, 64H
+   \            6E64        
+   \   0000A8   204465616373 DC8 20H, 44H, 65H, 61H, 63H, 73H, 20H, 73H
+   \            2073        
+   \   0000B0   74616E642069 DC8 74H, 61H, 6EH, 64H, 20H, 69H, 6EH, 20H
+   \            6E20        
+   \   0000B8   6C696E652E20 DC8 6CH, 69H, 6EH, 65H, 2EH, 20H, 54H, 68H
+   \            5468        
+   \   0000C0   652052656420 DC8 65H, 20H, 52H, 65H, 64H, 20H, 61H, 6EH
+   \            616E        
+   \   0000C8   642057686974 DC8 64H, 20H, 57H, 68H, 69H, 74H, 65H, 20H
+   \            6520        
+   \   0000D0   66726F6D204E DC8 66H, 72H, 6FH, 6DH, 20H, 4EH, 2EH, 43H
+   \            2E43        
+   \   0000D8   2E2053746174 DC8 2EH, 20H, 53H, 74H, 61H, 74H, 65H, 2EH
+   \            652E        
+   \   0000E0   20476F205374 DC8 20H, 47H, 6FH, 20H, 53H, 74H, 61H, 74H
+   \            6174        
+   \   0000E8   652100       DC8 65H, 21H, 0
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "red">`:
+   \   000000   72656400     DC8 "red"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "white">`:
+   \   000000   776869746500 DC8 "white"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "               ">`:
+   \   000000   202020202020 DC8 "               "
+   \            202020202020
+   \            20202000    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Color Value">`:
+   \   000000   436F6C6F7220 DC8 "Color Value"
+   \            56616C756500
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Black  0">`:
+   \   000000   426C61636B20 DC8 "Black  0"
+   \            203000      
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Brown   1">`:
+   \   000000   42726F776E20 DC8 "Brown   1"
+   \            20203100    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Red   2">`:
+   \   000000   526564202020 DC8 "Red   2"
+   \            3200        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Orange   3">`:
+   \   000000   4F72616E6765 DC8 "Orange   3"
+   \            2020203300  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Yellow   4">`:
+   \   000000   59656C6C6F77 DC8 "Yellow   4"
+   \            2020203400  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Green   5">`:
+   \   000000   477265656E20 DC8 "Green   5"
+   \            20203500    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Blue   6">`:
+   \   000000   426C75652020 DC8 "Blue   6"
+   \            203600      
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Violet   7">`:
+   \   000000   56696F6C6574 DC8 "Violet   7"
+   \            2020203700  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Gray    8">`:
+   \   000000   477261792020 DC8 "Gray    8"
+   \            20203800    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "White     9">`:
+   \   000000   576869746520 DC8 "White     9"
+   \            202020203900
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Circle">`:
+   \   000000   436972636C65 DC8 "Circle"
+   \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Square">`:
+   \   000000   537175617265 DC8 "Square"
+   \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Triangle">`:
+   \   000000   547269616E67 DC8 "Triangle"
+   \            6C6500      
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Octagon">`:
+   \   000000   4F637461676F DC8 "Octagon"
+   \            6E00        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Pentagon">`:
+   \   000000   50656E746167 DC8 "Pentagon"
+   \            6F6E00      
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Hexagon">`:
+   \   000000   48657861676F DC8 "Hexagon"
+   \            6E00        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Cube">`:
+   \   000000   4375626500   DC8 "Cube"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Oval">`:
+   \   000000   4F76616C00   DC8 "Oval"
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Sphere">`:
+   \   000000   537068657265 DC8 "Sphere"
+   \            00          
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Cylinder">`:
+   \   000000   43796C696E64 DC8 "Cylinder"
+   \            657200      
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "End">`:
+   \   000000   456E6400     DC8 "End"
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   displayRes
+        4   -> lcd_clear
+        4   -> lcd_out
+      4   displayShape
+        4   -> lcd_clear
+        4   -> lcd_out
+      6   displaySong
+        6   -> lcd_clear
+        6   -> lcd_out
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      16  ?<Constant "               ">
+     235  ?<Constant "           We\'re the ...">
+       9  ?<Constant "Black  0">
+       9  ?<Constant "Blue   6">
+      10  ?<Constant "Brown   1">
+       7  ?<Constant "Circle">
+      12  ?<Constant "Color Value">
+       5  ?<Constant "Cube">
+       9  ?<Constant "Cylinder">
+       4  ?<Constant "End">
+      10  ?<Constant "Gray    8">
+      10  ?<Constant "Green   5">
+       8  ?<Constant "Hexagon">
+       8  ?<Constant "Octagon">
+      11  ?<Constant "Orange   3">
+       5  ?<Constant "Oval">
+       9  ?<Constant "Pentagon">
+       8  ?<Constant "Red   2">
+       7  ?<Constant "Sphere">
+       7  ?<Constant "Square">
+       9  ?<Constant "Triangle">
+      11  ?<Constant "Violet   7">
+      12  ?<Constant "White     9">
+      11  ?<Constant "Yellow   4">
+       4  ?<Constant "red">
+       6  ?<Constant "white">
+       2  ?<Initializer for msg>
+       2  ?<Initializer for red>
+       2  ?<Initializer for res1>
+      20  ?<Initializer for res2>
+      20  ?<Initializer for shape1>
+      20  ?<Initializer for shape2>
+       2  ?<Initializer for song>
+       2  ?<Initializer for white>
+      64  displayRes
+      70  displayShape
+     286  displaySong
+       2  i
+       2  index
+       2  msg
+       2  red
+       2  res1
+      20  res2
+       2  rw
+      20  shape1
+      20  shape2
+       2  song
+       2  white
+
+ 
+ 420 bytes in segment CODE
+ 452 bytes in segment DATA16_C
+  70 bytes in segment DATA16_I
+  70 bytes in segment DATA16_ID
+   6 bytes in segment DATA16_Z
+ 
+ 420 bytes of CODE  memory
+ 522 bytes of CONST memory
+  76 bytes of DATA  memory
+
+Errors: none
+Warnings: none

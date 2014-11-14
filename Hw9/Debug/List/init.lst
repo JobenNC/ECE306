@@ -1,0 +1,98 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         13/Nov/2014  20:13:04
+# Copyright 1996-2014 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\init.c
+#    Command line  =  
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\init.c -lC
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\Debug\List\ -o
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\Debug\Obj\ --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -Ol --multiplier=32
+#        --multiplier_location=4C0 --hw_workaround=CPU40 --hw_workaround=CPU39
+#        --code_model=large
+#    List file     =  
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\Debug\List\init.lst
+#    Object file   =  
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\Debug\Obj\init.r43
+#
+###############################################################################
+
+C:\Users\Joseph\Documents\GitHub\ECE306\Hw9\init.c
+      1          //===========================================================================
+      2          // File Name : init.c
+      3          //
+      4          // Description: Set up initial conditions
+      5          //
+      6          // Author: Joseph Jarriel
+      7          // Date: Sep 2014
+      8          // Compiler: Built with IAR Embedded Workbench (6.10.5)
+      9          // Globals: No globals defined in this file
+     10          // Functions: Init_Conditions
+     11          //===========================================================================
+     12          
+     13          #include  "functions.h"
+     14          #include "macros.h"
+     15          
+
+   \                                 In  segment CODE, align 2
+     16          void Init_Conditions(void){
+   \                     Init_Conditions:
+     17          //===========================================================================
+     18          // Function name: Init_Conditions
+     19          //
+     20          // Description: Set up intiial conditions
+     21          // 
+     22          // Passed : no variables passed
+     23          // Locals: no variables declared
+     24          // Returned: no values returned
+     25          // Globals: None
+     26          // Calls: enable_interrupts
+     27          //
+     28          // Author: Joseph Jarriel
+     29          // Date: Sep 2014
+     30          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+     31          // ==========================================================================
+     32          //------------------------------------------------------------------------------
+     33          // Initializations Configurations
+     34          //------------------------------------------------------------------------------
+     35          // Interrupts are disabled by default, enable them. 
+     36            enable_interrupts();
+   \   000000   ........     BRA     #enable_interrupts
+     37          
+     38          //------------------------------------------------------------------------------
+     39          }
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Init_Conditions
+        4   -> enable_interrupts
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  Init_Conditions
+
+ 
+ 4 bytes in segment CODE
+ 
+ 4 bytes of CODE memory
+
+Errors: none
+Warnings: none
