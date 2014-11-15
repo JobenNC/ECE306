@@ -1,0 +1,364 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         06/Nov/2014  17:04:32
+# Copyright 1996-2014 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\interrupt_ports.c
+#    Command line  =  
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\interrupt_ports.c -lC
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\List\ -o
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\Obj\ --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -Ol --multiplier=32
+#        --multiplier_location=4C0 --hw_workaround=CPU40 --hw_workaround=CPU39
+#        --code_model=large
+#    List file     =  
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\List\interrupt_ports.lst
+#    Object file   =  
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\Obj\interrupt_ports.r43
+#
+###############################################################################
+
+C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\interrupt_ports.c
+      1          //===========================================================================
+      2          // File Name : functions.h
+      3          //
+      4          // Description: function declarations
+      5          //
+      6          // Author: Joseph Jarriel
+      7          // Date: Sep 2014
+      8          // Compiler: Built with IAR Embedded Workbench (6.10.5)
+      9          // Globals: None
+     10          // Functions: None defined
+     11          //===========================================================================
+     12          
+     13          #include  "functions.h"
+     14          #include "macros.h"
+     15          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x23a
+   \   union <unnamed> _A_PBIE_L
+   \                     _A_PBIE_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x23c
+   \   union <unnamed> _A_PBIFG_L
+   \                     _A_PBIFG_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x322
+   \   union <unnamed> _A_PJOUT_L
+   \                     _A_PJOUT_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x5e0
+   \   union <unnamed> _A_UCA1CTLW0_L
+   \                     _A_UCA1CTLW0_L:
+   \   000000                DS8 2
+     16          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     17          volatile unsigned int isDebounce;
+   \                     isDebounce:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     18          volatile unsigned int bounceCount;
+   \                     bounceCount:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     19          volatile unsigned int switchPress;
+   \                     switchPress:
+   \   000000                DS8 2
+     20          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     21          volatile unsigned int drive = RESET;
+   \                     drive:
+   \   000000                DS8 2
+     22          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     23          volatile unsigned int LED_White_LD;
+   \                     LED_White_LD:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     24          volatile unsigned int LED_Black_LD;
+   \                     LED_Black_LD:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     25          volatile unsigned int LED_White_RD;
+   \                     LED_White_RD:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     26          volatile unsigned int LED_Black_RD;
+   \                     LED_Black_RD:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     27          volatile unsigned int LED_Off_RD;
+   \                     LED_Off_RD:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     28          volatile unsigned int LED_Off_LD;
+   \                     LED_Off_LD:
+   \   000000                DS8 2
+     29          
+
+   \                                 In  segment DATA16_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+     30          volatile unsigned int butt1 = BEFORE_START;
+   \                     butt1:
+   \   000000                DS8 2
+   \   000002                REQUIRE `?<Initializer for butt1>`
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     31          volatile unsigned int butt2 = RESET;
+   \                     butt2:
+   \   000000                DS8 2
+     32          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     33          extern volatile unsigned int starting = RESET;
+   \                     starting:
+   \   000000                DS8 2
+     34          
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     35          char nib1;
+   \                     nib1:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     36          char nib2;
+   \                     nib2:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     37          char nib3;
+   \                     nib3:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     38          char nib4;
+   \                     nib4:
+   \   000000                DS8 1
+     39          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     40          char* outP;
+   \                     outP:
+   \   000000                DS8 2
+     41          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     42          char *display_One;
+   \                     display_One:
+   \   000000                DS8 2
+     43          
+     44          
+     45          #pragma vector=PORT4_VECTOR
+     46          
+
+   \                                 In  segment ISR_CODE, align 2
+     47          __interrupt void switch_interrupt(void) {
+   \                     switch_interrupt:
+   \   000000   3F15         PUSHM.W #0x4, R15
+     48          //===========================================================================
+     49          // ISR name: switch_interrupt
+     50          //
+     51          // Description: This ISR handles switch events
+     52          // 
+     53          // Passed : no variables passed
+     54          // Locals: no variables declared
+     55          // Returned: no values returned
+     56          // Globals: switchPress, isDebounce, bounceCount
+     57          // Calls: lcd_out, lcd_clear
+     58          //
+     59          // Author: Joseph Jarriel
+     60          // Date: Sep 2014
+     61          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+     62          // ==========================================================================
+     63          // Switch 1 
+     64           if (P4IFG & SW1) {
+   \   000002   D2B33D02     BIT.B   #0x1, &0x23d
+   \   000006   1A28         JNC     ??switch_interrupt_0
+     65              //Init_Serial_UCA1();
+     66              writeNext = START;
+   \   000008   9243....     MOV.W   #0x1, &writeNext
+     67             //lcd_clear();
+     68             //lcd_out("    Switch 1", LCD_LINE_1);
+     69          // Set a variable to identify the switch has been pressed.
+     70             switchPress = START;
+   \   00000C   9243....     MOV.W   #0x1, &switchPress
+     71          // Set a variable to identify the switch is being debounced.
+     72             isDebounce = START;
+   \   000010   9243....     MOV.W   #0x1, &isDebounce
+     73          // Reset the count required of the debounce.
+     74             bounceCount = RESET;
+   \   000014   8243....     MOV.W   #0x0, &bounceCount
+     75          // Disable the Switch Interrupt.
+     76             P4IE &= ~SW1; // P4.0 SW1 interrupt Disabled
+   \   000018   D2C33B02     BIC.B   #0x1, &0x23b
+     77             P4IE &= ~SW2; // P4.0 SW2 interrupt Disabled
+   \   00001C   E2C33B02     BIC.B   #0x2, &0x23b
+     78          // Clear any current timer interrupt.
+     79             P4IFG &= ~SW1; // P4 IFG SW1 cleared
+   \   000020   D2C33D02     BIC.B   #0x1, &0x23d
+     80             P4IFG &= ~SW2; // P4 IFG SW2 cleared
+   \   000024   E2C33D02     BIC.B   #0x2, &0x23d
+     81             PJOUT |= LED1; // Toggle LED 1 on to indicate boot ISR working
+   \   000028   92D32203     BIS.W   #0x1, &0x322
+     82             
+     83             //-----Setup up first fake receive
+     84             //++usb_rx_ring_wr;
+     85             //++usb_rx_ring_wr;
+     86             //USB_Char_Rx[0] = (char) 0x00;
+     87             //USB_Char_Rx[1] = (char) 0x00;
+     88             whichChar = RESET;
+   \   00002C   C243....     MOV.B   #0x0, &whichChar
+     89             readyToReceive = START;
+   \   000030   D243....     MOV.B   #0x1, &readyToReceive
+     90             
+     91             //Init_Serial_UCA1();
+     92             resetCount = START;
+   \   000034   D243....     MOV.B   #0x1, &resetCount
+     93             UCA1CTLW0 |= UCSWRST; // Set Software reset enable
+   \   000038   92D3E005     BIS.W   #0x1, &0x5e0
+     94           }
+     95          // Switch 2 
+     96           if (P4IFG & SW2) {
+   \                     ??switch_interrupt_0:
+   \   00003C   E2B33D02     BIT.B   #0x2, &0x23d
+   \   000040   1228         JNC     ??switch_interrupt_1
+     97          
+     98             lcd_clear();
+   \   000042   ........     CALLA   #lcd_clear
+     99          // t a variable to identify the switch has been pressed.
+    100             switchPress = START;
+   \   000046   9243....     MOV.W   #0x1, &switchPress
+    101          // Set a variable to identify the switch is being debounced.
+    102             isDebounce = START;
+   \   00004A   9243....     MOV.W   #0x1, &isDebounce
+    103          // Reset the count required of the debounce.
+    104             bounceCount = RESET;
+   \   00004E   8243....     MOV.W   #0x0, &bounceCount
+    105          // Disable the Switch Interrupt.
+    106             P4IE &= ~SW2; // P4.0 SW2 interrupt Disabled
+   \   000052   E2C33B02     BIC.B   #0x2, &0x23b
+    107             P4IE &= ~SW1; // P4.0 SW1 interrupt Disabled
+   \   000056   D2C33B02     BIC.B   #0x1, &0x23b
+    108          // Clear any current timer interrupt.
+    109             P4IFG &= ~SW2; // P4 IFG SW2 cleared
+   \   00005A   E2C33D02     BIC.B   #0x2, &0x23d
+    110             P4IFG &= ~SW1; // P4 IFG SW1 cleared
+   \   00005E   D2C33D02     BIC.B   #0x1, &0x23d
+    111             PJOUT |= LED1; // Toggle LED 1 on to indicate boot ISR working
+   \   000062   92D32203     BIS.W   #0x1, &0x322
+    112           }
+    113          // Enable the Timer Interrupt for the debounce.
+    114          }
+   \                     ??switch_interrupt_1:
+   \   000066   3C17         POPM.W  #0x4, R15
+   \   000068   0013         RETI
+   \   00006A                REQUIRE _A_PBIFG_L
+   \   00006A                REQUIRE _A_PBIE_L
+   \   00006A                REQUIRE _A_PJOUT_L
+   \   00006A                REQUIRE _A_UCA1CTLW0_L
+
+   \                                 In  segment INTVEC, offset 0x40, root
+   \                     `??switch_interrupt??INTVEC 64`:
+   \   000040   ....         DC16    switch_interrupt
+
+   \                                 In  segment DATA16_ID, align 2, align-sorted
+   \                     `?<Initializer for butt1>`:
+   \   000000   FFFF         DC16 65535
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+     12   switch_interrupt
+       12   -> lcd_clear
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       2  ?<Initializer for butt1>
+       2  ??switch_interrupt??INTVEC 64
+       2  LED_Black_LD
+       2  LED_Black_RD
+       2  LED_Off_LD
+       2  LED_Off_RD
+       2  LED_White_LD
+       2  LED_White_RD
+       2  _A_PBIE_L
+       2  _A_PBIFG_L
+       2  _A_PJOUT_L
+       2  _A_UCA1CTLW0_L
+       2  bounceCount
+       2  butt1
+       2  butt2
+       2  display_One
+       2  drive
+       2  isDebounce
+       1  nib1
+       1  nib2
+       1  nib3
+       1  nib4
+       2  outP
+       2  starting
+       2  switchPress
+     106  switch_interrupt
+
+ 
+   8 bytes in segment DATA16_AN
+   2 bytes in segment DATA16_I
+   2 bytes in segment DATA16_ID
+  32 bytes in segment DATA16_Z
+   2 bytes in segment INTVEC
+ 106 bytes in segment ISR_CODE
+ 
+ 106 bytes of CODE  memory
+   2 bytes of CONST memory (+ 2 bytes shared)
+  34 bytes of DATA  memory (+ 8 bytes shared)
+
+Errors: none
+Warnings: none

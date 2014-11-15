@@ -1,0 +1,381 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         06/Nov/2014  17:04:33
+# Copyright 1996-2014 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\timers.c
+#    Command line  =  
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\timers.c -lC
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\List\ -o
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\Obj\ --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -Ol --multiplier=32
+#        --multiplier_location=4C0 --hw_workaround=CPU40 --hw_workaround=CPU39
+#        --code_model=large
+#    List file     =  
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\List\timers.lst
+#    Object file   =  
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\Obj\timers.r43
+#
+###############################################################################
+
+C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\timers.c
+      1          //===========================================================================
+      2          // File Name : timers.c
+      3          //
+      4          // Description: This file contains initialization functions and interrupt
+      5          //      handlers for the time functions
+      6          //
+      7          // Author: Joseph Jarriel
+      8          // Date: Sep 2014
+      9          // Compiler: Built with IAR Embedded Workbench (6.10.5)
+     10          // Globals: No globals defined in this file
+     11          // Functions: Init_Timers
+     12          //===========================================================================
+     13          
+     14          #include  "functions.h"
+     15          #include "macros.h"
+     16          #include "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x340
+   \   unsigned short volatile TA0CTL
+   \                     TA0CTL:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x342
+   \   unsigned short volatile TA0CCTL0
+   \                     TA0CCTL0:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x352
+   \   unsigned short volatile TA0CCR0
+   \                     TA0CCR0:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x360
+   \   unsigned short volatile TA0EX0
+   \                     TA0EX0:
+   \   000000                DS8 2
+     17          
+
+   \                                 In  segment CODE, align 2
+     18          void Init_Timers(void){
+   \                     Init_Timers:
+     19          //===========================================================================
+     20          // Function name: Init_Timers
+     21          //
+     22          // Description: This function initialized the timers
+     23          // 
+     24          // Passed : no variables passed
+     25          // Locals: no variables declared
+     26          // Returned: no values returned
+     27          // Globals: None
+     28          // Calls: void Init_Timer_B2(void)
+     29          //
+     30          // Author: Joseph Jarriel
+     31          // Date: Sep 2014
+     32          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+     33          // ==========================================================================
+     34            
+     35            Init_Timer_B2();   //  Required for provided compiled code to work
+   \   000000   ........     CALLA   #Init_Timer_B2
+     36            Init_Timer_A0();
+   \   000004   ........     BRA     #Init_Timer_A0
+     37          //------------------------------------------------------------------------------
+     38          //******************************************************************************
+     39          }
+     40          
+
+   \                                 In  segment CODE, align 2
+     41          void usleep10(unsigned int usec){
+   \                     usleep10:
+     42          //===========================================================================
+     43          // Function name: usleep10
+     44          //
+     45          // Description: a sleep function
+     46          // 
+     47          // Passed : int usec: a 10us multiplier
+     48          // Locals: int i, int j
+     49          // Returned: no values returned
+     50          // Globals: None
+     51          // Calls: None
+     52          //
+     53          // Author: Joseph Jarriel
+     54          // Date: Sep 2014
+     55          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+     56          // ==========================================================================
+     57            
+     58          //******************************************************************************
+     59          //------------------------------------------------------------------------------
+     60          // At the current clock rate this yields about 10usec per value passed
+     61          // A value of  0 yields 1.37 uSec
+     62          // A value of  1 yields 1.87 uSec
+     63          // A value of  2 yields 2.36 uSec
+     64          // A value of  3 yields 2.86 uSec
+     65          // A value of  4 yields 3.36 uSec
+     66          // A value of  5 yields 3.86 uSec
+     67          // A value of  6 yields 4.36 uSec
+     68          // A value of  7 yields 4.85 uSec
+     69          // A value of  8 yields 5.354 uSec
+     70          // A value of  9 yields 5.854 uSec
+     71          // A value of 10 yields 6.353 uSec
+     72          // A value of 11 yields 6.851 uSec
+     73          // A value of 12 yields 7.351 uSec
+     74          // A value of 13 yields 7.849 uSec
+     75          // A value of 14 yields 8.350 uSec
+     76          // A value of 15 yields 8.849 uSec
+     77          // A value of 16 yields 9.342 uSec
+     78          // A value of 17 yields 9.84 uSec
+     79          // A value of 18 yields 10.34 uSec
+     80          // A value of 19 yields 10.84 uSec
+     81            int i,j;
+     82            for(j=RESET;j<usec;j++){
+   \   000000   0E43         MOV.W   #0x0, R14
+   \   000002   053C         JMP     ??usleep10_2
+     83              for(i=RESET;i<USLEEP_10_FIN;i++);
+   \                     ??usleep10_0:
+   \   000004   1F53         ADD.W   #0x1, R15
+   \                     ??usleep10_1:
+   \   000006   3F900E00     CMP.W   #0xe, R15
+   \   00000A   FC3B         JL      ??usleep10_0
+   \   00000C   1E53         ADD.W   #0x1, R14
+   \                     ??usleep10_2:
+   \   00000E   0E9C         CMP.W   R12, R14
+   \   000010   022C         JC      ??usleep10_3
+   \   000012   0F43         MOV.W   #0x0, R15
+   \   000014   F83F         JMP     ??usleep10_1
+     84            }
+     85          //------------------------------------------------------------------------------
+     86          //******************************************************************************
+     87          }
+   \                     ??usleep10_3:
+   \   000016   1001         RETA
+     88          
+
+   \                                 In  segment CODE, align 2
+     89          void five_msec_sleep(unsigned int fivemsec){
+   \                     five_msec_sleep:
+     90          //===========================================================================
+     91          // Function name: five_msec_sleep
+     92          //
+     93          // Description: a 5msec sleep function
+     94          // 
+     95          // Passed : unsigned int fivemsec
+     96          // Locals: no variables declared
+     97          // Returned: no values returned
+     98          // Globals: five_msec_count
+     99          // Calls: None
+    100          //
+    101          // Author: Joseph Jarriel
+    102          // Date: Sep 2014
+    103          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+    104          // ==========================================================================
+    105          //------------------------------------------------------------------------------
+    106          //Each count passed is at least x times 5 milliseconds
+    107            five_msec_count = RESET;
+   \   000000   8243....     MOV.W   #0x0, &five_msec_count
+    108            while(fivemsec > (five_msec_count+ONE));
+   \                     ??five_msec_sleep_0:
+   \   000004   1F42....     MOV.W   &five_msec_count, R15
+   \   000008   1F53         ADD.W   #0x1, R15
+   \   00000A   0F9C         CMP.W   R12, R15
+   \   00000C   FB2B         JNC     ??five_msec_sleep_0
+    109          //------------------------------------------------------------------------------
+    110          }
+   \   00000E   1001         RETA
+    111          
+
+   \                                 In  segment CODE, align 2
+    112          void TimerB0code(void){
+   \                     TimerB0code:
+    113          //------------------------------------------------------------------------------
+    114          // Timer B0 interrupt code
+    115          //------------------------------------------------------------------------------
+    116            Time_Sequence++;
+   \   000000   9253....     ADD.W   #0x1, &Time_Sequence
+    117            if (waitCount <= TIME_UP) waitCount ++;
+   \   000004   B2901A00.... CMP.W   #0x1a, &waitCount
+   \   00000A   0234         JGE     ??TimerB0code_0
+   \   00000C   9253....     ADD.W   #0x1, &waitCount
+    118            one_time = START;
+   \                     ??TimerB0code_0:
+   \   000010   D243....     MOV.B   #0x1, &one_time
+    119            if (five_msec_count < FIVE_MSEC_FIN){
+   \   000014   B290E803.... CMP.W   #0x3e8, &five_msec_count
+   \   00001A   022C         JC      ??TimerB0code_1
+    120              five_msec_count++;
+   \   00001C   9253....     ADD.W   #0x1, &five_msec_count
+    121            }
+    122          //------------------------------------------------------------------------------
+    123          }
+   \                     ??TimerB0code_1:
+   \   000020   1001         RETA
+    124          
+
+   \                                 In  segment CODE, align 2
+    125          void Init_Timer_A0(void)
+   \                     Init_Timer_A0:
+    126          {
+    127          //===========================================================================
+    128          // Function name: Init_Timer_A0
+    129          //
+    130          // Description: This function initializes Timer A0
+    131          // 
+    132          // Passed : no variables passed
+    133          // Locals: no variables declared
+    134          // Returned: no values returned
+    135          // Globals: None
+    136          // Calls: void Init_Timer_B2(void)
+    137          //
+    138          // Author: Joseph Jarriel
+    139          // Date: Sep 2014
+    140          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+    141          // ==========================================================================
+    142            //select src w/ tassel bits
+    143            // set divider w/ taidex bits
+    144            //then set taclr bit
+    145            //starts counting as soon as taclr bit is clears.
+    146            
+    147            //taxccr0 stops clock when 0 written, restarts w/ nonzero
+    148            //in scen, stars incr up from zero
+    149            
+    150            //op mode selected w/ mc bits
+    151            //00 stop - halt
+    152            //01 up - from zero to val of ta0ccr0
+    153            //10 cont - rep counts from zero to 0fffh
+    154            //11 up/down - rep counts from 0 to val of ta0ccr0 and back to 0
+    155            
+    156            //# timer cnts in period is ta0ccr0 + 1
+    157            
+    158            //ta0ccr0 ccifg intrpt flag is set when timer hits ta0ccr0 val
+    159            //taifg is set when timer counts from ta0ccr0 to 0
+    160            TA0CTL = TASSEL__SMCLK;
+   \   000000   B24000024003 MOV.W   #0x200, &0x340
+    161            //TA0CTL |= 0x
+    162            TA0CTL |= TACLR;
+   \   000006   A2D24003     BIS.W   #0x4, &0x340
+    163            TA0CTL |= MC__CONTINUOUS;
+   \   00000A   B2D020004003 BIS.W   #0x20, &0x340
+    164            TA0CTL |= ID__2;
+   \   000010   B2D040004003 BIS.W   #0x40, &0x340
+    165            TA0EX0 = TAIDEX_7;
+   \   000016   B24007006003 MOV.W   #0x7, &0x360
+    166            
+    167            //disable and reset overflow intrpt
+    168            TA0CTL &= ~TAIE;
+   \   00001C   A2C34003     BIC.W   #0x2, &0x340
+    169            TA0CTL &= ~TAIFG;
+   \   000020   92C34003     BIC.W   #0x1, &0x340
+    170            
+    171            //int INTERVAL = 5;
+    172            TA0CCR0 = FIVE_MSEC_OFFSET; //8,000,000/8/2/2500 = 200Hz = 5msec
+   \   000024   B240C4095203 MOV.W   #0x9c4, &0x352
+    173            
+    174            TA0CCTL0 |= CCIE; //enable caputre compare control reg 1
+   \   00002A   B2D010004203 BIS.W   #0x10, &0x342
+    175            
+    176            //&= ~CCIE to disable
+    177            
+    178            //TA0R is the count reg
+    179            //TA0CLR clears TA0R, clock div and count dir
+    180          }
+   \   000030   1001         RETA
+   \   000032                REQUIRE TA0CTL
+   \   000032                REQUIRE TA0EX0
+   \   000032                REQUIRE TA0CCR0
+   \   000032                REQUIRE TA0CCTL0
+    181          
+
+   \                                 In  segment CODE, align 2
+    182          void newFM(int count)
+   \                     newFM:
+    183          //===========================================================================
+    184          // Function name: newFM
+    185          //
+    186          // Description: My five msec sleep funct
+    187          // 
+    188          // Passed : iter count
+    189          // Locals: no variables declared
+    190          // Returned: no values returned
+    191          // Globals: fMCount
+    192          // Calls: None
+    193          //
+    194          // Author: Joseph Jarriel
+    195          // Date: Sep 2014
+    196          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+    197          // ==========================================================================
+    198          {
+    199            int i;
+    200            for (i=RESET; i < count; i++)
+   \   000000   0F43         MOV.W   #0x0, R15
+   \   000002   083C         JMP     ??newFM_2
+    201            {
+    202              int oldVal = fMCount;
+   \                     ??newFM_1:
+   \   000004   1E42....     MOV.W   &fMCount, R14
+    203              while (fMCount != ~oldVal)
+   \                     ??newFM_0:
+   \   000008   0D4E         MOV.W   R14, R13
+   \   00000A   3DE3         XOR.W   #0xffff, R13
+   \   00000C   829D....     CMP.W   R13, &fMCount
+   \   000010   FB23         JNE     ??newFM_0
+    204              {
+    205              }
+    206            }
+   \   000012   1F53         ADD.W   #0x1, R15
+   \                     ??newFM_2:
+   \   000014   0F9C         CMP.W   R12, R15
+   \   000016   F63B         JL      ??newFM_1
+    207            return;
+   \   000018   1001         RETA
+    208          }
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Init_Timer_A0
+      4   Init_Timers
+        4   -> Init_Timer_A0
+        4   -> Init_Timer_B2
+      4   TimerB0code
+      4   five_msec_sleep
+      4   newFM
+      4   usleep10
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      50  Init_Timer_A0
+       8  Init_Timers
+       2  TA0CCR0
+       2  TA0CCTL0
+       2  TA0CTL
+       2  TA0EX0
+      34  TimerB0code
+      16  five_msec_sleep
+      26  newFM
+      24  usleep10
+
+ 
+ 158 bytes in segment CODE
+   8 bytes in segment DATA16_AN
+ 
+ 158 bytes of CODE memory
+   0 bytes of DATA memory (+ 8 bytes shared)
+
+Errors: none
+Warnings: none
