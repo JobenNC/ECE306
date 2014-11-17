@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         06/Nov/2014  17:04:33
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         16/Nov/2014  19:43:45
 # Copyright 1996-2014 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
 #
@@ -12,11 +12,11 @@
 #    __core        =  430X
 #    __data_model  =  small
 #    __code_model  =  large
-#    Source file   =  C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Serial.c
+#    Source file   =  C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\Serial.c
 #    Command line  =  
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Serial.c -lC
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\List\ -o
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\Obj\ --no_cse
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\Serial.c -lC
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\Debug\List\ -o
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\Debug\Obj\ --no_cse
 #        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
 #        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
 #        (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.h"
@@ -24,13 +24,13 @@
 #        --multiplier_location=4C0 --hw_workaround=CPU40 --hw_workaround=CPU39
 #        --code_model=large
 #    List file     =  
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\List\Serial.lst
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\Debug\List\Serial.lst
 #    Object file   =  
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\Obj\Serial.r43
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\Debug\Obj\Serial.r43
 #
 ###############################################################################
 
-C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Serial.c
+C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\Serial.c
       1          //===========================================================================
       2          // File Name : Serial.c
       3          //
@@ -229,58 +229,68 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Serial.c
      82          __interrupt void USCI_A1_ISR(void){
    \                     USCI_A1_ISR:
    \   000000   1F15         PUSHM.W #0x2, R15
-     83           unsigned int temp;
-     84           switch(__even_in_range(UCA1IV,UCA_RANGE)){
+     83            //===========================================================================
+     84          // ISR name: UARTA1 interrupt
+     85          //
+     86          // Description: This ISR handles UARTA1
+     87          // 
+     88          // Passed : no variables passed
+     89          // Locals: no variables declared
+     90          // Returned: no values returned
+     91          // Globals: switchPress, isDebounce, bounceCount
+     92          // Calls: lcd_out, lcd_clear
+     93          //
+     94          // Author: Joseph Jarriel
+     95          // Date: Sep 2014
+     96          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+     97          // ==========================================================================
+     98           unsigned int temp;
+     99           switch(__even_in_range(UCA1IV,UCA_RANGE)){
    \   000002   1F42FE05     MOV.W   &0x5fe, R15
    \   000006   E00F         ADDA    R15, PC
    \                     `?<Jumptable for USCI_A1_ISR>_0`:
-   \   000008   193C         JMP     ??USCI_A1_ISR_2
-   \   00000A   033C         JMP     ??USCI_A1_ISR_5
-   \   00000C   173C         JMP     ??USCI_A1_ISR_2
-   \   00000E   163C         JMP     ??USCI_A1_ISR_2
-   \   000010   153C         JMP     ??USCI_A1_ISR_2
-     85           case RESET: // Vector 0 - no interrupt
-     86           break;
-     87           case SECOND: // Vector 2 - RXIFG
-     88           temp = ++usb_rx_ring_wr;
-   \                     ??USCI_A1_ISR_5:
+   \   000008   123C         JMP     ??USCI_A1_ISR_2
+   \   00000A   033C         JMP     ??USCI_A1_ISR_3
+   \   00000C   103C         JMP     ??USCI_A1_ISR_2
+   \   00000E   0F3C         JMP     ??USCI_A1_ISR_2
+   \   000010   0E3C         JMP     ??USCI_A1_ISR_2
+    100           case RESET: // Vector 0 - no interrupt
+    101           break;
+    102           case SECOND: // Vector 2 - RXIFG
+    103           temp = ++usb_rx_ring_wr;
+   \                     ??USCI_A1_ISR_3:
    \   000012   1F42....     MOV.W   &usb_rx_ring_wr, R15
    \   000016   1F53         ADD.W   #0x1, R15
    \   000018   824F....     MOV.W   R15, &usb_rx_ring_wr
-     89           
-     90           if (temp % SECOND) readyToReceive = START;
-   \   00001C   1FB3         BIT.W   #0x1, R15
-   \   00001E   0328         JNC     ??USCI_A1_ISR_3
-   \   000020   D243....     MOV.B   #0x1, &readyToReceive
-   \   000024   023C         JMP     ??USCI_A1_ISR_4
-     91           else readyToReceive = RESET;
-   \                     ??USCI_A1_ISR_3:
-   \   000026   C243....     MOV.B   #0x0, &readyToReceive
-     92           
-     93           USB_Char_Rx[temp] = UCA1RXBUF; // RX -> USB_Char_Rx character
-   \                     ??USCI_A1_ISR_4:
-   \   00002A   1E42EC05     MOV.W   &0x5ec, R14
-   \   00002E   CF4E....     MOV.B   R14, USB_Char_Rx(R15)
-     94           if (usb_rx_ring_wr > (SEVENTH)){
-   \   000032   B292....     CMP.W   #0x8, &usb_rx_ring_wr
-   \   000036   0238         JL      ??USCI_A1_ISR_2
-     95              usb_rx_ring_wr = RESET; // Circular buffer back to beginning
-   \   000038   8243....     MOV.W   #0x0, &usb_rx_ring_wr
-     96           }
-     97          
-     98           break;
-     99           case FOURTH: // Vector 4 – TXIFG
-    100             //write to UCAxTXBUF x=0
-    101             
-    102           break;
-    103           default: break; 
-    104           }
-    105          }
+    104           
+    105           //for prev proj
+    106           //if (temp % SECOND) readyToReceive = START;
+    107           //else readyToReceive = RESET;
+    108           
+    109           USB_Char_Rx[temp] = UCA1RXBUF; // RX -> USB_Char_Rx character
+   \   00001C   1E42EC05     MOV.W   &0x5ec, R14
+   \   000020   CF4E....     MOV.B   R14, USB_Char_Rx(R15)
+    110           if (usb_rx_ring_wr > (7)){
+   \   000024   B292....     CMP.W   #0x8, &usb_rx_ring_wr
+   \   000028   0238         JL      ??USCI_A1_ISR_2
+    111              //usb_rx_ring_wr = RESET; // Circular buffer back to beginning
+    112             usb_rx_ring_wr = -1;
+   \   00002A   B243....     MOV.W   #0xffff, &usb_rx_ring_wr
+    113           }
+    114          
+    115           break;
+    116           case FOURTH: // Vector 4 – TXIFG
+    117             //write to UCAxTXBUF x=0
+    118             
+    119           break;
+    120           default: break; 
+    121           }
+    122          }
    \                     ??USCI_A1_ISR_2:
-   \   00003C   1E17         POPM.W  #0x2, R15
-   \   00003E   0013         RETI
-   \   000040                REQUIRE _A_UCA1RXBUF_L
-   \   000040                REQUIRE UCA1IV
+   \   00002E   1E17         POPM.W  #0x2, R15
+   \   000030   0013         RETI
+   \   000032                REQUIRE _A_UCA1RXBUF_L
+   \   000032                REQUIRE UCA1IV
 
    \                                 In  segment INTVEC, offset 0x56, root
    \                     `??USCI_A1_ISR??INTVEC 86`:
@@ -293,7 +303,7 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Serial.c
    \                                 In  segment DATA16_ID, align 2, align-sorted
    \                     `?<Initializer for LARGE_RING_SIZE>`:
    \   000000   1000         DC16 16
-    106          //------------------------------------------------------------------------------
+    123          //------------------------------------------------------------------------------
 
    Maximum stack usage in bytes:
 
@@ -317,7 +327,7 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Serial.c
        2  UCA1IV
       10  USB_Char_Rx
       10  USB_Char_Tx
-      64  USCI_A1_ISR
+      50  USCI_A1_ISR
        2  _A_UCA1BRW_L
        2  _A_UCA1CTLW0_L
        2  _A_UCA1IE_L
@@ -335,9 +345,9 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Serial.c
   4 bytes in segment DATA16_ID
  30 bytes in segment DATA16_Z
   2 bytes in segment INTVEC
- 64 bytes in segment ISR_CODE
+ 50 bytes in segment ISR_CODE
  
- 148 bytes of CODE  memory
+ 134 bytes of CODE  memory
    4 bytes of CONST memory (+  2 bytes shared)
   34 bytes of DATA  memory (+ 12 bytes shared)
 

@@ -523,20 +523,26 @@ void Init_PortsJ(void)
 // Compiler: Built with IAR Embedded Workbench Version: (6.10.5)
 //===========================================================================
 {
- PJSELC = CLEAR_REG; // Default to I/0 
+// PJSELC = CLEAR_REG; // Default to I/0 
+ PJSEL0 = CLEAR_REG;
+ PJSEL1 = CLEAR_REG;
  PJDIR = DIR_INPUT; // Default to input
 
+ //GPS SETUP!---------------------------------
+ PJOUT |= GPS_PWR;
  PJDIR |= GPS_PWR; //Select GPS Power
- PJOUT &= ~GPS_PWR;
+ //PJOUT &= ~GPS_PWR;
  
- PJDIR |= GPS_RESET; //Select GPS Reset
  PJOUT &= ~GPS_RESET;
+ PJDIR |= GPS_RESET; //Select GPS Reset
+ //PJOUT &= ~GPS_RESET;
  
- PJDIR |= GPS_PWRCNTL; //Select GPS Power Control
  PJOUT &= ~GPS_PWRCNTL;
+ PJDIR |= GPS_PWRCNTL; //Select GPS Power Control
+ //PJOUT &= ~GPS_PWRCNTL;
  
- PJDIR &= ~GPS_PWRCHK; //Select GPS Power Check
- PJREN &= ~GPS_PWRCHK;
+ PJDIR &= ~GPS_PWRCHK;
+ //PJREN &= ~GPS_PWRCHK;
  
 }
 

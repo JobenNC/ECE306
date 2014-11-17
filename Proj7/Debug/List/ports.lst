@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         06/Nov/2014  17:04:33
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         15/Nov/2014  14:00:30
 # Copyright 1996-2014 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
 #
@@ -12,11 +12,11 @@
 #    __core        =  430X
 #    __data_model  =  small
 #    __code_model  =  large
-#    Source file   =  C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\ports.c
+#    Source file   =  C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\ports.c
 #    Command line  =  
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\ports.c -lC
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\List\ -o
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\Obj\ --no_cse
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\ports.c -lC
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\Debug\List\ -o
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\Debug\Obj\ --no_cse
 #        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
 #        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
 #        (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.h"
@@ -24,13 +24,13 @@
 #        --multiplier_location=4C0 --hw_workaround=CPU40 --hw_workaround=CPU39
 #        --code_model=large
 #    List file     =  
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\List\ports.lst
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\Debug\List\ports.lst
 #    Object file   =  
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\Obj\ports.r43
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\Debug\Obj\ports.r43
 #
 ###############################################################################
 
-C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\ports.c
+C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\ports.c
       1          //===========================================================================
       2          // File Name : ports.c
       3          //
@@ -122,14 +122,14 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\ports.c
    \                     _A_PJDIR_L:
    \   000000                DS8 2
 
-   \                                 In  segment DATA16_AN, at 0x326
-   \   union <unnamed> _A_PJREN_L
-   \                     _A_PJREN_L:
+   \                                 In  segment DATA16_AN, at 0x32a
+   \   union <unnamed> _A_PJSEL0_L
+   \                     _A_PJSEL0_L:
    \   000000                DS8 2
 
-   \                                 In  segment DATA16_AN, at 0x336
-   \   union <unnamed> _A_PJSELC_L
-   \                     _A_PJSELC_L:
+   \                                 In  segment DATA16_AN, at 0x32c
+   \   union <unnamed> _A_PJSEL1_L
+   \                     _A_PJSEL1_L:
    \   000000                DS8 2
      16          #include  "functions.h"
      17          #include "macros.h"
@@ -756,73 +756,79 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\ports.c
     523          // Compiler: Built with IAR Embedded Workbench Version: (6.10.5)
     524          //===========================================================================
     525          {
-    526           PJSELC = CLEAR_REG; // Default to I/0 
-   \   000000   82433603     MOV.W   #0x0, &0x336
-    527           PJDIR = DIR_INPUT; // Default to input
-   \   000004   82432403     MOV.W   #0x0, &0x324
-    528          
-    529           PJDIR |= GPS_PWR; //Select GPS Power
-   \   000008   92D32403     BIS.W   #0x1, &0x324
-    530           PJOUT &= ~GPS_PWR;
-   \   00000C   92C32203     BIC.W   #0x1, &0x322
-    531           
-    532           PJDIR |= GPS_RESET; //Select GPS Reset
-   \   000010   A2D32403     BIS.W   #0x2, &0x324
-    533           PJOUT &= ~GPS_RESET;
+    526          // PJSELC = CLEAR_REG; // Default to I/0 
+    527           PJSEL0 = CLEAR_REG;
+   \   000000   82432A03     MOV.W   #0x0, &0x32a
+    528           PJSEL1 = CLEAR_REG;
+   \   000004   82432C03     MOV.W   #0x0, &0x32c
+    529           PJDIR = DIR_INPUT; // Default to input
+   \   000008   82432403     MOV.W   #0x0, &0x324
+    530          
+    531           //GPS SETUP!---------------------------------
+    532           PJOUT |= GPS_PWR;
+   \   00000C   92D32203     BIS.W   #0x1, &0x322
+    533           PJDIR |= GPS_PWR; //Select GPS Power
+   \   000010   92D32403     BIS.W   #0x1, &0x324
+    534           //PJOUT &= ~GPS_PWR;
+    535           
+    536           PJOUT &= ~GPS_RESET;
    \   000014   A2C32203     BIC.W   #0x2, &0x322
-    534           
-    535           PJDIR |= GPS_PWRCNTL; //Select GPS Power Control
-   \   000018   A2D22403     BIS.W   #0x4, &0x324
-    536           PJOUT &= ~GPS_PWRCNTL;
+    537           PJDIR |= GPS_RESET; //Select GPS Reset
+   \   000018   A2D32403     BIS.W   #0x2, &0x324
+    538           //PJOUT &= ~GPS_RESET;
+    539           
+    540           PJOUT &= ~GPS_PWRCNTL;
    \   00001C   A2C22203     BIC.W   #0x4, &0x322
-    537           
-    538           PJDIR &= ~GPS_PWRCHK; //Select GPS Power Check
-   \   000020   B2C22403     BIC.W   #0x8, &0x324
-    539           PJREN &= ~GPS_PWRCHK;
-   \   000024   B2C22603     BIC.W   #0x8, &0x326
-    540           
-    541          }
+    541           PJDIR |= GPS_PWRCNTL; //Select GPS Power Control
+   \   000020   A2D22403     BIS.W   #0x4, &0x324
+    542           //PJOUT &= ~GPS_PWRCNTL;
+    543           
+    544           PJDIR &= ~GPS_PWRCHK;
+   \   000024   B2C22403     BIC.W   #0x8, &0x324
+    545           //PJREN &= ~GPS_PWRCHK;
+    546           
+    547          }
    \   000028   1001         RETA
-   \   00002A                REQUIRE _A_PJSELC_L
+   \   00002A                REQUIRE _A_PJSEL0_L
+   \   00002A                REQUIRE _A_PJSEL1_L
    \   00002A                REQUIRE _A_PJDIR_L
    \   00002A                REQUIRE _A_PJOUT_L
-   \   00002A                REQUIRE _A_PJREN_L
-    542          
-    543          
+    548          
+    549          
 
    \                                 In  segment CODE, align 2
-    544          void Init_Ports(void)
+    550          void Init_Ports(void)
    \                     Init_Ports:
-    545          //===========================================================================
-    546          // Function name: Init_Ports
-    547          //
-    548          // Description: Call init functions for each port
-    549          // 
-    550          // Passed : no variables passed
-    551          // Locals: no variables declared
-    552          // Returned: no values returned
-    553          // Globals: none
-    554          // Calls: void Init_Ports1(void), void Init_Ports2(void), void Init_Ports3(void)
-    555          // void Init_Ports4(void), void Init_PortsJ(void)
-    556          //
-    557          // Author: Joseph Jarriel
-    558          // Date: Sep 2014
-    559          // Compiler: Built with IAR Embedded Workbench Version: (6.10.5)
-    560          //===========================================================================
-    561          {
-    562           
-    563           Init_Ports1();
-   \   000000   ........     CALLA   #Init_Ports1
-    564           Init_Ports2();
-   \   000004   ........     CALLA   #Init_Ports2
-    565           Init_Ports3();
-   \   000008   ........     CALLA   #Init_Ports3
-    566           Init_Ports4();
-   \   00000C   ........     CALLA   #Init_Ports4
-    567           Init_PortsJ();
-   \   000010   ........     BRA     #Init_PortsJ
+    551          //===========================================================================
+    552          // Function name: Init_Ports
+    553          //
+    554          // Description: Call init functions for each port
+    555          // 
+    556          // Passed : no variables passed
+    557          // Locals: no variables declared
+    558          // Returned: no values returned
+    559          // Globals: none
+    560          // Calls: void Init_Ports1(void), void Init_Ports2(void), void Init_Ports3(void)
+    561          // void Init_Ports4(void), void Init_PortsJ(void)
+    562          //
+    563          // Author: Joseph Jarriel
+    564          // Date: Sep 2014
+    565          // Compiler: Built with IAR Embedded Workbench Version: (6.10.5)
+    566          //===========================================================================
+    567          {
     568           
-    569          }
+    569           Init_Ports1();
+   \   000000   ........     CALLA   #Init_Ports1
+    570           Init_Ports2();
+   \   000004   ........     CALLA   #Init_Ports2
+    571           Init_Ports3();
+   \   000008   ........     CALLA   #Init_Ports3
+    572           Init_Ports4();
+   \   00000C   ........     CALLA   #Init_Ports4
+    573           Init_PortsJ();
+   \   000010   ........     BRA     #Init_PortsJ
+    574           
+    575          }
 
    Maximum stack usage in bytes:
 
@@ -866,8 +872,8 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\ports.c
        2  _A_PBSELC_L
        2  _A_PJDIR_L
        2  _A_PJOUT_L
-       2  _A_PJREN_L
-       2  _A_PJSELC_L
+       2  _A_PJSEL0_L
+       2  _A_PJSEL1_L
 
  
  424 bytes in segment CODE

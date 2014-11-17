@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         06/Nov/2014  17:04:39
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         16/Nov/2014  21:37:57
 # Copyright 1996-2014 IAR Systems AB.
 # Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
 #
@@ -12,11 +12,11 @@
 #    __core        =  430X
 #    __data_model  =  small
 #    __code_model  =  large
-#    Source file   =  C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\main.c
+#    Source file   =  C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\main.c
 #    Command line  =  
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\main.c -lC
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\List\ -o
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\Obj\ --no_cse
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\main.c -lC
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\Debug\List\ -o
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\Debug\Obj\ --no_cse
 #        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
 #        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
 #        (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.h"
@@ -24,13 +24,13 @@
 #        --multiplier_location=4C0 --hw_workaround=CPU40 --hw_workaround=CPU39
 #        --code_model=large
 #    List file     =  
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\List\main.lst
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\Debug\List\main.lst
 #    Object file   =  
-#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\Debug\Obj\main.r43
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\Debug\Obj\main.r43
 #
 ###############################################################################
 
-C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\main.c
+C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\main.c
       1          //===========================================================================
       2          // File Name : main.c
       3          //
@@ -45,26 +45,6 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\main.c
      12          //===========================================================================
      13          
      14          #include  "msp430.h"
-
-   \                                 In  segment DATA16_AN, at 0x322
-   \   union <unnamed> _A_PJOUT_L
-   \                     _A_PJOUT_L:
-   \   000000                DS8 2
-
-   \                                 In  segment DATA16_AN, at 0x5e0
-   \   union <unnamed> _A_UCA1CTLW0_L
-   \                     _A_UCA1CTLW0_L:
-   \   000000                DS8 2
-
-   \                                 In  segment DATA16_AN, at 0x5ee
-   \   union <unnamed> _A_UCA1TXBUF_L
-   \                     _A_UCA1TXBUF_L:
-   \   000000                DS8 2
-
-   \                                 In  segment DATA16_AN, at 0x5fa
-   \   union <unnamed> _A_UCA1IE_L
-   \                     _A_UCA1IE_L:
-   \   000000                DS8 2
      15          #include  "functions.h"
      16          #include "macros.h"
      17          
@@ -255,342 +235,459 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\main.c
    \                     dontWrite:
    \   000000                DS8 2
      58          
-     59          
 
    \                                 In  segment DATA16_Z, align 2, align-sorted
    \   000000                REQUIRE ?cstart_init_zero
-     60          extern volatile int writeNext = RESET;
+     59          int grabCount = 0;
+   \                     grabCount:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     60          int grabCode = 0;
+   \                     grabCode:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     61          int ind = 0;
+   \                     ind:
+   \   000000                DS8 2
+     62          
+     63          //80 is the NEMA size!
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     64          unsigned char NEMA_BUF[80]; 
+   \                     NEMA_BUF:
+   \   000000                DS8 80
+     65          
+     66          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     67          extern volatile int writeNext = RESET;
    \                     writeNext:
    \   000000                DS8 2
-     61          
+     68          
 
    \                                 In  segment CODE, align 2
-     62          void main(void){
+     69          void main(void){
    \                     main:
-     63          //===========================================================================
-     64          // Function name: main
-     65          //
-     66          // Description: The main function.  Our 'while' OS
-     67          // 
-     68          // Passed : no variables passed
-     69          // Locals: no variables declared
-     70          // Returned: no values returned
-     71          // Globals: Time_Sequence, one_time, five_msec_count
-     72          // Calls: Init_Ports, Init_Clocks, Init_Conditions, Init_Timers, Init_LEDs,
-     73          //      Init_LCD, five_msec_sleep, Switch_Process
-     74          //
-     75          // Author: Joseph Jarriel
-     76          // Date: Sep 2014
-     77          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
-     78          //===========================================================================
-     79            Init_Ports();                             // Initialize Ports
-   \   000000   ........     CALLA   #Init_Ports
-     80            Init_Clocks();                            // Initialize Clock System 
-   \   000004   ........     CALLA   #Init_Clocks
-     81            init_adc();
-   \   000008   ........     CALLA   #init_adc
-     82            Init_Serial_UCA1();                        // Initialize Serial Comms
+   \   000000   31802000     SUB.W   #0x20, SP
+     70          //===========================================================================
+     71          // Function name: main
+     72          //
+     73          // Description: The main function.  Our 'while' OS
+     74          // 
+     75          // Passed : no variables passed
+     76          // Locals: no variables declared
+     77          // Returned: no values returned
+     78          // Globals: Time_Sequence, one_time, five_msec_count
+     79          // Calls: Init_Ports, Init_Clocks, Init_Conditions, Init_Timers, Init_LEDs,
+     80          //      Init_LCD, five_msec_sleep, Switch_Process
+     81          //
+     82          // Author: Joseph Jarriel
+     83          // Date: Sep 2014
+     84          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+     85          //===========================================================================
+     86            Init_Ports();                             // Initialize Ports
+   \   000004   ........     CALLA   #Init_Ports
+     87            Init_Clocks();                            // Initialize Clock System 
+   \   000008   ........     CALLA   #Init_Clocks
+     88            //init_adc();
+     89            Init_Serial_UCA1();                        // Initialize Serial Comms
    \   00000C   ........     CALLA   #Init_Serial_UCA1
-     83            Init_Conditions();
+     90            Init_Conditions();
    \   000010   ........     CALLA   #Init_Conditions
-     84            PJOUT |= LED1;                            // Turn LED 1 on to indicate boot
-   \   000014   92D32203     BIS.W   #0x1, &0x322
-     85            Time_Sequence = RESET;                        // 
-   \   000018   8243....     MOV.W   #0x0, &Time_Sequence
-     86            Init_Timers();                            // Initialize Timers
-   \   00001C   ........     CALLA   #Init_Timers
-     87            five_msec_sleep(SLEEP_50);                      // 250 msec delay for the clock to settle
-   \   000020   3C403200     MOV.W   #0x32, R12
-   \   000024   ........     CALLA   #five_msec_sleep
-     88            Init_LCD();                               // Initialize LCD
-   \   000028   ........     CALLA   #Init_LCD
-     89            five_msec_sleep(SLEEP_75);                      // 375 msec delay for the clock to settle
-   \   00002C   3C404B00     MOV.W   #0x4b, R12
-   \   000030   ........     CALLA   #five_msec_sleep
-     90            Init_LEDs();                              // Initialize LEDs
-   \   000034   ........     CALLA   #Init_LEDs
-     91            display_NCSU = "   Callibrate   ";
-   \   000038   B240........ MOV.W   #`?<Constant "   Callibrate   ">`, &display_NCSU
-     92            display_HW3 =  "  IR Em Off  ";
-   \   00003E   B240........ MOV.W   #`?<Constant "  IR Em Off  ">`, &display_HW3
-     93            
-     94          //  lcd_command(CLEAR_DISPLAY);
-     95            five_msec_sleep(SLEEP_10); 
-   \   000044   3C400A00     MOV.W   #0xa, R12
-   \   000048   ........     CALLA   #five_msec_sleep
-     96            lcd_out("1-Display 2-Clr",LCD_LINE_1);       // 16 characters max between quotes - line 1
-   \   00004C   7D408000     MOV.B   #0x80, R13
-   \   000050   3C40....     MOV.W   #`?<Constant "1-Display 2-Clr">`, R12
-   \   000054   ........     CALLA   #lcd_out
-     97            //lcd_out("LED On       ",LCD_LINE_2);
-     98              //lcd_out(display_NCSU,LCD_LINE_1);       // 16 characters max between quotes - line 1
-     99              //lcd_out(display_HW3,LCD_LINE_2);        // 16 characters max between quotes - line 2
-    100              
-    101          //------------------------------------------------------------------------------
-    102          // Begining of the "While" Operating System
-    103          //------------------------------------------------------------------------------
-    104           ADC_Process();
-   \   000058   ........     CALLA   #ADC_Process
-    105           L_Dir = L_FORWARD;
-   \   00005C   B2404000.... MOV.W   #0x40, &L_Dir
-    106           R_Dir = R_FORWARD;
-   \   000062   B2401000.... MOV.W   #0x10, &R_Dir
-    107           serial="               ";
-   \   000068   B240........ MOV.W   #`?<Constant "               ">`, &serial
-   \   00006E   A43C         JMP     ??main_0
-    108           while(ALWAYS) {    
-    109             
-    110             if (resetCount)
-    111             {
-    112               UCA1CTL1 &= ~UCSWRST; // Release from reset
-    113               UCA1IE |= UCRXIE; // Enable RX interrup
-    114               Init_Serial_UCA1();
-    115               resetCount = RESET;
-    116               ++usb_rx_ring_wr;
-    117               ++usb_rx_ring_wr;
-    118               USB_Char_Rx[RESET] = (char) CLEAR_REG;
-    119               USB_Char_Rx[START] = (char) CLEAR_REG;
-    120             }
-    121             
-    122             test1 = usb_rx_ring_wr;
-    123             test2 = usb_rx_ring_rd;
-    124             
-    125             test = RESET;
-    126             if ((test1 != test2) & (readyToReceive))
-    127                {
-    128                  if ((UCTXIFG))
-    129                  {
-    130                    if (usb_rx_ring_rd > SIXTH)
-    131                    {
-    132                      usb_rx_ring_rd =RESET;
-    133                      
-    134                      if (!whichChar)
-    135                      {
-    136                        bit1 = USB_Char_Rx[EIGHTH]; //6
-    137                        //char1++;
-    138                      }
-    139                      else
-    140                      {
-    141                        bit2 = USB_Char_Rx[NINTH]; //7
-    142                        //char2++;
-    143                        gotBoth = START;
-    144                      }
-    145                      whichChar = !whichChar;
-    146                    }
-    147                    else
-    148                    {
-    149                      if (!whichChar)
-    150                      {
-    151                        test1 = usb_rx_ring_wr;
-    152                        bit1 = USB_Char_Rx[test1-START];
-    153                      }
-    154                      else
-    155                      {
-    156                        test2 = usb_rx_ring_wr;
-    157                        bit2 = USB_Char_Rx[test2];
-    158                        gotBoth = START;
-    159                      }
-    160                      whichChar = !whichChar;
-   \                     ??main_2:
-   \   000070   4E43         MOV.B   #0x0, R14
-   \                     ??main_3:
-   \   000072   C24E....     MOV.B   R14, &whichChar
-    161                      usb_rx_ring_rd++;
-   \   000076   9253....     ADD.W   #0x1, &usb_rx_ring_rd
-    162                    }
-    163                    
-    164                    //---------------Write to LCD
-    165                    if (gotBoth)
+     91            //PJOUT |= LED1;                            // Turn LED 1 on to indicate boot
+     92            Time_Sequence = RESET;                        // 
+   \   000014   8243....     MOV.W   #0x0, &Time_Sequence
+     93            Init_Timers();                            // Initialize Timers
+   \   000018   ........     CALLA   #Init_Timers
+     94            five_msec_sleep(SLEEP_50);                      // 250 msec delay for the clock to settle
+   \   00001C   3C403200     MOV.W   #0x32, R12
+   \   000020   ........     CALLA   #five_msec_sleep
+     95            Init_LCD();                               // Initialize LCD
+   \   000024   ........     CALLA   #Init_LCD
+     96            five_msec_sleep(SLEEP_75);                      // 375 msec delay for the clock to settle
+   \   000028   3C404B00     MOV.W   #0x4b, R12
+   \   00002C   ........     CALLA   #five_msec_sleep
+     97            //Init_LEDs();                              // Initialize LEDs
+     98            GPS_Init();
+   \   000030   ........     CALLA   #GPS_Init
+     99            display_NCSU = "   Callibrate   ";
+   \   000034   B240........ MOV.W   #`?<Constant "   Callibrate   ">`, &display_NCSU
+    100            display_HW3 =  "  IR Em Off  ";
+   \   00003A   B240........ MOV.W   #`?<Constant "  IR Em Off  ">`, &display_HW3
+    101            char lat[16] = {' '};
+   \   000040   0C41         MOV.W   SP, R12
+   \   000042   3C501000     ADD.W   #0x10, R12
+   \   000046   3E40....     MOV.W   #`?<Constant {32}>`, R14
+   \   00004A   3D401000     MOV.W   #0x10, R13
+   \   00004E   ........     CALLA   #?CopyMemoryBytes
+    102            char lon[16] = {' '};
+   \   000052   0C41         MOV.W   SP, R12
+   \   000054   0C53         ADD.W   #0x0, R12
+   \   000056   3E40....     MOV.W   #`?<Constant {32}>_1`, R14
+   \   00005A   3D401000     MOV.W   #0x10, R13
+   \   00005E   ........     CALLA   #?CopyMemoryBytes
+    103            
+    104          //  lcd_command(CLEAR_DISPLAY);
+    105            //five_msec_sleep(SLEEP_10); 
+    106            //lcd_out("1-Display 2-Clr",LCD_LINE_1);       // 16 characters max between quotes - line 1
+    107            //lcd_out("LED On       ",LCD_LINE_2);
+    108              //lcd_out(display_NCSU,LCD_LINE_1);       // 16 characters max between quotes - line 1
+    109              //lcd_out(display_HW3,LCD_LINE_2);        // 16 characters max between quotes - line 2
+    110              
+    111          //------------------------------------------------------------------------------
+    112          // Begining of the "While" Operating System
+    113          //------------------------------------------------------------------------------
+    114           //ADC_Process();
+    115           L_Dir = L_FORWARD;
+   \   000062   B2404000.... MOV.W   #0x40, &L_Dir
+    116           R_Dir = R_FORWARD;
+   \   000068   B2401000.... MOV.W   #0x10, &R_Dir
+    117           serial="               ";
+   \   00006E   B240........ MOV.W   #`?<Constant "               ">`, &serial
+   \   000074   C13C         JMP     ??main_0
+    118           while(ALWAYS) {    
+    119             
+    120             test1 = usb_rx_ring_wr;
+    121             test2 = usb_rx_ring_rd;
+    122             
+    123             test = RESET;
+    124             if (test1 != test2)
+    125             {
+    126               bit1 = USB_Char_Rx[usb_rx_ring_wr+1];
+    127               //serial[9] = bit1;
+    128               if (usb_rx_ring_rd > 6) 
+    129               {
+    130                 usb_rx_ring_rd = -1;
+    131               }
+    132               else usb_rx_ring_rd++;
+    133               
+    134               if (bit1 == '$') grabCode = 1;
+    135               if (grabCode)
+    136               {
+    137                  //GPRMC = 69char, GPGS
+    138                 //also getting gpgga!?!?!
+    139                  NEMA_BUF[ind] = bit1;
+    140                  ind++;
+    141                  
+    142                  if (grabCount == 6)
+    143                  {
+    144                    //grabCode = 0;
+    145                    //grabCount = 0;
+    146                    //serial[14] = bit1;
+    147                    lcd_clear();
+    148                    lcd_out(serial, LCD_LINE_1);
+    149                    //grabCode = 0;
+    150                    if (!(NEMA_BUF[5] == 'C'))
+    151                    {
+    152                      grabCode = 0;
+    153                      grabCount = 0;
+    154                      ind = 0;
+    155                    }
+    156                    else if (NEMA_BUF[5] == 'C')
+    157                    {
+    158                      ind = ind;
+    159                    }
+    160                  }
+    161                  else
+    162                  {
+    163                    serial[8+grabCount] = bit1;
    \                     ??main_1:
-   \   00007A   C293....     CMP.B   #0x0, &gotBoth
-   \   00007E   9C24         JEQ     ??main_0
-    166                    {
-    167                      lcd_clear();
-   \   000080   ........     CALLA   #lcd_clear
-    168                      //newFM(HALF_SEC);
-    169                      test = (int) bit2<<EIGHTH;
-   \   000084   5F42....     MOV.B   &bit2, R15
-   \   000088   4F4F         MOV.B   R15, R15
-   \   00008A   3FF0FF00     AND.W   #0xff, R15
-   \   00008E   8F10         SWPB    R15
-   \   000090   824F....     MOV.W   R15, &test
-    170                      test = test | (int) bit1;
-   \   000094   5F42....     MOV.B   &bit1, R15
-   \   000098   4F4F         MOV.B   R15, R15
-   \   00009A   82DF....     BIS.W   R15, &test
-    171                      
-    172                      testChar = (test/(numRange*numRange*numRange*numRange))%numRange+numOffset;
-   \   00009E   1C42....     MOV.W   &test, R12
-   \   0000A2   3E401027     MOV.W   #0x2710, R14
-   \   0000A6   ........     CALLA   #?DivMod16u
-   \   0000AA   3E400A00     MOV.W   #0xa, R14
-   \   0000AE   ........     CALLA   #?DivMod16u
-   \   0000B2   7E503000     ADD.B   #0x30, R14
-   \   0000B6   C24E....     MOV.B   R14, &testChar
-    173                      serial[SEVENTH] = (char) testChar;
-   \   0000BA   1F42....     MOV.W   &serial, R15
-   \   0000BE   DF42....0700 MOV.B   &testChar, 0x7(R15)
-    174                      testChar = (test/(numRange*numRange*numRange))%numRange + numOffset;
-   \   0000C4   1C42....     MOV.W   &test, R12
-   \   0000C8   3E40E803     MOV.W   #0x3e8, R14
-   \   0000CC   ........     CALLA   #?DivMod16u
-   \   0000D0   3E400A00     MOV.W   #0xa, R14
-   \   0000D4   ........     CALLA   #?DivMod16u
-   \   0000D8   7E503000     ADD.B   #0x30, R14
-   \   0000DC   C24E....     MOV.B   R14, &testChar
-    175                      serial[EIGHTH] = testChar;
-   \   0000E0   1F42....     MOV.W   &serial, R15
-   \   0000E4   DF42....0800 MOV.B   &testChar, 0x8(R15)
-    176                      testChar = (test/(numRange*numRange))%numRange + numOffset;
-   \   0000EA   1C42....     MOV.W   &test, R12
-   \   0000EE   3E406400     MOV.W   #0x64, R14
-   \   0000F2   ........     CALLA   #?DivMod16u
-   \   0000F6   3E400A00     MOV.W   #0xa, R14
-   \   0000FA   ........     CALLA   #?DivMod16u
-   \   0000FE   7E503000     ADD.B   #0x30, R14
-   \   000102   C24E....     MOV.B   R14, &testChar
-    177                      serial[NINTH] = testChar;
-   \   000106   1F42....     MOV.W   &serial, R15
-   \   00010A   DF42....0900 MOV.B   &testChar, 0x9(R15)
-    178                      testChar = (test/numRange)%numRange + numOffset;
-   \   000110   1C42....     MOV.W   &test, R12
-   \   000114   3E400A00     MOV.W   #0xa, R14
-   \   000118   ........     CALLA   #?DivMod16u
-   \   00011C   3E400A00     MOV.W   #0xa, R14
-   \   000120   ........     CALLA   #?DivMod16u
-   \   000124   7E503000     ADD.B   #0x30, R14
-   \   000128   C24E....     MOV.B   R14, &testChar
-    179                      serial[numRange] = testChar;
-   \   00012C   1F42....     MOV.W   &serial, R15
-   \   000130   DF42....0A00 MOV.B   &testChar, 0xa(R15)
-    180                      testChar = (test/START)%numRange + numOffset;
-   \   000136   1C42....     MOV.W   &test, R12
-   \   00013A   1E43         MOV.W   #0x1, R14
-   \   00013C   ........     CALLA   #?DivMod16u
-   \   000140   3E400A00     MOV.W   #0xa, R14
-   \   000144   ........     CALLA   #?DivMod16u
-   \   000148   7E503000     ADD.B   #0x30, R14
-   \   00014C   C24E....     MOV.B   R14, &testChar
-    181                      serial[ELEVENTH] = testChar;
-   \   000150   1F42....     MOV.W   &serial, R15
-   \   000154   DF42....0B00 MOV.B   &testChar, 0xb(R15)
-    182                      lcd_out(serial, LCD_LINE_1);
-   \   00015A   7D408000     MOV.B   #0x80, R13
-   \   00015E   1C42....     MOV.W   &serial, R12
-   \   000162   ........     CALLA   #lcd_out
-    183                      
-    184                      testChar = (test/START)%numRange + numOffset;
-   \   000166   1C42....     MOV.W   &test, R12
-   \   00016A   1E43         MOV.W   #0x1, R14
-   \   00016C   ........     CALLA   #?DivMod16u
-   \   000170   3E400A00     MOV.W   #0xa, R14
-   \   000174   ........     CALLA   #?DivMod16u
-   \   000178   7E503000     ADD.B   #0x30, R14
-   \   00017C   C24E....     MOV.B   R14, &testChar
-    185                      test++;
-   \   000180   9253....     ADD.W   #0x1, &test
-    186                      
-    187                      bit1 = (char) (test & full);
-   \   000184   D242........ MOV.B   &test, &bit1
-    188                      bit2 = (char) (test>>EIGHTH);
-   \   00018A   D242........ MOV.B   &test + 1, &bit2
-    189                      
-    190                      writeOut = START;
-   \   000190   D243....     MOV.B   #0x1, &writeOut
-    191                    
-    192                      newFM(ONE_SEC);
-   \   000194   3C40C800     MOV.W   #0xc8, R12
-   \   000198   ........     CALLA   #newFM
-    193                    
-    194                      //wroteFirst = 1;
-    195                      UCA1TXBUF = bit1;
-   \   00019C   5F42....     MOV.B   &bit1, R15
-   \   0001A0   4F4F         MOV.B   R15, R15
-   \   0001A2   824FEE05     MOV.W   R15, &0x5ee
-    196                      while (!UCTXIFG) {}
-    197                      UCA1TXBUF = bit2;
-   \   0001A6   5F42....     MOV.B   &bit2, R15
-   \   0001AA   4F4F         MOV.B   R15, R15
-   \   0001AC   824FEE05     MOV.W   R15, &0x5ee
-    198                      while (!UCTXIFG) {}
-    199                      writeOut = RESET;
-   \   0001B0   C243....     MOV.B   #0x0, &writeOut
-    200                      gotBoth = RESET;
-   \   0001B4   C243....     MOV.B   #0x0, &gotBoth
-    201                      //wroteFirst = 0;
-    202                  }
+   \   000076   1F42....     MOV.W   &serial, R15
+   \   00007A   1F52....     ADD.W   &grabCount, R15
+   \   00007E   DF42....0800 MOV.B   &bit1, 0x8(R15)
+    164                    grabCount++;
+   \   000084   9253....     ADD.W   #0x1, &grabCount
+    165                  }
+    166                  
+    167                  if (ind == 69)
+   \                     ??main_2:
+   \   000088   B2904500.... CMP.W   #0x45, &ind
+   \   00008E   B420         JNE     ??main_0
+    168                  {
+    169                    grabCode = 0;
+   \   000090   8243....     MOV.W   #0x0, &grabCode
+    170                    grabCount = 0;
+   \   000094   8243....     MOV.W   #0x0, &grabCount
+    171                    ind = 0;
+   \   000098   8243....     MOV.W   #0x0, &ind
+    172                    if (NEMA_BUF[18] == 'A')
+   \   00009C   F2904100.... CMP.B   #0x41, &NEMA_BUF + 18
+   \   0000A2   AA20         JNE     ??main_0
+    173                    {
+    174                      bit2 = NEMA_BUF[19];
+   \   0000A4   D242........ MOV.B   &NEMA_BUF + 19, &bit2
+    175                      lat[0] = bit2;
+   \   0000AA   D142....1000 MOV.B   &bit2, 0x10(SP)
+    176                      bit2 = NEMA_BUF[20];
+   \   0000B0   D242........ MOV.B   &NEMA_BUF + 20, &bit2
+    177                      lat[1] = bit2;
+   \   0000B6   D142....1100 MOV.B   &bit2, 0x11(SP)
+    178                      bit2 = NEMA_BUF[21];
+   \   0000BC   D242........ MOV.B   &NEMA_BUF + 21, &bit2
+    179                      lat[2] = bit2;
+   \   0000C2   D142....1200 MOV.B   &bit2, 0x12(SP)
+    180                      bit2 = NEMA_BUF[22];
+   \   0000C8   D242........ MOV.B   &NEMA_BUF + 22, &bit2
+    181                      lat[3] = bit2;
+   \   0000CE   D142....1300 MOV.B   &bit2, 0x13(SP)
+    182                      bit2 = NEMA_BUF[23];
+   \   0000D4   D242........ MOV.B   &NEMA_BUF + 23, &bit2
+    183                      lat[4] = bit2;
+   \   0000DA   D142....1400 MOV.B   &bit2, 0x14(SP)
+    184                      bit2 = NEMA_BUF[24];
+   \   0000E0   D242........ MOV.B   &NEMA_BUF + 24, &bit2
+    185                      lat[5] = bit2;
+   \   0000E6   D142....1500 MOV.B   &bit2, 0x15(SP)
+    186                      bit2 = NEMA_BUF[25];
+   \   0000EC   D242........ MOV.B   &NEMA_BUF + 25, &bit2
+    187                      lat[6] = bit2;
+   \   0000F2   D142....1600 MOV.B   &bit2, 0x16(SP)
+    188                      bit2 = NEMA_BUF[26];
+   \   0000F8   D242........ MOV.B   &NEMA_BUF + 26, &bit2
+    189                      lat[7] = bit2;
+   \   0000FE   D142....1700 MOV.B   &bit2, 0x17(SP)
+    190                      bit2 = NEMA_BUF[27];
+   \   000104   D242........ MOV.B   &NEMA_BUF + 27, &bit2
+    191                      lat[8] = bit2;
+   \   00010A   D142....1800 MOV.B   &bit2, 0x18(SP)
+    192                      bit2 = NEMA_BUF[28];
+   \   000110   D242........ MOV.B   &NEMA_BUF + 28, &bit2
+    193                      lat[9] = bit2;
+   \   000116   D142....1900 MOV.B   &bit2, 0x19(SP)
+    194                      bit2 = NEMA_BUF[29];
+   \   00011C   D242........ MOV.B   &NEMA_BUF + 29, &bit2
+    195                      lat[10] = bit2;
+   \   000122   D142....1A00 MOV.B   &bit2, 0x1a(SP)
+    196                      
+    197                      newFM(30);
+   \   000128   3C401E00     MOV.W   #0x1e, R12
+   \   00012C   ........     CALLA   #newFM
+    198                      
+    199                      bit2 = NEMA_BUF[31];
+   \   000130   D242........ MOV.B   &NEMA_BUF + 31, &bit2
+    200                      lon[0] = bit2;
+   \   000136   D142....0000 MOV.B   &bit2, 0(SP)
+    201                      bit2 = NEMA_BUF[32];
+   \   00013C   D242........ MOV.B   &NEMA_BUF + 32, &bit2
+    202                      lon[1] = bit2;
+   \   000142   D142....0100 MOV.B   &bit2, 0x1(SP)
+    203                      bit2 = NEMA_BUF[33];
+   \   000148   D242........ MOV.B   &NEMA_BUF + 33, &bit2
+    204                      lon[2] = bit2;
+   \   00014E   D142....0200 MOV.B   &bit2, 0x2(SP)
+    205                      bit2 = NEMA_BUF[34];
+   \   000154   D242........ MOV.B   &NEMA_BUF + 34, &bit2
+    206                      lon[3] = bit2;
+   \   00015A   D142....0300 MOV.B   &bit2, 0x3(SP)
+    207                      bit2 = NEMA_BUF[35];
+   \   000160   D242........ MOV.B   &NEMA_BUF + 35, &bit2
+    208                      lon[4] = bit2;
+   \   000166   D142....0400 MOV.B   &bit2, 0x4(SP)
+    209                      bit2 = NEMA_BUF[36];
+   \   00016C   D242........ MOV.B   &NEMA_BUF + 36, &bit2
+    210                      lon[5] = bit2;
+   \   000172   D142....0500 MOV.B   &bit2, 0x5(SP)
+    211                      bit2 = NEMA_BUF[37];
+   \   000178   D242........ MOV.B   &NEMA_BUF + 37, &bit2
+    212                      lon[6] = bit2;
+   \   00017E   D142....0600 MOV.B   &bit2, 0x6(SP)
+    213                      bit2 = NEMA_BUF[38];
+   \   000184   D242........ MOV.B   &NEMA_BUF + 38, &bit2
+    214                      lon[7] = bit2;
+   \   00018A   D142....0700 MOV.B   &bit2, 0x7(SP)
+    215                      bit2 = NEMA_BUF[39];
+   \   000190   D242........ MOV.B   &NEMA_BUF + 39, &bit2
+    216                      lon[8] = bit2;
+   \   000196   D142....0800 MOV.B   &bit2, 0x8(SP)
+    217                      bit2 = NEMA_BUF[40];
+   \   00019C   D242........ MOV.B   &NEMA_BUF + 40, &bit2
+    218                      lon[9] = bit2;
+   \   0001A2   D142....0900 MOV.B   &bit2, 0x9(SP)
+    219                      bit2 = NEMA_BUF[41];
+   \   0001A8   D242........ MOV.B   &NEMA_BUF + 41, &bit2
+    220                      lon[10] = bit2;
+   \   0001AE   D142....0A00 MOV.B   &bit2, 0xa(SP)
+    221                      
+    222                      
+    223                      lcd_clear();
+   \   0001B4   ........     CALLA   #lcd_clear
+    224                      newFM(100);
+   \   0001B8   3C406400     MOV.W   #0x64, R12
+   \   0001BC   ........     CALLA   #newFM
+    225                      lcd_out(lat, LCD_LINE_1);
+   \   0001C0   7D408000     MOV.B   #0x80, R13
+   \   0001C4   0C41         MOV.W   SP, R12
+   \   0001C6   3C501000     ADD.W   #0x10, R12
+   \   0001CA   ........     CALLA   #lcd_out
+    226                      newFM(100);
+   \   0001CE   3C406400     MOV.W   #0x64, R12
+   \   0001D2   ........     CALLA   #newFM
+    227                      lcd_out(lon, LCD_LINE_2);
+   \   0001D6   7D40C000     MOV.B   #0xc0, R13
+   \   0001DA   0C41         MOV.W   SP, R12
+   \   0001DC   0C53         ADD.W   #0x0, R12
+   \   0001DE   ........     CALLA   #lcd_out
+    228                      newFM(100);
+   \   0001E2   3C406400     MOV.W   #0x64, R12
+   \   0001E6   ........     CALLA   #newFM
+    229                      ind = ind;
+   \   0001EA   9242........ MOV.W   &ind, &ind
+    230                      newFM(400);
+   \   0001F0   3C409001     MOV.W   #0x190, R12
+   \   0001F4   ........     CALLA   #newFM
+    231                    }
+    232                  }
    \                     ??main_0:
-   \   0001B8   C293....     CMP.B   #0x0, &resetCount
-   \   0001BC   1024         JEQ     ??main_4
-   \   0001BE   D2C3E005     BIC.B   #0x1, &0x5e0
-   \   0001C2   92D3FA05     BIS.W   #0x1, &0x5fa
-   \   0001C6   ........     CALLA   #Init_Serial_UCA1
-   \   0001CA   C243....     MOV.B   #0x0, &resetCount
-   \   0001CE   9253....     ADD.W   #0x1, &usb_rx_ring_wr
-   \   0001D2   9253....     ADD.W   #0x1, &usb_rx_ring_wr
-   \   0001D6   C243....     MOV.B   #0x0, &USB_Char_Rx
-   \   0001DA   C243....     MOV.B   #0x0, &USB_Char_Rx + 1
+   \   0001F8   9242........ MOV.W   &usb_rx_ring_wr, &test1
+   \   0001FE   9242........ MOV.W   &usb_rx_ring_rd, &test2
+   \   000204   8243....     MOV.W   #0x0, &test
+   \   000208   9292........ CMP.W   &test2, &test1
+   \   00020E   F427         JEQ     ??main_0
+   \   000210   1F42....     MOV.W   &usb_rx_ring_wr, R15
+   \   000214   D24F........ MOV.B   USB_Char_Rx + 1(R15), &bit1
+   \   00021A   B2900700.... CMP.W   #0x7, &usb_rx_ring_rd
+   \   000220   0338         JL      ??main_3
+   \   000222   B243....     MOV.W   #0xffff, &usb_rx_ring_rd
+   \   000226   023C         JMP     ??main_4
+   \                     ??main_3:
+   \   000228   9253....     ADD.W   #0x1, &usb_rx_ring_rd
    \                     ??main_4:
-   \   0001DE   9242........ MOV.W   &usb_rx_ring_wr, &test1
-   \   0001E4   9242........ MOV.W   &usb_rx_ring_rd, &test2
-   \   0001EA   8243....     MOV.W   #0x0, &test
-   \   0001EE   9292........ CMP.W   &test2, &test1
-   \   0001F4   0224         JEQ     ??main_5
-   \   0001F6   5E43         MOV.B   #0x1, R14
-   \   0001F8   013C         JMP     ??main_6
+   \   00022C   F2902400.... CMP.B   #0x24, &bit1
+   \   000232   0220         JNE     ??main_5
+   \   000234   9243....     MOV.W   #0x1, &grabCode
    \                     ??main_5:
-   \   0001FA   4E43         MOV.B   #0x0, R14
+   \   000238   8293....     CMP.W   #0x0, &grabCode
+   \   00023C   DD27         JEQ     ??main_0
+   \   00023E   1F42....     MOV.W   &ind, R15
+   \   000242   DF42........ MOV.B   &bit1, NEMA_BUF(R15)
+   \   000248   9253....     ADD.W   #0x1, &ind
+   \   00024C   B2900600.... CMP.W   #0x6, &grabCount
+   \   000252   1123         JNE     ??main_1
+   \   000254   ........     CALLA   #lcd_clear
+   \   000258   7D408000     MOV.B   #0x80, R13
+   \   00025C   1C42....     MOV.W   &serial, R12
+   \   000260   ........     CALLA   #lcd_out
+   \   000264   F2904300.... CMP.B   #0x43, &NEMA_BUF + 5
+   \   00026A   0724         JEQ     ??main_6
+   \   00026C   8243....     MOV.W   #0x0, &grabCode
+   \   000270   8243....     MOV.W   #0x0, &grabCount
+   \   000274   8243....     MOV.W   #0x0, &ind
+   \   000278   073F         JMP     ??main_2
    \                     ??main_6:
-   \   0001FC   5F42....     MOV.B   &readyToReceive, R15
-   \   000200   5FF3         AND.B   #0x1, R15
-   \   000202   4EBF         BIT.B   R15, R14
-   \   000204   D927         JEQ     ??main_0
-   \   000206   B2900700.... CMP.W   #0x7, &usb_rx_ring_rd
-   \   00020C   1738         JL      ??main_7
-   \   00020E   8243....     MOV.W   #0x0, &usb_rx_ring_rd
-   \   000212   C293....     CMP.B   #0x0, &whichChar
-   \   000216   0420         JNE     ??main_8
-   \   000218   D242........ MOV.B   &USB_Char_Rx + 8, &bit1
-   \   00021E   053C         JMP     ??main_9
-   \                     ??main_8:
-   \   000220   D242........ MOV.B   &USB_Char_Rx + 9, &bit2
-   \   000226   D243....     MOV.B   #0x1, &gotBoth
-   \                     ??main_9:
-   \   00022A   C293....     CMP.B   #0x0, &whichChar
-   \   00022E   0220         JNE     ??main_10
-   \   000230   5E43         MOV.B   #0x1, R14
-   \   000232   013C         JMP     ??main_11
-   \                     ??main_10:
-   \   000234   4E43         MOV.B   #0x0, R14
-   \                     ??main_11:
-   \   000236   C24E....     MOV.B   R14, &whichChar
-   \   00023A   1F3F         JMP     ??main_1
-   \                     ??main_7:
-   \   00023C   C293....     CMP.B   #0x0, &whichChar
-   \   000240   0920         JNE     ??main_12
-   \   000242   9242........ MOV.W   &usb_rx_ring_wr, &test1
-   \   000248   1F42....     MOV.W   &test1, R15
-   \   00024C   D24F........ MOV.B   LWRD(USB_Char_Rx - 1)(R15), &bit1
-   \   000252   0A3C         JMP     ??main_13
-   \                     ??main_12:
-   \   000254   9242........ MOV.W   &usb_rx_ring_wr, &test2
-   \   00025A   1F42....     MOV.W   &test2, R15
-   \   00025E   D24F........ MOV.B   USB_Char_Rx(R15), &bit2
-   \   000264   D243....     MOV.B   #0x1, &gotBoth
-   \                     ??main_13:
-   \   000268   C293....     CMP.B   #0x0, &whichChar
-   \   00026C   0123         JNE     ??main_2
-   \   00026E   5E43         MOV.B   #0x1, R14
-   \   000270   003F         JMP     ??main_3
-   \   000272   0343         NOP
-   \   000274                REQUIRE _A_PJOUT_L
-   \   000274                REQUIRE _A_UCA1CTLW0_L
-   \   000274                REQUIRE _A_UCA1IE_L
-   \   000274                REQUIRE _A_UCA1TXBUF_L
-    203                }
-    204          }
-    205          }
-    206          }
+   \   00027A   F2904300.... CMP.B   #0x43, &NEMA_BUF + 5
+   \   000280   0323         JNE     ??main_2
+   \   000282   9242........ MOV.W   &ind, &ind
+   \   000288   FF3E         JMP     ??main_2
+   \   00028A   0343         NOP
+    233                  
+    234                  //lcd_clear();
+    235                  //lcd_out(serial, LCD_LINE_1);
+    236               }
+    237             }
+    238                 
+    239                 
+    240                 
+    241                 
+    242                 
+    243                 
+    244             //if (resetCount)
+    245             //{
+    246             //  UCA1CTL1 &= ~UCSWRST; // Release from reset
+    247             //  UCA1IE |= UCRXIE; // Enable RX interrup
+    248             //  Init_Serial_UCA1();
+    249             //  resetCount = RESET;
+    250             //  ++usb_rx_ring_wr;
+    251             //  ++usb_rx_ring_wr;
+    252             //  USB_Char_Rx[RESET] = (char) CLEAR_REG;
+    253             //  USB_Char_Rx[START] = (char) CLEAR_REG;
+    254             //}
+    255             
+    256             //test1 = usb_rx_ring_wr;
+    257             //test2 = usb_rx_ring_rd;
+    258             //
+    259             //test = RESET;
+    260             //if ((test1 != test2) & (readyToReceive))
+    261             //   {
+    262             //     if ((UCTXIFG))
+    263             //     {
+    264             //       if (usb_rx_ring_rd > SIXTH)
+    265             //       {
+    266             //         usb_rx_ring_rd =RESET;
+    267             //         
+    268             //         if (!whichChar)
+    269             //         {
+    270             //           bit1 = USB_Char_Rx[EIGHTH]; //6
+    271             //         }
+    272             //         else
+    273             //         {
+    274             //           bit2 = USB_Char_Rx[NINTH]; //7
+    275             //           gotBoth = START;
+    276             //         }
+    277             //         whichChar = !whichChar;
+    278             //       }
+    279             //       else
+    280             //       {
+    281             //         if (!whichChar)
+    282             //         {
+    283             //           test1 = usb_rx_ring_wr;
+    284             //           bit1 = USB_Char_Rx[test1-START];
+    285             //         }
+    286             //         else
+    287             //         {
+    288             //           test2 = usb_rx_ring_wr;
+    289             //           bit2 = USB_Char_Rx[test2];
+    290             //           gotBoth = START;
+    291             //         }
+    292             //         whichChar = !whichChar;
+    293             //         usb_rx_ring_rd++;
+    294             //       }
+    295             //       
+    296             //       //---------------Write to LCD
+    297             //       if (gotBoth)
+    298             //       {
+    299             //         lcd_clear();
+    300             //         test = (int) bit2<<EIGHTH;
+    301             //         test = test | (int) bit1;
+    302             //         
+    303             //         testChar = (test/(numRange*numRange*numRange*numRange))%numRange+numOffset;
+    304             //         serial[SEVENTH] = (char) testChar;
+    305             //         testChar = (test/(numRange*numRange*numRange))%numRange + numOffset;
+    306             //         serial[EIGHTH] = testChar;
+    307             //         testChar = (test/(numRange*numRange))%numRange + numOffset;
+    308             //         serial[NINTH] = testChar;
+    309             //         testChar = (test/numRange)%numRange + numOffset;
+    310             //         serial[numRange] = testChar;
+    311             //         testChar = (test/START)%numRange + numOffset;
+    312             //         serial[ELEVENTH] = testChar;
+    313             //         lcd_out(serial, LCD_LINE_1);
+    314             //         
+    315             //         testChar = (test/START)%numRange + numOffset;
+    316             //         test++;
+    317             //         
+    318             //         bit1 = (char) (test & full);
+    319             //         bit2 = (char) (test>>EIGHTH);
+    320             //         
+    321             //         writeOut = START;
+    322             //       
+    323             //         newFM(ONE_SEC);
+    324             //       
+    325             //         UCA1TXBUF = bit1;
+    326             //         while (!UCTXIFG) {}
+    327             //         UCA1TXBUF = bit2;
+    328             //         while (!UCTXIFG) {}
+    329             //         writeOut = RESET;
+    330             //         gotBoth = RESET;
+    331             //     }
+    332             //   }
+    333          //}
+    334          }
+    335          }
 
    \                                 In  segment DATA16_ID, align 1, align-sorted
    \                     `?<Initializer for readyToReceive>`:
@@ -609,10 +706,16 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\main.c
    \            2000        
 
    \                                 In  segment DATA16_C, align 1, align-sorted
-   \                     `?<Constant "1-Display 2-Clr">`:
-   \   000000   312D44697370 DC8 "1-Display 2-Clr"
-   \            6C617920322D
-   \            436C7200    
+   \                     `?<Constant {32}>`:
+   \   000000   200000000000 DC8 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \            000000000000
+   \            00000000    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant {32}>_1`:
+   \   000000   200000000000 DC8 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \            000000000000
+   \            00000000    
 
    \                                 In  segment DATA16_C, align 1, align-sorted
    \                     `?<Constant "               ">`:
@@ -624,20 +727,18 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\main.c
 
    CSTACK Function
    ------ --------
-      4   main
-        4   -> ADC_Process
-        4   -> Init_Clocks
-        4   -> Init_Conditions
-        4   -> Init_LCD
-        4   -> Init_LEDs
-        4   -> Init_Ports
-        4   -> Init_Serial_UCA1
-        4   -> Init_Timers
-        4   -> five_msec_sleep
-        4   -> init_adc
-        4   -> lcd_clear
-        4   -> lcd_out
-        4   -> newFM
+     36   main
+       36   -> GPS_Init
+       36   -> Init_Clocks
+       36   -> Init_Conditions
+       36   -> Init_LCD
+       36   -> Init_Ports
+       36   -> Init_Serial_UCA1
+       36   -> Init_Timers
+       36   -> five_msec_sleep
+       36   -> lcd_clear
+       36   -> lcd_out
+       36   -> newFM
 
 
    Segment part sizes:
@@ -647,15 +748,13 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\main.c
       16  ?<Constant "               ">
       17  ?<Constant "   Callibrate   ">
       14  ?<Constant "  IR Em Off  ">
-      16  ?<Constant "1-Display 2-Clr">
+      16  ?<Constant {32}>
+      16  ?<Constant {32}>_1
        1  ?<Initializer for readyToReceive>
        2  L_Dir
+      80  NEMA_BUF
        2  R_Dir
        2  Time_Sequence
-       2  _A_PJOUT_L
-       2  _A_UCA1CTLW0_L
-       2  _A_UCA1IE_L
-       2  _A_UCA1TXBUF_L
        1  bit1
        1  bit2
        2  counter
@@ -665,8 +764,11 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\main.c
        2  driving
        2  five_msec_count
        1  gotBoth
+       2  grabCode
+       2  grabCount
        2  halfTimer
-     628  main
+       2  ind
+     652  main
        1  one_time
        1  readyToReceive
        1  resetCount
@@ -686,16 +788,15 @@ C:\Users\Joseph\Documents\GitHub\ECE306\Proj6\main.c
        1  wroteFirst
 
  
- 628 bytes in segment CODE
-   8 bytes in segment DATA16_AN
-  63 bytes in segment DATA16_C
+ 652 bytes in segment CODE
+  79 bytes in segment DATA16_C
    1 byte  in segment DATA16_I
    1 byte  in segment DATA16_ID
-  48 bytes in segment DATA16_Z
+ 134 bytes in segment DATA16_Z
  
- 628 bytes of CODE  memory
-  64 bytes of CONST memory
-  49 bytes of DATA  memory (+ 8 bytes shared)
+ 652 bytes of CODE  memory
+  80 bytes of CONST memory
+ 135 bytes of DATA  memory
 
 Errors: none
 Warnings: none

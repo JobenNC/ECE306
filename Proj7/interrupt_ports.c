@@ -78,7 +78,7 @@ __interrupt void switch_interrupt(void) {
 // Clear any current timer interrupt.
    P4IFG &= ~SW1; // P4 IFG SW1 cleared
    P4IFG &= ~SW2; // P4 IFG SW2 cleared
-   PJOUT |= LED1; // Toggle LED 1 on to indicate boot ISR working
+   //PJOUT |= LED1; // Toggle LED 1 on to indicate boot ISR working
    
    //-----Setup up first fake receive
    //++usb_rx_ring_wr;
@@ -108,7 +108,7 @@ __interrupt void switch_interrupt(void) {
 // Clear any current timer interrupt.
    P4IFG &= ~SW2; // P4 IFG SW2 cleared
    P4IFG &= ~SW1; // P4 IFG SW1 cleared
-   PJOUT |= LED1; // Toggle LED 1 on to indicate boot ISR working
+   //PJOUT |= LED1; // Toggle LED 1 on to indicate boot ISR working
  }
 // Enable the Timer Interrupt for the debounce.
 }

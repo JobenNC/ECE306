@@ -61,3 +61,8 @@ void ADC_Process(void);
 
 //Serial
 void Init_Serial_UCA1(void);
+
+//GPS
+void GPS_Init(void);
+void gps_wakeup(void);
+void gps_out_once(void);

@@ -1,0 +1,282 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         16/Nov/2014  17:06:35
+# Copyright 1996-2014 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\gps.c
+#    Command line  =  
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\gps.c -lC
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\Debug\List\ -o
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\Debug\Obj\ --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -Ol --multiplier=32
+#        --multiplier_location=4C0 --hw_workaround=CPU40 --hw_workaround=CPU39
+#        --code_model=large
+#    List file     =  
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\Debug\List\gps.lst
+#    Object file   =  
+#        C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\Debug\Obj\gps.r43
+#
+###############################################################################
+
+C:\Users\Joseph\Documents\GitHub\ECE306\Proj7\gps.c
+      1          //===========================================================================
+      2          // File Name : gps.c
+      3          //
+      4          // Description: gps functions
+      5          //
+      6          // Author: Joseph Jarriel
+      7          // Date: Sep 2014
+      8          // Compiler: Built with IAR Embedded Workbench (6.10.5)
+      9          // Globals: buffers and sizes
+     10          // Functions: None
+     11          //===========================================================================
+     12          
+     13          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x320
+   \   union <unnamed> _A_PJIN_L
+   \                     _A_PJIN_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x322
+   \   union <unnamed> _A_PJOUT_L
+   \                     _A_PJOUT_L:
+   \   000000                DS8 2
+     14          #include  "functions.h"
+     15          #include "macros.h"
+     16          
+     17          //pin 6 high, gps is on!
+     18          
+
+   \                                 In  segment DATA16_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+     19          char *display_line1 = "    ";
+   \                     display_line1:
+   \   000000                DS8 2
+   \   000002                REQUIRE `?<Initializer for display_line1>`
+
+   \                                 In  segment DATA16_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy
+     20          char *display_line2 = "    ";
+   \                     display_line2:
+   \   000000                DS8 2
+   \   000002                REQUIRE `?<Initializer for display_line2>`
+     21          
+
+   \                                 In  segment CODE, align 2
+     22          void GPS_Init()
+   \                     GPS_Init:
+     23          {
+     24            // GPS Initialization
+     25           //time_pass_by = 0;
+     26           PJOUT &= ~GPS_RESET; // GPS_RESET = GPS in Reset;
+   \   000000   A2C32203     BIC.W   #0x2, &0x322
+     27           //time_pass_by = 0;
+     28           //while (time_pass_by <= 200);
+     29           newFM(200);
+   \   000004   3C40C800     MOV.W   #0xc8, R12
+   \   000008   ........     CALLA   #newFM
+     30           //time_pass_by = 0;
+     31           PJOUT |= GPS_RESET; // GPS_RESET = GPS NOT Reset;
+   \   00000C   A2D32203     BIS.W   #0x2, &0x322
+     32           newFM(200);
+   \   000010   3C40C800     MOV.W   #0xc8, R12
+   \   000014   ........     CALLA   #newFM
+     33           //while (time_pass_by <= 200);
+     34           //PJOUT &= ~GPS_PWRCNTL;
+     35           newFM(20);
+   \   000018   3C401400     MOV.W   #0x14, R12
+   \   00001C   ........     CALLA   #newFM
+     36           PJOUT |= GPS_PWRCNTL;
+   \   000020   A2D22203     BIS.W   #0x4, &0x322
+     37           newFM(40);
+   \   000024   3C402800     MOV.W   #0x28, R12
+   \   000028   ........     CALLA   #newFM
+     38           if (PJIN & GPS_PWRCHK) 
+   \   00002C   B2B22003     BIT.W   #0x8, &0x320
+   \   000030   0228         JNC     ??GPS_Init_0
+     39           {
+     40             PJOUT &= ~GPS_PWRCNTL;
+   \   000032   A2C22203     BIC.W   #0x4, &0x322
+     41           }
+     42           
+     43           //PJOUT |= GPS_PWRCNTL;
+     44           //newFM(210);
+     45           //PJOUT &= ~GPS_PWRCNTL;
+     46           
+     47           //I commented this out
+     48           return;
+   \                     ??GPS_Init_0:
+   \   000036   1001         RETA
+   \   000038                REQUIRE _A_PJOUT_L
+   \   000038                REQUIRE _A_PJIN_L
+     49           gps_wakeup();
+                  ^
+Warning[Pe111]: statement is unreachable
+     50           while(!(PJIN & GPS_PWRCHK)){
+     51              if (!(PJIN & GPS_PWRCHK)){
+     52                  newFM(210);
+     53                  //while (time_pass_by <= 210);
+     54                  gps_wakeup();
+     55              }
+     56           }
+     57           lcd_clear();
+     58           lcd_out("GPS_UP", LCD_LINE_1);
+     59          }
+     60          
+
+   \                                 In  segment CODE, align 2
+     61          void gps_wakeup(void){
+   \                     gps_wakeup:
+   \   000000   0A12         PUSH.W  R10
+     62           int kick_out = 1;
+   \   000002   1A43         MOV.W   #0x1, R10
+     63           //time_pass_by = 0;
+     64           //while (time_pass_by <= 10);
+     65           newFM(10);
+   \   000004   3C400A00     MOV.W   #0xa, R12
+   \   000008   ........     CALLA   #newFM
+     66           PJOUT |= GPS_PWRCNTL; // GPS_PWRCNTL = GPS_ON;
+   \   00000C   A2D22203     BIS.W   #0x4, &0x322
+     67           //time_pass_by = 0;
+     68           newFM(20);
+   \   000010   3C401400     MOV.W   #0x14, R12
+   \   000014   ........     CALLA   #newFM
+   \   000018   043C         JMP     ??gps_wakeup_1
+     69           //while ((time_pass_by <= 20) & kick_out){
+     70           
+     71           //this is where carlson set trace to show me working gps
+     72           while (kick_out){
+     73              if (PJIN & GPS_PWRCHK){
+   \                     ??gps_wakeup_0:
+   \   00001A   B2B22003     BIT.W   #0x8, &0x320
+   \   00001E   0128         JNC     ??gps_wakeup_1
+     74                  kick_out = 0;
+   \   000020   0A43         MOV.W   #0x0, R10
+     75              }
+     76           }
+   \                     ??gps_wakeup_1:
+   \   000022   0A93         CMP.W   #0x0, R10
+   \   000024   FA23         JNE     ??gps_wakeup_0
+     77           //commented this out to get this working!
+     78           PJOUT &= ~GPS_PWRCNTL; // GPS_PWRCNTL = GPS_Off;
+   \   000026   A2C22203     BIC.W   #0x4, &0x322
+     79           //gps_out_once();
+     80          }
+   \   00002A   3A41         POP.W   R10
+   \   00002C   1001         RETA
+   \   00002E                REQUIRE _A_PJOUT_L
+   \   00002E                REQUIRE _A_PJIN_L
+     81          
+
+   \                                 In  segment CODE, align 2
+     82          void gps_out_once(void){
+   \                     gps_out_once:
+     83           display_line1[0] = 'L';
+   \   000000   1F42....     MOV.W   &display_line1, R15
+   \   000004   FF404C000000 MOV.B   #0x4c, 0(R15)
+     84           display_line1[1] = 'A';
+   \   00000A   1F42....     MOV.W   &display_line1, R15
+   \   00000E   FF4041000100 MOV.B   #0x41, 0x1(R15)
+     85           display_line1[2] = 'T';
+   \   000014   1F42....     MOV.W   &display_line1, R15
+   \   000018   FF4054000200 MOV.B   #0x54, 0x2(R15)
+     86           display_line1[3] = ' ';
+   \   00001E   1F42....     MOV.W   &display_line1, R15
+   \   000022   FF4020000300 MOV.B   #0x20, 0x3(R15)
+     87           display_line2[0] = 'L';
+   \   000028   1F42....     MOV.W   &display_line2, R15
+   \   00002C   FF404C000000 MOV.B   #0x4c, 0(R15)
+     88           display_line2[1] = 'O';
+   \   000032   1F42....     MOV.W   &display_line2, R15
+   \   000036   FF404F000100 MOV.B   #0x4f, 0x1(R15)
+     89           display_line2[2] = 'N';
+   \   00003C   1F42....     MOV.W   &display_line2, R15
+   \   000040   FF404E000200 MOV.B   #0x4e, 0x2(R15)
+     90           display_line2[3] = ' ';
+   \   000046   1F42....     MOV.W   &display_line2, R15
+   \   00004A   FF4020000300 MOV.B   #0x20, 0x3(R15)
+     91           lcd_clear();
+   \   000050   ........     CALLA   #lcd_clear
+     92           newFM(50);
+   \   000054   3C403200     MOV.W   #0x32, R12
+   \   000058   ........     CALLA   #newFM
+     93           lcd_out(display_line1,LCD_LINE_1); // 16 characters max between quotes - line 1
+   \   00005C   7D408000     MOV.B   #0x80, R13
+   \   000060   1C42....     MOV.W   &display_line1, R12
+   \   000064   ........     CALLA   #lcd_out
+     94           newFM(50);
+   \   000068   3C403200     MOV.W   #0x32, R12
+   \   00006C   ........     CALLA   #newFM
+     95           lcd_out(display_line2,LCD_LINE_2); // 16 characters max between quotes - line 2
+   \   000070   7D40C000     MOV.B   #0xc0, R13
+   \   000074   1C42....     MOV.W   &display_line2, R12
+   \   000078   ........     BRA     #lcd_out
+     96          }
+
+   \                                 In  segment DATA16_ID, align 2, align-sorted
+   \                     `?<Initializer for display_line1>`:
+   \   000000   ....         DC16 `?<Constant "    ">`
+
+   \                                 In  segment DATA16_ID, align 2, align-sorted
+   \                     `?<Initializer for display_line2>`:
+   \   000000   ....         DC16 `?<Constant "    ">`
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "    ">`:
+   \   000000   2020202000   DC8 "    "
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   GPS_Init
+        4   -> newFM
+      4   gps_out_once
+        4   -> lcd_clear
+        4   -> lcd_out
+        4   -> newFM
+      6   gps_wakeup
+        6   -> newFM
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       5  ?<Constant "    ">
+       2  ?<Initializer for display_line1>
+       2  ?<Initializer for display_line2>
+      56  GPS_Init
+       2  _A_PJIN_L
+       2  _A_PJOUT_L
+       2  display_line1
+       2  display_line2
+     124  gps_out_once
+      46  gps_wakeup
+
+ 
+ 226 bytes in segment CODE
+   4 bytes in segment DATA16_AN
+   5 bytes in segment DATA16_C
+   4 bytes in segment DATA16_I
+   4 bytes in segment DATA16_ID
+ 
+ 226 bytes of CODE  memory
+   9 bytes of CONST memory
+   4 bytes of DATA  memory (+ 4 bytes shared)
+
+Errors: none
+Warnings: 1
