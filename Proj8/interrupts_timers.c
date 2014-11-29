@@ -19,6 +19,8 @@ int incr = 0;
 
 volatile unsigned int fMCount = RESET;
 volatile unsigned int timerCount = 0;
+
+volatile unsigned int turnAround = 0;
 //******************************************************************************
 //------------------------------------------------------------------------------
 // TimerA0 0 Interrupt handler 
@@ -53,8 +55,16 @@ __interrupt void Timer0_A0_ISR(void){
  //P3DIR |= LCD_BACKLITE; 
  fMCount = ~fMCount;
  incr++;
+ turnAroundCount++;
+ if ((drive) && (turnAroundCount > 6500)) 
+ {
+   turnAround = 1;
+   turnAroundCount = 0;
+ }
  slowDrive = 0;
- if (incr == 5) 
+ //5 works
+ //3 is good for my car
+ if (incr == 7) 
  {
    slowDrive = 1;
    incr = 0;

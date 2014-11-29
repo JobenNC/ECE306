@@ -28,6 +28,8 @@ volatile unsigned int LED_Black_RD;
 volatile unsigned int butt1 = -1;
 volatile unsigned int butt2 = 0;
 
+volatile unsigned int turnAroundCount = 0;
+
 char nib1;
 char nib2;
 char nib3;
@@ -265,6 +267,7 @@ __interrupt void switch_interrupt(void) {
    case 0:
      
      drive = 1; 
+     turnAroundCount = 0;
      
      break;
       

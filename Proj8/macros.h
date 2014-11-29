@@ -117,6 +117,8 @@ extern volatile unsigned int ADC_RD;
 extern volatile unsigned int chan;
 
 extern volatile unsigned int drive;
+extern volatile unsigned int turnAround;
+extern volatile unsigned int turnAroundCount;
 
 extern volatile unsigned int LED_White_LD;
 extern volatile unsigned int LED_Black_LD;

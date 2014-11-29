@@ -32,6 +32,8 @@ unsigned int halfTimer = 0;
 unsigned int L_Dir;
 unsigned int R_Dir;
 
+unsigned int turnDebounce = 1;
+
 char *display_NCSU;
 char *display_HW3;
 
@@ -82,10 +84,17 @@ void main(void){
  L_Dir = L_FORWARD;
  R_Dir = R_FORWARD;
  while(ALWAYS) {                            // Can the Operating system run
+  if (turnAround) 
+  {
+    //turnDebounce = 1;
+    turnAroundExp();
+  }
+  else{
   if ((drive) && ~(driving))
   {
       //newFM(200);
       driving = 1;
+      //if (turnAround) turnAroundExp();
   }
   if (driving)
   {
@@ -94,7 +103,7 @@ void main(void){
     //threshhold of 50 at least works!
     //100 works well
     //else if ((ADC_LD > (LED_White_LD+250)) && (ADC_RD > (LED_White_RD+250)))
-    if ((ADC_LD > (LED_White_LD+150)) && (ADC_RD > (LED_White_RD+380)))
+    if ((ADC_LD > (LED_Black_LD-80)) && (ADC_RD > (LED_Black_RD-80)))
     {
       
       //P3OUT |= L_Dir;
@@ -119,16 +128,22 @@ void main(void){
     }
     
     //if ((ADC_LD < (LED_White_LD+250)) && (ADC_RD > (LED_White_RD+250)))
-    else if (ADC_RD > (LED_White_RD+380))
+    else if ((ADC_RD > (LED_Black_RD-80)))
     {
       goLeft();
     }
     
     //else if ((ADC_LD > (LED_White_LD+250)) && (ADC_RD < (LED_White_RD+250)))
-    else if (ADC_LD > (LED_White_LD+150))
+    else if ((ADC_LD > (LED_Black_LD-80)))
     {
       goRight();
     }
+    
+    //else if ((turnAround) && ((ADC_LD < (LED_Black_LD-150)) && (ADC_RD < (LED_Black_RD-150))))
+    //else if (turnAround)
+    //{
+    //  turnAroundExp();
+    //}
     
     else
     {
@@ -144,19 +159,15 @@ void main(void){
       }
     }
   }
+  }
  }
 //------------------------------------------------------------------------------
 }
 
 void goLeft()
 {
-      
-      //P3OUT |= L_FORWARD;
-      //P3OUT &= ~R_FORWARD;
-      //newFM(1);
-      //P3OUT &= ~L_FORWARD;
-      //P3OUT &= ~R_FORWARD;
-      //newFM(3);
+   
+  
       if (slowDrive)
       {
         P3OUT |= L_Dir;
@@ -164,8 +175,10 @@ void goLeft()
       }
       else
       {
-        P3OUT &= ~L_Dir;
-        P3OUT &= ~R_Dir;
+        P3OUT &= ~L_FORWARD;
+      P3OUT &= ~R_FORWARD;
+      P3OUT &= ~L_REVERSE;
+      P3OUT &= ~R_REVERSE;
       }
       //goRight = 1;
       goingLeft = 1;
@@ -194,5 +207,49 @@ void goRight()
       }
       //goRight = 1;
       goingRight = 1;
+  
+}
+
+void turnAroundExp()
+{
+  
+  if (turnDebounce)
+  {
+      newFM(5);
+      P3OUT |= R_FORWARD;
+      P3OUT |= L_REVERSE;
+      newFM(50);
+      P3OUT &= ~L_FORWARD;
+      P3OUT &= ~R_FORWARD;
+      P3OUT &= ~L_REVERSE;
+      P3OUT &= ~R_REVERSE;
+      newFM(5);
+      turnDebounce = 0;
+  }
+  if (((ADC_LD < (LED_Black_LD-80)) && (ADC_RD < (LED_Black_RD-80))))
+  {
+    if (slowDrive)
+        {
+          P3OUT |= R_FORWARD;
+          P3OUT &= ~L_FORWARD;
+          P3OUT |= L_REVERSE;
+        }
+    else
+      {
+         P3OUT &= ~L_FORWARD;
+         P3OUT &= ~R_FORWARD;
+         P3OUT &= ~L_REVERSE;
+         P3OUT &= ~R_REVERSE;
+      }
+  }
+  else 
+  {
+     P3OUT &= ~L_FORWARD;
+     P3OUT &= ~R_FORWARD;
+     P3OUT &= ~L_REVERSE;
+     P3OUT &= ~R_REVERSE;
+     turnAround = 0;
+  }
+  
   
 }
