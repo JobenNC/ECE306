@@ -1,0 +1,526 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         24/Nov/2014  18:37:52
+# Copyright 1996-2014 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\FromDesktop\Working_Proj5\main.c
+#    Command line  =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\FromDesktop\Working_Proj5\main.c
+#        -lC
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\FromDesktop\Working_Proj5\Debug\List\
+#        -o
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\FromDesktop\Working_Proj5\Debug\Obj\
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -Ol --multiplier=32
+#        --multiplier_location=4C0 --hw_workaround=CPU40 --hw_workaround=CPU39
+#        --code_model=large
+#    List file     =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\FromDesktop\Working_Proj5\Debug\List\main.lst
+#    Object file   =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\FromDesktop\Working_Proj5\Debug\Obj\main.r43
+#
+###############################################################################
+
+C:\Users\Joseph\Desktop\CurrentClasses\ECE306\FromDesktop\Working_Proj5\main.c
+      1          //===========================================================================
+      2          // File Name : main.c
+      3          //
+      4          // Description: The main, 'while' operating system
+      5          //
+      6          // Author: Joseph Jarriel
+      7          // Date: Sep 2014
+      8          // Compiler: Built with IAR Embedded Workbench (6.10.5)
+      9          // Globals: volatile unsigned int Time_Sequence, volatile char one_time,
+     10          // volatile unsigned int five_msec_count, char *display_NCSU, char *display_HW3
+     11          // Functions: main
+     12          //===========================================================================
+     13          
+     14          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x222
+   \   union <unnamed> _A_PBOUT_L
+   \                     _A_PBOUT_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x322
+   \   union <unnamed> _A_PJOUT_L
+   \                     _A_PJOUT_L:
+   \   000000                DS8 2
+     15          #include  "functions.h"
+     16          #include "macros.h"
+     17          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     18          volatile unsigned int Time_Sequence;
+   \                     Time_Sequence:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     19          volatile char one_time;
+   \                     one_time:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     20          volatile unsigned int five_msec_count;
+   \                     five_msec_count:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     21          volatile unsigned int startTimer = 0;
+   \                     startTimer:
+   \   000000                DS8 2
+     22          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     23          volatile unsigned int goFor = 0;
+   \                     goFor:
+   \   000000                DS8 2
+     24          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     25          volatile unsigned int slowDrive = 0;
+   \                     slowDrive:
+   \   000000                DS8 2
+     26          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     27          unsigned int driving = 0;
+   \                     driving:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     28          unsigned int reverse = 0;
+   \                     reverse:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     29          unsigned int startHalf = 0;
+   \                     startHalf:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     30          unsigned int halfTimer = 0;
+   \                     halfTimer:
+   \   000000                DS8 2
+     31          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     32          unsigned int L_Dir;
+   \                     L_Dir:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     33          unsigned int R_Dir;
+   \                     R_Dir:
+   \   000000                DS8 2
+     34          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     35          char *display_NCSU;
+   \                     display_NCSU:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     36          char *display_HW3;
+   \                     display_HW3:
+   \   000000                DS8 2
+     37          
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     38          char goingRight = 0;
+   \                     goingRight:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     39          char goingLeft = 0;
+   \                     goingLeft:
+   \   000000                DS8 1
+     40          
+
+   \                                 In  segment CODE, align 2
+     41          void main(void){
+   \                     main:
+     42          //===========================================================================
+     43          // Function name: main
+     44          //
+     45          // Description: The main function.  Our 'while' OS
+     46          // 
+     47          // Passed : no variables passed
+     48          // Locals: no variables declared
+     49          // Returned: no values returned
+     50          // Globals: Time_Sequence, one_time, five_msec_count
+     51          // Calls: Init_Ports, Init_Clocks, Init_Conditions, Init_Timers, Init_LEDs,
+     52          //      Init_LCD, five_msec_sleep, Switch_Process
+     53          //
+     54          // Author: Joseph Jarriel
+     55          // Date: Sep 2014
+     56          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+     57          //===========================================================================
+     58            Init_Ports();                             // Initialize Ports
+   \   000000   ........     CALLA   #Init_Ports
+     59            Init_Clocks();                            // Initialize Clock System 
+   \   000004   ........     CALLA   #Init_Clocks
+     60            Init_Conditions();
+   \   000008   ........     CALLA   #Init_Conditions
+     61            PJOUT |= LED1;                            // Turn LED 1 on to indicate boot
+   \   00000C   92D32203     BIS.W   #0x1, &0x322
+     62            Time_Sequence = RESET;                        // 
+   \   000010   8243....     MOV.W   #0x0, &Time_Sequence
+     63            Init_Timers();                            // Initialize Timers
+   \   000014   ........     CALLA   #Init_Timers
+     64            five_msec_sleep(SLEEP_50);                      // 250 msec delay for the clock to settle
+   \   000018   3C403200     MOV.W   #0x32, R12
+   \   00001C   ........     CALLA   #five_msec_sleep
+     65            Init_LCD();                               // Initialize LCD
+   \   000020   ........     CALLA   #Init_LCD
+     66            five_msec_sleep(SLEEP_75);                      // 375 msec delay for the clock to settle
+   \   000024   3C404B00     MOV.W   #0x4b, R12
+   \   000028   ........     CALLA   #five_msec_sleep
+     67            Init_LEDs();                              // Initialize LEDs
+   \   00002C   ........     CALLA   #Init_LEDs
+     68            display_NCSU = "   Callibrate   ";
+   \   000030   B240........ MOV.W   #`?<Constant "   Callibrate   ">`, &display_NCSU
+     69            display_HW3 =  "  IR Em Off  ";
+   \   000036   B240........ MOV.W   #`?<Constant "  IR Em Off  ">`, &display_HW3
+     70            
+     71          //  lcd_command(CLEAR_DISPLAY);
+     72            five_msec_sleep(SLEEP_10); 
+   \   00003C   3C400A00     MOV.W   #0xa, R12
+   \   000040   ........     CALLA   #five_msec_sleep
+     73            lcd_out("Make Selection",LCD_LINE_1);       // 16 characters max between quotes - line 1
+   \   000044   7D408000     MOV.B   #0x80, R13
+   \   000048   3C40....     MOV.W   #`?<Constant "Make Selection">`, R12
+   \   00004C   ........     CALLA   #lcd_out
+     74            //lcd_out("LED On       ",LCD_LINE_2);
+     75              //lcd_out(display_NCSU,LCD_LINE_1);       // 16 characters max between quotes - line 1
+     76              //lcd_out(display_HW3,LCD_LINE_2);        // 16 characters max between quotes - line 2
+     77              
+     78          //------------------------------------------------------------------------------
+     79          // Begining of the "While" Operating System
+     80          //------------------------------------------------------------------------------
+     81           ADC_Process();
+   \   000050   ........     CALLA   #ADC_Process
+     82           L_Dir = L_FORWARD;
+   \   000054   B2404000.... MOV.W   #0x40, &L_Dir
+     83           R_Dir = R_FORWARD;
+   \   00005A   B2401000.... MOV.W   #0x10, &R_Dir
+   \   000060   0A3C         JMP     ??main_0
+     84           while(ALWAYS) {                            // Can the Operating system run
+     85            if ((drive) && ~(driving))
+     86            {
+     87                //newFM(200);
+     88                driving = 1;
+     89            }
+     90            if (driving)
+     91            {
+     92              
+     93              //newFM(2);
+     94              //threshhold of 50 at least works!
+     95              //100 works well
+     96              //else if ((ADC_LD > (LED_White_LD+250)) && (ADC_RD > (LED_White_RD+250)))
+     97              if ((ADC_LD > (LED_White_LD+150)) && (ADC_RD > (LED_White_RD+380)))
+                     ^
+Warning[Pa082]: undefined behavior: the order of volatile accesses is
+          undefined in this statement
+     98              {
+     99                
+    100                //P3OUT |= L_Dir;
+    101                //P3OUT |= R_Dir;
+    102                //newFM(1);
+    103                //P3OUT &= ~L_Dir;
+    104                //P3OUT &= ~R_Dir;
+    105                //newFM(1);
+    106                //goFor = 1;
+    107                if (slowDrive)
+    108                {
+    109                  P3OUT |= L_Dir;
+    110                  P3OUT |= R_Dir;
+    111                }
+    112                else
+    113                {
+    114                  P3OUT &= ~L_Dir;
+   \                     ??main_1:
+   \   000062   D2C2....2202 BIC.B   &L_Dir, &0x222
+    115                  P3OUT &= ~R_Dir;
+   \   000068   D2C2....2202 BIC.B   &R_Dir, &0x222
+    116                }
+    117                goingLeft = 0;
+   \                     ??main_2:
+   \   00006E   C243....     MOV.B   #0x0, &goingLeft
+    118                goingRight = 0;
+   \   000072   C243....     MOV.B   #0x0, &goingRight
+   \                     ??main_0:
+   \   000076   8293....     CMP.W   #0x0, &drive
+   \   00007A   0724         JEQ     ??main_3
+   \   00007C   1F42....     MOV.W   &driving, R15
+   \   000080   3FE3         XOR.W   #0xffff, R15
+   \   000082   0F93         CMP.W   #0x0, R15
+   \   000084   0224         JEQ     ??main_3
+   \   000086   9243....     MOV.W   #0x1, &driving
+   \                     ??main_3:
+   \   00008A   8293....     CMP.W   #0x0, &driving
+   \   00008E   F327         JEQ     ??main_0
+   \   000090   1F42....     MOV.W   &LED_White_LD, R15
+   \   000094   3F509600     ADD.W   #0x96, R15
+   \   000098   1F92....     CMP.W   &ADC_LD, R15
+   \   00009C   112C         JC      ??main_4
+   \   00009E   1F42....     MOV.W   &LED_White_RD, R15
+   \   0000A2   3F507C01     ADD.W   #0x17c, R15
+   \   0000A6   1F92....     CMP.W   &ADC_RD, R15
+   \   0000AA   0A2C         JC      ??main_4
+   \   0000AC   8293....     CMP.W   #0x0, &slowDrive
+   \   0000B0   D827         JEQ     ??main_1
+   \   0000B2   D2D2....2202 BIS.B   &L_Dir, &0x222
+   \   0000B8   D2D2....2202 BIS.B   &R_Dir, &0x222
+   \   0000BE   D73F         JMP     ??main_2
+    119              }
+    120              
+    121              //if ((ADC_LD < (LED_White_LD+250)) && (ADC_RD > (LED_White_RD+250)))
+    122              else if (ADC_RD > (LED_White_RD+380))
+                          ^
+Warning[Pa082]: undefined behavior: the order of volatile accesses is
+          undefined in this statement
+   \                     ??main_4:
+   \   0000C0   1F42....     MOV.W   &LED_White_RD, R15
+   \   0000C4   3F507C01     ADD.W   #0x17c, R15
+   \   0000C8   1F92....     CMP.W   &ADC_RD, R15
+   \   0000CC   032C         JC      ??main_5
+    123              {
+    124                goLeft();
+   \   0000CE   ........     CALLA   #goLeft
+   \   0000D2   D13F         JMP     ??main_0
+    125              }
+    126              
+    127              //else if ((ADC_LD > (LED_White_LD+250)) && (ADC_RD < (LED_White_RD+250)))
+    128              else if (ADC_LD > (LED_White_LD+150))
+                          ^
+Warning[Pa082]: undefined behavior: the order of volatile accesses is
+          undefined in this statement
+   \                     ??main_5:
+   \   0000D4   1F42....     MOV.W   &LED_White_LD, R15
+   \   0000D8   3F509600     ADD.W   #0x96, R15
+   \   0000DC   1F92....     CMP.W   &ADC_LD, R15
+   \   0000E0   032C         JC      ??main_6
+    129              {
+    130                goRight();
+   \   0000E2   ........     CALLA   #goRight
+   \   0000E6   C73F         JMP     ??main_0
+    131              }
+    132              
+    133              else
+    134              {
+    135                if (goingLeft)
+   \                     ??main_6:
+   \   0000E8   C293....     CMP.B   #0x0, &goingLeft
+   \   0000EC   0324         JEQ     ??main_7
+    136                {
+    137                goLeft();
+   \   0000EE   ........     CALLA   #goLeft
+   \   0000F2   C13F         JMP     ??main_0
+    138                  
+    139                }
+    140                
+    141                else if (goingRight)
+   \                     ??main_7:
+   \   0000F4   C293....     CMP.B   #0x0, &goingRight
+   \   0000F8   BE27         JEQ     ??main_0
+    142                {
+    143                goRight();
+   \   0000FA   ........     CALLA   #goRight
+   \   0000FE   BB3F         JMP     ??main_0
+   \   000100   0343         NOP
+   \   000102                REQUIRE _A_PJOUT_L
+   \   000102                REQUIRE _A_PBOUT_L
+    144                }
+    145              }
+    146            }
+    147           }
+    148          //------------------------------------------------------------------------------
+    149          }
+    150          
+
+   \                                 In  segment CODE, align 2
+    151          void goLeft()
+   \                     goLeft:
+    152          {
+    153                
+    154                //P3OUT |= L_FORWARD;
+    155                //P3OUT &= ~R_FORWARD;
+    156                //newFM(1);
+    157                //P3OUT &= ~L_FORWARD;
+    158                //P3OUT &= ~R_FORWARD;
+    159                //newFM(3);
+    160                if (slowDrive)
+   \   000000   8293....     CMP.W   #0x0, &slowDrive
+   \   000004   0724         JEQ     ??goLeft_0
+    161                {
+    162                  P3OUT |= L_Dir;
+   \   000006   D2D2....2202 BIS.B   &L_Dir, &0x222
+    163                  P3OUT &= ~R_Dir;
+   \   00000C   D2C2....2202 BIC.B   &R_Dir, &0x222
+   \   000012   063C         JMP     ??goLeft_1
+    164                }
+    165                else
+    166                {
+    167                  P3OUT &= ~L_Dir;
+   \                     ??goLeft_0:
+   \   000014   D2C2....2202 BIC.B   &L_Dir, &0x222
+    168                  P3OUT &= ~R_Dir;
+   \   00001A   D2C2....2202 BIC.B   &R_Dir, &0x222
+    169                }
+    170                //goRight = 1;
+    171                goingLeft = 1;
+   \                     ??goLeft_1:
+   \   000020   D243....     MOV.B   #0x1, &goingLeft
+    172          }
+   \   000024   1001         RETA
+   \   000026                REQUIRE _A_PBOUT_L
+    173          
+
+   \                                 In  segment CODE, align 2
+    174          void goRight()
+   \                     goRight:
+    175          {
+    176                //lcd_clear();
+    177                //lcd_out("Go Right", LCD_LINE_1);
+    178                //newFM(5);
+    179                //P3OUT &= ~L_FORWARD;
+    180                //P3OUT |= R_FORWARD;
+    181                //newFM(1);
+    182                //P3OUT &= ~L_FORWARD;
+    183                //P3OUT &= ~R_FORWARD;
+    184                //newFM(3);
+    185                if (slowDrive)
+   \   000000   8293....     CMP.W   #0x0, &slowDrive
+   \   000004   0724         JEQ     ??goRight_0
+    186                {
+    187                  P3OUT &= ~L_Dir;
+   \   000006   D2C2....2202 BIC.B   &L_Dir, &0x222
+    188                  P3OUT |= R_Dir;
+   \   00000C   D2D2....2202 BIS.B   &R_Dir, &0x222
+   \   000012   063C         JMP     ??goRight_1
+    189                }
+    190                else
+    191                {
+    192                  P3OUT &= ~L_Dir;
+   \                     ??goRight_0:
+   \   000014   D2C2....2202 BIC.B   &L_Dir, &0x222
+    193                  P3OUT &= ~R_Dir;
+   \   00001A   D2C2....2202 BIC.B   &R_Dir, &0x222
+    194                }
+    195                //goRight = 1;
+    196                goingRight = 1;
+   \                     ??goRight_1:
+   \   000020   D243....     MOV.B   #0x1, &goingRight
+    197            
+    198          }
+   \   000024   1001         RETA
+   \   000026                REQUIRE _A_PBOUT_L
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "   Callibrate   ">`:
+   \   000000   20202043616C DC8 "   Callibrate   "
+   \            6C6962726174
+   \            6520202000  
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "  IR Em Off  ">`:
+   \   000000   202049522045 DC8 "  IR Em Off  "
+   \            6D204F666620
+   \            2000        
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "Make Selection">`:
+   \   000000   4D616B652053 DC8 "Make Selection"
+   \            656C65637469
+   \            6F6E00      
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   goLeft
+      4   goRight
+      4   main
+        4   -> ADC_Process
+        4   -> Init_Clocks
+        4   -> Init_Conditions
+        4   -> Init_LCD
+        4   -> Init_LEDs
+        4   -> Init_Ports
+        4   -> Init_Timers
+        4   -> five_msec_sleep
+        4   -> goLeft
+        4   -> goRight
+        4   -> lcd_out
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      17  ?<Constant "   Callibrate   ">
+      14  ?<Constant "  IR Em Off  ">
+      15  ?<Constant "Make Selection">
+       2  L_Dir
+       2  R_Dir
+       2  Time_Sequence
+       2  _A_PBOUT_L
+       2  _A_PJOUT_L
+       2  display_HW3
+       2  display_NCSU
+       2  driving
+       2  five_msec_count
+       2  goFor
+      38  goLeft
+      38  goRight
+       1  goingLeft
+       1  goingRight
+       2  halfTimer
+     258  main
+       1  one_time
+       2  reverse
+       2  slowDrive
+       2  startHalf
+       2  startTimer
+
+ 
+ 334 bytes in segment CODE
+   4 bytes in segment DATA16_AN
+  46 bytes in segment DATA16_C
+  29 bytes in segment DATA16_Z
+ 
+ 334 bytes of CODE  memory
+  46 bytes of CONST memory
+  29 bytes of DATA  memory (+ 4 bytes shared)
+
+Errors: none
+Warnings: 3

@@ -1,0 +1,277 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V6.10.2.50871/W32 for MSP430         24/Nov/2014  18:37:52
+# Copyright 1996-2014 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 6.10
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\FromDesktop\Working_Proj5\interrupts_timers.c
+#    Command line  =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\FromDesktop\Working_Proj5\interrupts_timers.c
+#        -lC
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\FromDesktop\Working_Proj5\Debug\List\
+#        -o
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\FromDesktop\Working_Proj5\Debug\Obj\
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa --debug
+#        -D__MSP430FR5739__ -e --double=32 --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.0\430\lib\dlib\dl430xlsfn.h"
+#        --core=430X --data_model=small -Ol --multiplier=32
+#        --multiplier_location=4C0 --hw_workaround=CPU40 --hw_workaround=CPU39
+#        --code_model=large
+#    List file     =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\FromDesktop\Working_Proj5\Debug\List\interrupts_timers.lst
+#    Object file   =  
+#        C:\Users\Joseph\Desktop\CurrentClasses\ECE306\FromDesktop\Working_Proj5\Debug\Obj\interrupts_timers.r43
+#
+###############################################################################
+
+C:\Users\Joseph\Desktop\CurrentClasses\ECE306\FromDesktop\Working_Proj5\interrupts_timers.c
+      1          //===========================================================================
+      2          // File Name : interrupts_timers.c
+      3          //
+      4          // Description: timer interrupts
+      5          //
+      6          // Author: Joseph Jarriel
+      7          // Date: Sep 2014
+      8          // Compiler: Built with IAR Embedded Workbench (6.10.5)
+      9          // Globals: None
+     10          // Functions: Timer0_A0_ISR
+     11          //===========================================================================
+     12          
+     13          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x23a
+   \   union <unnamed> _A_PBIE_L
+   \                     _A_PBIE_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x23c
+   \   union <unnamed> _A_PBIFG_L
+   \                     _A_PBIFG_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x322
+   \   union <unnamed> _A_PJOUT_L
+   \                     _A_PJOUT_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x352
+   \   unsigned short volatile TA0CCR0
+   \                     TA0CCR0:
+   \   000000                DS8 2
+     14          #include  "functions.h"
+     15          #include  "macros.h"
+     16          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     17          int lcdCount = RESET;
+   \                     lcdCount:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     18          int incr = 0;
+   \                     incr:
+   \   000000                DS8 2
+     19          
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     20          volatile unsigned int fMCount = RESET;
+   \                     fMCount:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     21          volatile unsigned int timerCount = 0;
+   \                     timerCount:
+   \   000000                DS8 2
+     22          //******************************************************************************
+     23          //------------------------------------------------------------------------------
+     24          // TimerA0 0 Interrupt handler 
+     25          #pragma vector = TIMER0_A0_VECTOR 
+
+   \                                 In  segment ISR_CODE, align 2
+     26          __interrupt void Timer0_A0_ISR(void){
+   \                     Timer0_A0_ISR:
+     27          //===========================================================================
+     28          // ISR name: Timer0_A0_ISR
+     29          //
+     30          // Description: This ISR handles the A0 timer
+     31          // 
+     32          // Passed : no variables passed
+     33          // Locals: no variables declared
+     34          // Returned: no values returned
+     35          // Globals: fMCount, TA0CCR0
+     36          // Calls: void Init_Timer_B2(void)
+     37          //
+     38          // Author: Joseph Jarriel
+     39          // Date: Sep 2014
+     40          // Compiler: Built with IAR Embedded Workbench Version (6.10.5)
+     41          // ==========================================================================
+     42           
+     43           //if (count > 500)
+     44           //{
+     45           //   P3OUT ^= LCD_BACKLITE;
+     46           //   count = 0;
+     47           //}
+     48           //else
+     49           //{
+     50           //   count++;
+     51           //}
+     52           
+     53           //P3DIR |= LCD_BACKLITE; 
+     54           fMCount = ~fMCount;
+   \   000000   B2E3....     XOR.W   #0xffff, &fMCount
+     55           incr++;
+   \   000004   9253....     ADD.W   #0x1, &incr
+     56           slowDrive = 0;
+   \   000008   8243....     MOV.W   #0x0, &slowDrive
+     57           if (incr == 5) 
+   \   00000C   B2900500.... CMP.W   #0x5, &incr
+   \   000012   0420         JNE     ??Timer0_A0_ISR_0
+     58           {
+     59             slowDrive = 1;
+   \   000014   9243....     MOV.W   #0x1, &slowDrive
+     60             incr = 0;
+   \   000018   8243....     MOV.W   #0x0, &incr
+     61           }
+     62           
+     63           //if (lcdCount < lcdCountFin) lcdCount++;
+     64           //else
+     65           //{
+     66           //  P3OUT ^= LCD_BACKLITE;
+     67           //  lcdCount = RESET;
+     68           //}
+     69           
+     70           if (isDebounce)
+   \                     ??Timer0_A0_ISR_0:
+   \   00001C   8293....     CMP.W   #0x0, &isDebounce
+   \   000020   1524         JEQ     ??Timer0_A0_ISR_1
+     71           {
+     72             if (bounceCount > bounceCountFin)
+   \   000022   B290C900.... CMP.W   #0xc9, &bounceCount
+   \   000028   0F28         JNC     ??Timer0_A0_ISR_2
+     73             {
+     74               //Clear
+     75               P4IFG &= ~SW1; // P4 IFG SW1 cleared
+   \   00002A   D2C33D02     BIC.B   #0x1, &0x23d
+     76               P4IFG &= ~SW2; // P4 IFG SW2 cleared
+   \   00002E   E2C33D02     BIC.B   #0x2, &0x23d
+     77               // Start / Enable Interrupt 
+     78               P4IE |= SW1; // P4.0 SW1 interrupt Enabled
+   \   000032   D2D33B02     BIS.B   #0x1, &0x23b
+     79               P4IE |= SW2; // P4.0 SW2 interrupt enabled
+   \   000036   E2D33B02     BIS.B   #0x2, &0x23b
+     80               
+     81               isDebounce = RESET;
+   \   00003A   8243....     MOV.W   #0x0, &isDebounce
+     82               bounceCount = RESET;
+   \   00003E   8243....     MOV.W   #0x0, &bounceCount
+     83               
+     84               //lcd_clear();
+     85               //lcd_out("    Done Debouncing", LCD_LINE_1);
+     86               
+     87               PJOUT &= ~LED1; // Turn off debounce LED
+   \   000042   92C32203     BIC.W   #0x1, &0x322
+   \   000046   023C         JMP     ??Timer0_A0_ISR_1
+     88             }
+     89             else
+     90             {
+     91               bounceCount++;
+   \                     ??Timer0_A0_ISR_2:
+   \   000048   9253....     ADD.W   #0x1, &bounceCount
+     92             }
+     93           }
+     94           
+     95           if (startTimer) timerCount++;
+   \                     ??Timer0_A0_ISR_1:
+   \   00004C   8293....     CMP.W   #0x0, &startTimer
+   \   000050   0224         JEQ     ??Timer0_A0_ISR_3
+   \   000052   9253....     ADD.W   #0x1, &timerCount
+     96           TA0CCR0 += FIVE_MSEC_OFFSET; // Add Offset to TACCR0 
+   \                     ??Timer0_A0_ISR_3:
+   \   000056   B250C4095203 ADD.W   #0x9c4, &0x352
+     97          } 
+   \   00005C   0013         RETI
+   \   00005E                REQUIRE _A_PBIFG_L
+   \   00005E                REQUIRE _A_PBIE_L
+   \   00005E                REQUIRE _A_PJOUT_L
+   \   00005E                REQUIRE TA0CCR0
+
+   \                                 In  segment INTVEC, offset 0x5a, root
+   \                     `??Timer0_A0_ISR??INTVEC 90`:
+   \   00005A   ....         DC16    Timer0_A0_ISR
+     98          //------------------------------------------------------------------------------
+     99          /*
+    100          //------------------------------------------------------------------------------
+    101          // TimerA0 1-2, Overflow Interrupt Vector (TAIV) handler
+    102          #pragma vector=TIMER0_A1_VECTOR
+    103          __interrupt void TIMER0_A1_ISR(void){
+    104           switch(__even_in_range(TA0IV,14)){
+    105           case 0: break; // No interrupt
+    106           case 2: // CCR1 not used
+    107          // Put code here for CCR1 
+    108           TA0CCR1 += TA0CCR1_INTERVAL; // Add Offset to TACCR1
+    109           break;
+    110           case 4: // CCR2 not used
+    111          // Put code here for CCR2 
+    112           TA0CCR2 += TA0CCR2_INTERVAL; // Add Offset to TACCR2
+    113           break;
+    114           case 6: break; // reserved
+    115           case 8: break; // reserved
+    116           case 10: break; // reserved
+    117           case 12: break; // reserved
+    118           case 14: // overflow
+    119          // Put code here for overflow
+    120           break;
+    121           default: break; 
+    122           }
+    123          }
+    124          //------------------------------------------------------------------------------
+    125          */
+    126          //*************************************************************
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Timer0_A0_ISR
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       2  ??Timer0_A0_ISR??INTVEC 90
+       2  TA0CCR0
+      94  Timer0_A0_ISR
+       2  _A_PBIE_L
+       2  _A_PBIFG_L
+       2  _A_PJOUT_L
+       2  fMCount
+       2  incr
+       2  lcdCount
+       2  timerCount
+
+ 
+  8 bytes in segment DATA16_AN
+  8 bytes in segment DATA16_Z
+  2 bytes in segment INTVEC
+ 94 bytes in segment ISR_CODE
+ 
+ 94 bytes of CODE  memory
+  0 bytes of CONST memory (+ 2 bytes shared)
+  8 bytes of DATA  memory (+ 8 bytes shared)
+
+Errors: none
+Warnings: none
